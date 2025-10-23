@@ -6,36 +6,43 @@ export function VoiceCloningSection() {
       title: "Personalized Voice Assistants",
       description: "Create branded voice assistants with unique personalities",
       icon: "🤖",
+      href: "/voice-cloning/personalized-assistants",
     },
     {
       title: "Multilingual Content",
       description: "Maintain original speaker voice across multiple languages",
       icon: "🌍",
+      href: "/voice-cloning/multilingual-content",
     },
     {
       title: "Video Series Narration",
       description: "Consistent narrator voice throughout video series",
       icon: "🎬",
+      href: "/voice-cloning/video-series-narration",
     },
     {
       title: "Film & Series Dubbing",
       description: "Professional voice dubbing for films and television",
       icon: "🎭",
+      href: "/voice-cloning/film-dubbing",
     },
     {
       title: "Game Character Voices",
       description: "Unique character voices for games and animation",
       icon: "🎮",
+      href: "/voice-cloning/game-character-voices",
     },
     {
       title: "Radio Jockey Voice",
       description: "Replicate professional radio announcer voices",
       icon: "📻",
+      href: "/voice-cloning/radio-jockey",
     },
     {
       title: "News Anchor Generation",
       description: "Automated news anchor voice generation",
       icon: "📡",
+      href: "/voice-cloning/news-anchor",
     },
   ]
 
