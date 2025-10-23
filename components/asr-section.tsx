@@ -6,46 +6,55 @@ export function AsrSection() {
       title: "Call Transcription",
       description: "Automatically transcribe phone calls and voice conversations",
       icon: "☎️",
+      href: "/asr/call-transcription",
     },
     {
       title: "Meeting Minutes",
       description: "Generate accurate meeting transcripts and summaries",
       icon: "📋",
+      href: "/asr/meeting-minutes",
     },
     {
       title: "Video & Podcast Subtitling",
       description: "Create accurate subtitles for video and podcast content",
       icon: "📹",
+      href: "/asr/video-podcast-subtitling",
     },
     {
       title: "Voice Search",
       description: "Enable voice-based search functionality in applications",
       icon: "🔍",
+      href: "/asr/voice-search",
     },
     {
       title: "Interview Transcription",
       description: "Professional transcription for journalism and research",
       icon: "🎤",
+      href: "/asr/interview-transcription",
     },
     {
       title: "Voice Commands",
       description: "Implement voice control for apps and devices",
       icon: "🗣️",
+      href: "/asr/voice-commands",
     },
     {
       title: "Lecture Transcription",
       description: "Convert educational lectures into searchable text",
       icon: "👨‍🏫",
+      href: "/asr/lecture-transcription",
     },
     {
       title: "Voice Data Entry",
       description: "Hands-free data input through voice commands",
       icon: "✍️",
+      href: "/asr/voice-data-entry",
     },
     {
       title: "Survey Voice Input",
       description: "Collect survey responses through voice input",
       icon: "📊",
+      href: "/asr/survey-voice-input",
     },
   ]
 

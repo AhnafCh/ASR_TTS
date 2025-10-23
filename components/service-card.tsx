@@ -1,14 +1,17 @@
 "use client"
 
+import Link from "next/link"
+
 interface ServiceCardProps {
   title: string
   description: string
   icon: string
+  href?: string
 }
 
-export function ServiceCard({ title, description, icon }: ServiceCardProps) {
-  return (
-    <div className="group relative p-6 rounded-lg bg-card border border-border hover:border-accent/50 card-hover cursor-pointer overflow-hidden">
+export function ServiceCard({ title, description, icon, href }: ServiceCardProps) {
+  const content = (
+    <div className="group relative p-6 rounded-lg bg-card border border-border hover:border-accent/50 card-hover cursor-pointer overflow-hidden h-full">
       {/* Hover glow effect */}
       <div className="absolute inset-0 bg-gradient-to-br from-accent/0 via-transparent to-accent/0 group-hover:from-accent/10 group-hover:to-accent/5 transition-all duration-300" />
 
@@ -21,4 +24,14 @@ export function ServiceCard({ title, description, icon }: ServiceCardProps) {
       </div>
     </div>
   )
+
+  if (href) {
+    return (
+      <Link href={href} className="block">
+        {content}
+      </Link>
+    )
+  }
+
+  return content
 }

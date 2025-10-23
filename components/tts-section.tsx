@@ -6,41 +6,49 @@ export function TtsSection() {
       title: "Article & Blog Readout",
       description: "Convert written content into natural-sounding audio for accessibility and engagement",
       icon: "📰",
+      href: "/tts/article-blog-readout",
     },
     {
       title: "E-book Narration",
       description: "Professional voice narration for digital books and publications",
       icon: "📖",
+      href: "/tts/ebook-narration",
     },
     {
       title: "Educational Voiceovers",
       description: "High-quality audio for online courses and educational materials",
       icon: "🎓",
+      href: "/tts/educational-voiceovers",
     },
     {
       title: "Audio Ads & Commercials",
       description: "Engaging voice content for marketing and advertising campaigns",
       icon: "📢",
+      href: "/tts/audio-ads-commercials",
     },
     {
       title: "Podcast Script Conversion",
       description: "Transform scripts into polished podcast audio content",
       icon: "🎙️",
+      href: "/tts/podcast-conversion",
     },
     {
       title: "E-commerce Product Audio",
       description: "Product descriptions and details in engaging audio format",
       icon: "🛍️",
+      href: "/tts/ecommerce-audio",
     },
     {
       title: "Museum Audio Guides",
       description: "Immersive audio experiences for exhibitions and museums",
       icon: "🏛️",
+      href: "/tts/museum-audio-guides",
     },
     {
       title: "Audiobook Production",
       description: "Complete audiobook creation with professional narration",
       icon: "🎧",
+      href: "/tts/audiobook-production",
     },
   ]
 
