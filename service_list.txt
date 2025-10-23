@@ -1,0 +1,34 @@
+# Product name: SenseVoice
+# Description: Voice AI tech using platform
+# Features: ASR, TTS, and Voice Cloning
+# TTS
+- Article/blog readout for accessibility
+- E-book narration
+- Educational course voiceovers
+- Audio ads and commercials
+- Podcast script conversion
+- Product description audio for e-commerce
+- Museum/exhibition audio guides
+- Audiobook production
+
+# ASR
+- Call transcription
+- Meeting minutes generation
+- Video/podcast subtitling
+- Voice search functionality
+- Interview transcription for journalism
+- Voice commands for apps/devices
+- Lecture transcription for students
+- Survey responses via voice input
+- Voice-based data entry forms
+
+# Voice Cloning
+- Celebrity/influencer voice for brand campaigns
+- Personalized voice assistants (branded voices)
+- Multilingual content with original speaker's voice
+- CEO/founder voice for company communications
+- Consistent narrator voice across video series
+- Voice dubbing for films/series
+- Character voices for games/animation
+- Radio jockey/announcer voice replication
+- Automated news anchor voice generation
