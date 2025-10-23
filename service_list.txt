@@ -1,7 +1,9 @@
 # Product name: SenseVoice
 # Description: Voice AI tech using platform
+# Primary Language: Bangla
 # Features: ASR, TTS, and Voice Cloning
-# TTS
+
+# TTS usage
 - Article/blog readout for accessibility
 - E-book narration
 - Educational course voiceovers
@@ -11,7 +13,7 @@
 - Museum/exhibition audio guides
 - Audiobook production
 
-# ASR
+# ASR usage
 - Call transcription
 - Meeting minutes generation
 - Video/podcast subtitling
@@ -22,11 +24,9 @@
 - Survey responses via voice input
 - Voice-based data entry forms
 
-# Voice Cloning
-- Celebrity/influencer voice for brand campaigns
+# Voice Cloning usage
 - Personalized voice assistants (branded voices)
 - Multilingual content with original speaker's voice
-- CEO/founder voice for company communications
 - Consistent narrator voice across video series
 - Voice dubbing for films/series
 - Character voices for games/animation
