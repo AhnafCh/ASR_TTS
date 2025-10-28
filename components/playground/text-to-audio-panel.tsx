@@ -23,11 +23,8 @@ import {
 import { Switch } from "@/components/ui/switch"
 
 const voiceActors = [
-  { id: "bn-female-1", name: "Priya (Female)", language: "Bangla", sample: "/samples/priya.mp3" },
-  { id: "bn-male-1", name: "Arjun (Male)", language: "Bangla", sample: "/samples/arjun.mp3" },
-  { id: "bn-female-2", name: "Riya (Female)", language: "Bangla", sample: "/samples/riya.mp3" },
-  { id: "en-female-1", name: "Emma (Female)", language: "English", sample: "/samples/emma.mp3" },
-  { id: "en-male-1", name: "James (Male)", language: "English", sample: "/samples/james.mp3" },
+  { id: "female", name: "Female Voice", language: "Universal", sample: "/samples/female.mp3" },
+  { id: "male", name: "Male Voice", language: "Universal", sample: "/samples/male.mp3" },
 ]
 
 export function TextToAudioPanel() {

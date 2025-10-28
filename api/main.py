@@ -63,7 +63,7 @@ class TTSRequest(BaseModel):
     Attributes:
         text: The input text to convert to speech (required)
         language: Target language for speech synthesis (default: "english")
-        voice: Voice actor ID to use (default: "bn-female-1")
+        voice: Voice gender to use (default: "female")
     """
     text: str = Field(..., description="Text to convert to speech", min_length=1, max_length=5000)
     language: str = Field(
@@ -71,8 +71,8 @@ class TTSRequest(BaseModel):
         description="Language for speech synthesis: 'bangla', 'english', or 'mix'"
     )
     voice: str = Field(
-        default="bn-female-1",
-        description="Voice actor ID: bn-female-1, bn-male-1, bn-female-2, en-female-1, en-male-1"
+        default="female",
+        description="Voice gender: 'female' or 'male'"
     )
 
     class Config:
@@ -80,7 +80,7 @@ class TTSRequest(BaseModel):
             "example": {
                 "text": "Hello, this is a test message in English.",
                 "language": "english",
-                "voice": "en-female-1"
+                "voice": "female"
             }
         }
 
@@ -130,21 +130,15 @@ class ASRResponse(BaseModel):
 # ============================================================================
 
 # Mapping of custom voice IDs to OpenAI voice names
-# Each voice has distinct characteristics suitable for different use cases
+# Simplified to two universal voices for all languages
 VOICE_MAP = {
-    "bn-female-1": "nova",      # Priya: Warm, friendly female voice
-    "bn-male-1": "onyx",        # Arjun: Deep, authoritative male voice
-    "bn-female-2": "shimmer",   # Riya: Expressive, energetic female voice
-    "en-female-1": "coral",     # Emma: Cheerful, bright female voice
-    "en-male-1": "echo",        # James: Clear, articulate male voice
+    "female": "nova",    # works for Bengali and English
+    "male": "echo",      # works for Bengali and English
 }
 
 # Voice characteristics for instruction generation
 VOICE_CHARACTERISTICS = {
     "nova": "warm, friendly, and conversational",
-    "onyx": "deep, authoritative, and confident",
-    "shimmer": "expressive, energetic, and engaging",
-    "coral": "cheerful, bright, and uplifting",
     "echo": "clear, articulate, and professional"
 }
 
@@ -302,11 +296,8 @@ async def generate_tts(request: TTSRequest):
     - `mix`: Mixed Bengali-English with code-switching
     
     **Available Voices:**
-    - `bn-female-1`: Priya (warm, friendly female)
-    - `bn-male-1`: Arjun (deep, authoritative male)
-    - `bn-female-2`: Riya (expressive, energetic female)
-    - `en-female-1`: Emma (cheerful, bright female)
-    - `en-male-1`: James (clear, articulate male)
+    - `female`: Warm, friendly female voice (works for all languages)
+    - `male`: Deep, authoritative male voice (works for all languages)
     
     Args:
         request: TTSRequest object containing text, language, and voice

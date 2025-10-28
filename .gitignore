@@ -25,6 +25,7 @@ yarn-error.log*
 .env.production.local
 
 # Python virtual environment
+/voice_env
 /voice
 
 # Python
