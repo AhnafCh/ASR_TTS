@@ -1,6 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 
 export function Hero() {
   const scrollToSection = (id: string) => {
@@ -13,7 +14,7 @@ export function Hero() {
   return (
     <section className="relative min-h-screen flex items-center justify-center px-4 py-20 overflow-hidden pt-32">
       {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-accent/10 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-linear-to-b from-accent/10 via-transparent to-transparent pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center fade-in">
@@ -34,14 +35,15 @@ export function Hero() {
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-8">
                 Get API
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border-muted-foreground text-foreground hover:bg-secondary rounded-full px-8 bg-transparent cursor-pointer"
-                onClick={() => scrollToSection("playground")}
-              >
-                Playground
-              </Button>
+              <Link href="/playground">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-muted-foreground text-foreground hover:bg-secondary rounded-full px-8 bg-transparent cursor-pointer"
+                >
+                  Playground
+                </Button>
+              </Link>
               <Button
                 size="lg"
                 variant="outline"

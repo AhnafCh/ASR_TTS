@@ -126,7 +126,7 @@
 
 @layer utilities {
   .gradient-text {
-    @apply bg-gradient-to-r from-accent to-accent/70 bg-clip-text text-transparent;
+    @apply bg-linear-to-r from-accent to-accent/70 bg-clip-text text-transparent;
   }
 
   .card-hover {

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ChevronUp } from "lucide-react"
+import Link from "next/link"
 
 export function FloatingNavbar() {
   const [isVisible, setIsVisible] = useState(false)
@@ -38,14 +39,15 @@ export function FloatingNavbar() {
       >
         Contact Us
       </Button>
-      <Button
-        size="sm"
-        variant="outline"
-        className="border-muted-foreground text-foreground hover:bg-secondary rounded-full bg-background shadow-lg hover:shadow-xl transition-all"
-        onClick={() => scrollToSection("playground")}
-      >
-        Playground
-      </Button>
+      <Link href="/playground">
+        <Button
+          size="sm"
+          variant="outline"
+          className="border-muted-foreground text-foreground hover:bg-secondary rounded-full bg-background shadow-lg hover:shadow-xl transition-all w-full"
+        >
+          Playground
+        </Button>
+      </Link>
       <Button
         size="icon"
         className="bg-accent text-accent-foreground hover:bg-accent/90 rounded-full shadow-lg hover:shadow-xl transition-all"
