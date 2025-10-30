@@ -37,7 +37,7 @@ export function ContactForm() {
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-card border border-border rounded-lg p-8">
+        <form onSubmit={handleSubmit} className="space-y-6 card-gradient dark:bg-card border border-border rounded-lg p-8 elevation-2">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -50,7 +50,7 @@ export function ContactForm() {
                 onChange={handleChange}
                 placeholder="Your name"
                 required
-                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg transition-colors duration-200"
+                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200"
               />
             </div>
             <div className="space-y-2">
@@ -65,7 +65,7 @@ export function ContactForm() {
                 onChange={handleChange}
                 placeholder="your@email.com"
                 required
-                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg transition-colors duration-200"
+                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200"
               />
             </div>
           </div>
@@ -80,7 +80,7 @@ export function ContactForm() {
               value={formData.company}
               onChange={handleChange}
               placeholder="Your company"
-              className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg transition-colors duration-200"
+              className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200"
             />
           </div>
 
@@ -95,11 +95,11 @@ export function ContactForm() {
               onChange={handleChange}
               placeholder="Tell us about your project..."
               rows={5}
-              className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg transition-colors duration-200 resize-none"
+              className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200 resize-none"
             />
           </div>
 
-          <Button type="submit" className="w-full bg-primary text-white hover:bg-secondary rounded-lg transition-colors duration-200">
+          <Button type="submit" className="w-full ai-gradient-button text-white rounded-lg shadow-lg">
             Send Message
           </Button>
         </form>

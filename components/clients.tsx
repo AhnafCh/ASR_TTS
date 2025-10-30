@@ -83,7 +83,7 @@ export function Clients() {
                 const Icon = item.icon
                 return (
                   <div key={index} className="w-full md:w-1/3 shrink-0 px-3">
-                    <div className="relative bg-white dark:bg-card border-2 border-border rounded-2xl p-6 shadow-lg hover:shadow-xl hover:border-primary transition-all duration-200 h-full">
+                    <div className="relative card-gradient dark:bg-card border-2 border-border rounded-2xl p-6 shadow-lg card-hover-lift h-full hover:border-primary transition-all duration-200 elevation-2">
                       {/* Company Icon at top */}
                       <div className="flex justify-center mb-6">
                         <div className="w-16 h-16 rounded-xl bg-linear-to-br from-primary to-secondary flex items-center justify-center shadow-md">

@@ -12,9 +12,9 @@ interface ServiceCardProps {
 
 export function ServiceCard({ title, description, icon: Icon, href }: ServiceCardProps) {
   const content = (
-    <div className="group relative p-6 rounded-lg bg-white dark:bg-card border border-border hover:border-primary transition-colors duration-200 cursor-pointer h-full">
+    <div className="group relative p-6 rounded-lg card-gradient dark:bg-card border border-border hover:border-primary transition-all duration-200 cursor-pointer h-full card-hover-lift elevation-1">
       <div className="space-y-3">
-        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-200">
           <Icon className="w-6 h-6" />
         </div>
         <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200">

@@ -38,7 +38,7 @@ export function PricingSection() {
 
         {/* Pricing Card */}
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white dark:bg-card border border-border rounded-lg p-8 md:p-12">
+          <div className="card-gradient dark:bg-card border border-border rounded-lg p-8 md:p-12 elevation-2 card-hover-lift">
             <div className="grid md:grid-cols-2 gap-8 items-center">
               {/* Left side - Info */}
               <div className="space-y-6">
@@ -69,7 +69,7 @@ export function PricingSection() {
                   <Button 
                     onClick={scrollToContact}
                     size="lg"
-                    className="bg-primary hover:bg-secondary text-white font-semibold rounded-lg transition-colors duration-200 w-full md:w-auto"
+                    className="ai-gradient-button text-white font-semibold rounded-lg shadow-lg w-full md:w-auto"
                   >
                     <Mail className="w-4 h-4 mr-2" />
                     Request Quote
@@ -79,7 +79,7 @@ export function PricingSection() {
 
               {/* Right side - Contact Info */}
               <div className="space-y-6">
-                <div className="bg-white dark:bg-card border border-border rounded-lg p-6">
+                <div className="card-gradient dark:bg-card border border-border rounded-lg p-6 elevation-1">
                   <h4 className="font-semibold text-lg mb-4 text-foreground">Get in Touch</h4>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
@@ -99,7 +99,7 @@ export function PricingSection() {
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-card border border-border rounded-lg p-6">
+                <div className="card-gradient dark:bg-card border border-border rounded-lg p-6 elevation-1">
                   <h4 className="font-semibold text-sm mb-3 text-foreground">What's Included</h4>
                   <ul className="text-sm text-muted-foreground space-y-2">
                     <li>• Volume-based discounts</li>
@@ -109,7 +109,7 @@ export function PricingSection() {
                   </ul>
                 </div>
 
-                <div className="text-center p-6 bg-white dark:bg-card border border-border rounded-lg">
+                <div className="text-center p-6 card-gradient dark:bg-card border border-border rounded-lg elevation-1">
                   <p className="text-sm text-muted-foreground mb-2">Trusted by</p>
                   <p className="text-2xl font-bold text-primary">50+ Enterprises</p>
                 </div>

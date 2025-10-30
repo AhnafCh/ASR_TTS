@@ -35,19 +35,19 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-8">
           <button
             onClick={() => scrollToSection("tts")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
           >
             TTS
           </button>
           <button
             onClick={() => scrollToSection("asr")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
           >
             ASR
           </button>
           <button
             onClick={() => scrollToSection("pricing")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
           >
             Pricing
           </button>
@@ -55,6 +55,14 @@ export function Navbar() {
 
         <div className="flex items-center gap-3">
           <ThemeToggle />
+          <Button
+            size="sm"
+            variant="outline"
+            className="border border-border text-foreground hover:bg-muted rounded-lg hidden sm:inline-flex transition-colors duration-200"
+            onClick={() => window.location.href = '/playground'}
+          >
+            Playground
+          </Button>
           <Button
             size="sm"
             variant="outline"

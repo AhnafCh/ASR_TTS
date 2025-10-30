@@ -186,10 +186,11 @@ export function TextToAudioPanel() {
             {inputMode === "text" && (
               <Textarea
                 id="input-text"
-                placeholder="আপনার টেক্সট এখানে লিখুন বা পেস্ট করুন..."
+                placeholder={language === "bangla" ? "আপনার টেক্সট এখানে লিখুন বা পেস্ট করুন..." : "Enter or paste your text here..."}
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                className="min-h-[250px] resize-none bg-white dark:bg-background border border-border rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 text-base leading-relaxed p-4"
+                className="min-h-[250px] resize-none bg-white dark:bg-background border border-border rounded-md focus-glow transition-all duration-200 leading-relaxed p-4"
+                style={{ fontSize: '16px' }}
               />
             )}
             
@@ -247,7 +248,6 @@ export function TextToAudioPanel() {
                 <SelectContent className="bg-white dark:bg-card border border-border rounded-md">
                   <SelectItem value="bangla">বাংলা (Bangla)</SelectItem>
                   <SelectItem value="english">English</SelectItem>
-                  <SelectItem value="mix">Mixed (Bangla + English)</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -257,7 +257,7 @@ export function TextToAudioPanel() {
           <Button
             onClick={handleGenerate}
             disabled={isGenerating || !inputText}
-            className="w-full h-14 text-base font-semibold bg-primary hover:bg-secondary text-white rounded-lg transition-colors duration-200"
+            className="w-full h-14 text-base font-semibold ai-gradient-button text-white rounded-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
             size="lg"
           >
             {isGenerating ? (
@@ -275,7 +275,7 @@ export function TextToAudioPanel() {
 
           {/* Output Section */}
           {generatedAudio && (
-            <div className="bg-white dark:bg-card border border-border rounded-lg p-6 space-y-4 animate-in fade-in duration-300">
+            <div className="card-gradient dark:bg-card border border-border rounded-lg p-6 space-y-4 animate-in fade-in duration-300 elevation-2">
               <div className="flex items-center justify-between">
                 <h3 className="font-semibold text-lg text-foreground flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-primary" />

@@ -1,5 +1,4 @@
 import { Navbar } from "@/components/navbar"
-import { FloatingNavbar } from "@/components/floating-navbar"
 import { Hero } from "@/components/hero"
 import { Clients } from "@/components/clients"
 import { TtsSection } from "@/components/tts-section"
@@ -12,7 +11,6 @@ export default function Home() {
   return (
     <>
       <Navbar />
-      <FloatingNavbar />
       <main className="min-h-screen bg-background">
         <Hero />
         <Clients />

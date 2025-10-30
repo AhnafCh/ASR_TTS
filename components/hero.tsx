@@ -13,7 +13,24 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex items-center justify-center px-4 py-10 overflow-hidden pt-20 pb-20 bg-background">
+    <section className="relative flex items-center justify-center px-4 py-10 overflow-hidden pt-20 pb-20">
+      {/* Animated Gradient Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white via-primary/20 to-blue-50 dark:from-background dark:via-primary/25 dark:to-background animate-gradient-shift" 
+           style={{
+             backgroundSize: '200% 200%',
+             animation: 'gradient-shift 15s ease infinite'
+           }}
+      />
+      
+      {/* Grainy Texture Overlay */}
+      <div className="absolute inset-0 opacity-[0.085] dark:opacity-[0.035]"
+           style={{
+             backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")`,
+             backgroundRepeat: 'repeat',
+             backgroundSize: '200px 200px'
+           }}
+      />
+
       {/* Subtle Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
@@ -32,7 +49,7 @@ export function Hero() {
 
             <div className="space-y-6">
               <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-foreground">
-                <span className="block mb-2">
+                <span className="block">
                   বাংলা এআই
                 </span>
                 <span className="block text-primary">
@@ -60,7 +77,7 @@ export function Hero() {
             <div className="flex flex-col sm:flex-row gap-4 pt-2">
               <Button 
                 size="lg" 
-                className="bg-primary hover:bg-secondary text-white font-semibold rounded-lg px-8 transition-colors duration-200"
+                className="ai-gradient-button text-white font-semibold rounded-lg px-8 shadow-lg"
               >
                 Get API Access
               </Button>
@@ -68,7 +85,7 @@ export function Hero() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-2 border-border text-foreground hover:bg-muted rounded-lg px-8 transition-colors duration-200 font-semibold"
+                  className="border-2 border-border text-foreground hover:bg-muted rounded-lg px-8 transition-colors duration-200 font-semibold elevation-1 hover:elevation-2"
                 >
                   <span className="mr-2">Try Playground</span>
                   <Zap className="w-4 h-4" />

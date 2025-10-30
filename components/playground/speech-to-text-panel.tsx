@@ -326,7 +326,7 @@ export function SpeechToTextPanel() {
       <Button
         onClick={handleTranscribe}
         disabled={isTranscribing || !uploadedFile}
-        className="w-full h-14 text-base font-semibold bg-primary hover:bg-secondary text-white rounded-lg transition-colors duration-200"
+        className="w-full h-14 text-base font-semibold ai-gradient-button text-white rounded-lg shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
         size="lg"
       >
         {isTranscribing ? (
@@ -344,7 +344,7 @@ export function SpeechToTextPanel() {
 
       {/* Output Section */}
       {transcription && (
-        <div className="bg-white dark:bg-card border border-border rounded-lg p-6 space-y-4 animate-in fade-in duration-300">
+        <div className="card-gradient dark:bg-card border border-border rounded-lg p-6 space-y-4 animate-in fade-in duration-300 elevation-2">
           <div className="flex items-center justify-between">
             <h3 className="font-semibold text-lg text-foreground flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-primary" />
@@ -375,7 +375,7 @@ export function SpeechToTextPanel() {
           <Textarea
             value={transcription}
             onChange={(e) => setTranscription(e.target.value)}
-            className="min-h-[250px] resize-none bg-white dark:bg-background border border-border rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 text-base leading-relaxed p-4"
+            className="min-h-[250px] resize-none bg-white dark:bg-background border border-border rounded-md focus-glow transition-all duration-200 text-base leading-relaxed p-4"
             placeholder="Transcription will appear here..."
           />
           

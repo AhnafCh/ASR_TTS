@@ -62,7 +62,7 @@ export function AsrSection() {
   ]
 
   return (
-    <section id="asr" className="py-12 px-4 border-t border-border scroll-mt-20 bg-muted">
+    <section id="asr" className="py-12 px-4 border-t border-border scroll-mt-20 bg-white dark:bg-background">
       <div className="max-w-6xl mx-auto space-y-12">
         <div className="text-center space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground">Automatic Speech Recognition</h2>
