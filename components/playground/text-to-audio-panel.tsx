@@ -1,6 +1,8 @@
 "use client"
 
 import { useState, useRef, useEffect } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -27,6 +29,8 @@ const voiceActors = [
 ]
 
 export function TextToAudioPanel() {
+  const router = useRouter()
+  const { isAuthenticated } = useAuth()
   const [inputMode, setInputMode] = useState<"text" | "file" | "link">("text")
   const [inputText, setInputText] = useState("")
   const [fileUrl, setFileUrl] = useState("")
@@ -64,6 +68,12 @@ export function TextToAudioPanel() {
   }
 
   const handleGenerate = async () => {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      router.push("/signup")
+      return
+    }
+
     // Validate input based on mode
     if (inputMode === "text" && !inputText) {
       alert("Please enter text")

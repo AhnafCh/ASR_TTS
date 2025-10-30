@@ -1,6 +1,8 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { 
@@ -24,6 +26,8 @@ import {
 import { Textarea } from "@/components/ui/textarea"
 
 export function SpeechToTextPanel() {
+  const router = useRouter()
+  const { isAuthenticated } = useAuth()
   const [inputMode, setInputMode] = useState<"record" | "file" | "link">("file")
   const [isRecording, setIsRecording] = useState(false)
   const [isTranscribing, setIsTranscribing] = useState(false)
@@ -98,6 +102,12 @@ export function SpeechToTextPanel() {
   }
 
   const handleTranscribe = async () => {
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      router.push("/signup")
+      return
+    }
+
     // Validate input
     if (!uploadedFile) {
       alert("Please upload an audio file")

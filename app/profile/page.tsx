@@ -11,11 +11,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Separator } from "@/components/ui/separator"
 import { Alert, AlertDescription } from "@/components/ui/alert"
-import { User, Mail, Lock, Camera, AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
+import { User, Mail, Lock, Camera, AlertCircle, CheckCircle2, Loader2, LogOut } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 function ProfilePageContent() {
-  const { user, updateUser } = useAuth()
+  const { user, updateUser, logout } = useAuth()
+  const router = useRouter()
   const [isEditing, setIsEditing] = useState(false)
   const [name, setName] = useState(user?.name || "")
   const [email, setEmail] = useState(user?.email || "")
@@ -25,6 +27,15 @@ function ProfilePageContent() {
   const [success, setSuccess] = useState("")
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
+
+  const handleLogout = async () => {
+    try {
+      await logout()
+      router.push("/")
+    } catch (error) {
+      console.error("Logout error:", error)
+    }
+  }
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -328,6 +339,18 @@ function ProfilePageContent() {
                 <CardDescription>Irreversible and destructive actions</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
+                <div className="flex items-center justify-between p-4 border border-border rounded-lg">
+                  <div>
+                    <h4 className="font-medium">Log Out</h4>
+                    <p className="text-sm text-muted-foreground">
+                      Sign out of your account on this device
+                    </p>
+                  </div>
+                  <Button variant="outline" onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Log Out
+                  </Button>
+                </div>
                 <div className="flex items-center justify-between p-4 border border-border rounded-lg">
                   <div>
                     <h4 className="font-medium">Delete Account</h4>

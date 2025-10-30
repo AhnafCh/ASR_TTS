@@ -3,8 +3,7 @@
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { AudioWaveform, Mic2, Key, User, UserCircle, LogOut } from "lucide-react"
-import { ThemeToggle } from "@/components/theme-toggle"
+import { AudioWaveform, Mic2, Key, User, UserCircle, History } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
@@ -14,7 +13,7 @@ interface PlaygroundSidebarProps {
 }
 
 export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebarProps) {
-  const { user, isAuthenticated, logout } = useAuth()
+  const { user, isAuthenticated } = useAuth()
   const router = useRouter()
 
   return (
@@ -67,6 +66,16 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
         </button>
 
         <div className="pt-4 mt-4 border-t border-border space-y-2">
+          {isAuthenticated && (
+            <Button 
+              variant="outline" 
+              className="w-full justify-start gap-3 border border-border hover:bg-card transition-colors duration-200"
+            >
+              <History className="w-5 h-5" />
+              History
+            </Button>
+          )}
+
           <Link href="/#contact">
             <Button variant="outline" className="w-full justify-start gap-3 border border-border hover:bg-card transition-colors duration-200">
               <Key className="w-5 h-5" />
@@ -80,34 +89,21 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
       <div className="p-4 border-t border-border bg-white dark:bg-card space-y-2">
         {isAuthenticated && user ? (
           <>
-            <div className="flex items-center gap-3 px-4 py-2">
-              <Avatar className="h-8 w-8">
+            <button
+              onClick={() => router.push("/profile")}
+              className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-muted/50 hover:shadow-sm transition-all duration-200 text-left group"
+            >
+              <Avatar className="h-8 w-8 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
                 <AvatarImage src={user.avatar} alt={user.name} />
                 <AvatarFallback className="bg-primary text-white text-sm">
                   {user.name.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate">{user.name}</p>
+                <p className="text-sm font-medium truncate group-hover:text-primary transition-colors duration-200">{user.name}</p>
                 <p className="text-xs text-muted-foreground truncate">{user.email}</p>
               </div>
-            </div>
-            <Button
-              variant="ghost"
-              className="w-full justify-start gap-3 hover:bg-muted transition-colors duration-200"
-              onClick={() => router.push("/profile")}
-            >
-              <User className="w-5 h-5" />
-              Profile
-            </Button>
-            <Button
-              variant="ghost"
-              className="w-full justify-start gap-3 hover:bg-muted transition-colors duration-200 text-red-600 dark:text-red-400"
-              onClick={logout}
-            >
-              <LogOut className="w-5 h-5" />
-              Logout
-            </Button>
+            </button>
           </>
         ) : (
           <Button
@@ -119,10 +115,6 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
             Login
           </Button>
         )}
-        <div className="flex items-center justify-between px-4">
-          <span className="text-sm text-muted-foreground font-medium">Theme</span>
-          <ThemeToggle />
-        </div>
       </div>
     </aside>
   )
