@@ -1,11 +1,15 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import AudioPlayer from "@/components/audio-player"
+import CTASection from "@/components/cta-section"
 
 export default function ArticleBlogReadoutPage() {
   return (
-    <div className="min-h-screen py-20 px-4">
-      <div className="max-w-4xl mx-auto space-y-12">
+    <div className="min-h-screen py-20 px-4 pb-32">
+      <div className="max-w-4xl mx-auto space-y-8">
         {/* Back Button */}
         <Link href="/#tts">
           <Button variant="ghost" className="gap-2">
@@ -16,122 +20,45 @@ export default function ArticleBlogReadoutPage() {
 
         {/* Header */}
         <div className="space-y-4">
-          <div className="text-5xl">📰</div>
-          <h1 className="text-4xl md:text-5xl font-bold">Article & Blog Readout</h1>
-          <p className="text-xl text-muted-foreground">
-            Convert written content into natural-sounding audio for accessibility and engagement
+          <h1 className="pt-4 text-3xl md:text-4xl font-bold">এজেন্টিক এআই-এর উত্থান: বুদ্ধিমান সিস্টেমের ভবিষ্যত রূপান্তর</h1>
+          <p className="text-lg text-muted-foreground">
+            প্রকাশিত: ৩০ অক্টোবর, ২০২৫ • ৪ মিনিট পড়ুন
           </p>
         </div>
 
-        {/* Overview Section */}
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Overview</h2>
-          <p className="text-muted-foreground leading-relaxed">
-            Transform your articles and blog posts into engaging audio content with our advanced Text-to-Speech technology. 
-            Perfect for accessibility, reaching audio-first audiences, and providing an alternative content consumption method.
+        {/* Article Content */}
+        <article className="prose prose-lg dark:prose-invert max-w-none space-y-6">
+          <p className="text-lg leading-relaxed text-foreground">
+            কৃত্রিম বুদ্ধিমত্তা গত এক দশকে নাটকীয়ভাবে বিকশিত হয়েছে, তবে সম্ভবত সবচেয়ে উত্তেজনাপূর্ণ উন্নয়ন হলো <strong>এজেন্টিক এআই</strong>-এর আবির্ভাব—স্বায়ত্তশাসিত সিস্টেম যা ন্যূনতম মানবিক হস্তক্ষেপে সিদ্ধান্ত নিতে, পদক্ষেপ নিতে এবং লক্ষ্য অর্জন করতে সক্ষম। এই নতুন যুগের দোরগোড়ায় দাঁড়িয়ে, এজেন্টিক এআই আমাদের ভবিষ্যতের জন্য কী অর্থ বহন করে এবং এটি ঐতিহ্যবাহী এআই সিস্টেম থেকে কীভাবে ভিন্ন তা বোঝা অত্যন্ত গুরুত্বপূর্ণ।
           </p>
-        </section>
 
-        {/* Features Section */}
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Key Features</h2>
-          <ul className="space-y-3">
-            <li className="flex gap-3">
-              <span className="text-accent">✓</span>
-              <span className="text-muted-foreground">Natural-sounding Bengali voice with proper pronunciation</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-accent">✓</span>
-              <span className="text-muted-foreground">Support for multiple voice styles and tones</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-accent">✓</span>
-              <span className="text-muted-foreground">Automatic text formatting and punctuation handling</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-accent">✓</span>
-              <span className="text-muted-foreground">High-quality audio output in various formats</span>
-            </li>
-            <li className="flex gap-3">
-              <span className="text-accent">✓</span>
-              <span className="text-muted-foreground">Fast processing for real-time audio generation</span>
-            </li>
-          </ul>
-        </section>
+          <h2 className="text-2xl font-semibold mt-8 mb-4">এজেন্টিক এআই কী?</h2>
+          <p className="leading-relaxed text-foreground">
+            এজেন্টিক এআই বলতে এমন কৃত্রিম বুদ্ধিমত্তা সিস্টেমকে বোঝায় যা এজেন্সি বা কর্মক্ষমতা ধারণ করে—তাদের পরিবেশ উপলব্ধি করার, স্বায়ত্তশাসিত সিদ্ধান্ত নেওয়ার এবং নির্দিষ্ট উদ্দেশ্য অর্জনের জন্য পদক্ষেপ নেওয়ার ক্ষমতা। প্রচলিত এআই-এর বিপরীতে যা শুধুমাত্র পূর্বনির্ধারিত আউটপুট দিয়ে ইনপুটে সাড়া দেয়, এজেন্টিক এআই পরিকল্পনা করতে, যুক্তি করতে এবং পরিবর্তনশীল পরিস্থিতির উপর ভিত্তি করে তার আচরণ খাপ খাইয়ে নিতে পারে।
+          </p>
 
-        {/* Use Cases Section */}
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">Use Cases</h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="p-4 rounded-lg bg-card border border-border">
-              <h3 className="font-semibold mb-2">News Websites</h3>
-              <p className="text-sm text-muted-foreground">
-                Provide audio versions of news articles for commuters and busy readers
-              </p>
-            </div>
-            <div className="p-4 rounded-lg bg-card border border-border">
-              <h3 className="font-semibold mb-2">Content Platforms</h3>
-              <p className="text-sm text-muted-foreground">
-                Offer audio playback options for blog posts and long-form content
-              </p>
-            </div>
-            <div className="p-4 rounded-lg bg-card border border-border">
-              <h3 className="font-semibold mb-2">Accessibility</h3>
-              <p className="text-sm text-muted-foreground">
-                Make content accessible to visually impaired users
-              </p>
-            </div>
-            <div className="p-4 rounded-lg bg-card border border-border">
-              <h3 className="font-semibold mb-2">Education</h3>
-              <p className="text-sm text-muted-foreground">
-                Convert educational materials into audio for better learning
-              </p>
-            </div>
-          </div>
-        </section>
+          <h2 className="text-2xl font-semibold mt-8 mb-4">বাস্তব-জগতের প্রয়োগ</h2>
+          <p className="leading-relaxed text-foreground">
+            এজেন্টিক এআই-এর প্রয়োগ ইতোমধ্যে একাধিক শিল্পকে রূপান্তরিত করছে। স্বাস্থ্যসেবায়, স্বায়ত্তশাসিত ডায়াগনস্টিক সিস্টেমগুলি রোগীর ডেটা বিশ্লেষণ করে, চিকিৎসা পরিকল্পনা প্রস্তাব করে এবং ন্যূনতম চিকিৎসক হস্তক্ষেপে রোগীর অগ্রগতি পর্যবেক্ষণ করে। আর্থিক সেবাগুলি এজেন্টিক ট্রেডিং অ্যালগরিদম মোতায়েন করে যা বাজারের অবস্থার উপর ভিত্তি করে মুহূর্তের মধ্যে বিনিয়োগ সিদ্ধান্ত নেয়। স্ব-চালিত যানবাহনগুলি সম্ভবত সবচেয়ে দৃশ্যমান উদাহরণ, জটিল ট্রাফিক পরিস্থিতি নেভিগেট করে এবং স্বাধীনভাবে সুরক্ষা-সমালোচনামূলক সিদ্ধান্ত নেয়।
+          </p>
 
-        {/* API Integration Section */}
-        <section className="space-y-4">
-          <h2 className="text-2xl font-semibold">API Integration</h2>
-          <div className="bg-secondary/50 rounded-lg p-6 space-y-4">
-            <p className="text-muted-foreground">
-              Integrate our TTS API into your platform with just a few lines of code:
-            </p>
-            <pre className="bg-background p-4 rounded-lg overflow-x-auto">
-              <code className="text-sm">
-{`// Example API call
-const response = await fetch('https://api.sensevoice.ai/tts', {
-  method: 'POST',
-  headers: {
-    'Authorization': 'Bearer YOUR_API_KEY',
-    'Content-Type': 'application/json'
-  },
-  body: JSON.stringify({
-    text: 'আপনার টেক্সট এখানে লিখুন',
-    voice: 'bengali-female-1',
-    format: 'mp3'
-  })
-});
+          <h2 className="text-2xl font-semibold mt-8 mb-4">চ্যালেঞ্জ এবং নৈতিক বিবেচনা</h2>
+          <p className="leading-relaxed text-foreground">
+            তার প্রতিশ্রুতি সত্ত্বেও, এজেন্টিক এআই নিয়ন্ত্রণ, জবাবদিহিতা এবং নিরাপত্তা সম্পর্কে গুরুত্বপূর্ণ প্রশ্ন উত্থাপন করে। যখন এআই সিস্টেম স্বায়ত্তশাসিত সিদ্ধান্ত নেয়, তখন ফলাফলের জন্য কে দায়ী? আমরা কীভাবে নিশ্চিত করব যে এই সিস্টেমগুলি মানবিক মূল্যবোধ এবং সামাজিক নিয়মের সাথে সামঞ্জস্যপূর্ণ? গবেষকরা সক্রিয়ভাবে এআই অ্যালাইনমেন্ট সমস্যায় কাজ করছেন, এজেন্টিক সিস্টেমগুলিকে গ্রহণযোগ্য আচরণগত সীমার মধ্যে রাখার জন্য কাঠামো বিকাশ করছেন।
+          </p>
 
-const audio = await response.blob();`}
-              </code>
-            </pre>
-          </div>
-        </section>
+          <h2 className="text-2xl font-semibold mt-8 mb-4">এগিয়ে যাওয়ার পথ</h2>
+          <p className="leading-relaxed text-foreground">
+            এজেন্টিক এআই যেমন বিকশিত হতে থাকে, আমাদের অবশ্যই উদ্ভাবন এবং দায়িত্বের মধ্যে ভারসাম্য রাখতে হবে। প্রযুক্তি জটিল সমস্যা সমাধান, দক্ষতা বৃদ্ধি এবং জীবনের মান উন্নত করার জন্য বিপুল সম্ভাবনা রাখে। যাইহোক, এই সুবিধাগুলি উপলব্ধি করার জন্য চিন্তাশীল উন্নয়ন, শক্তিশালী নিরাপত্তা ব্যবস্থা এবং স্পষ্ট নৈতিক নির্দেশিকা প্রয়োজন। এজেন্টিক এআই-এর ভবিষ্যত শুধুমাত্র প্রযুক্তিগত সক্ষমতা দ্বারা নয়, বরং এই শক্তিশালী সিস্টেমগুলি কীভাবে বিকাশ এবং মোতায়েন করতে হবে সে সম্পর্কে আমাদের সম্মিলিত সিদ্ধান্ত দ্বারা গঠিত হবে।
+          </p>
+        </article>
 
         {/* CTA Section */}
-        <section className="space-y-4 pt-8 border-t border-border">
-          <h2 className="text-2xl font-semibold">Ready to get started?</h2>
-          <div className="flex gap-4">
-            <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90">
-              Get API Access
-            </Button>
-            <Button size="lg" variant="outline">
-              View Documentation
-            </Button>
-          </div>
-        </section>
+        <CTASection />
       </div>
+
+      {/* Audio Player */}
+      <AudioPlayer audioSrc="/usecase/article.mp3" />
     </div>
   )
 }
