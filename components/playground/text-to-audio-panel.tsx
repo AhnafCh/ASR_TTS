@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -10,7 +10,6 @@ import {
   Link as LinkIcon, 
   Play, 
   Download, 
-  Share2,
   Loader2 
 } from "lucide-react"
 import {
@@ -36,6 +35,17 @@ export function TextToAudioPanel() {
   const [selectedVoice, setSelectedVoice] = useState(voiceActors[0].id)
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedAudio, setGeneratedAudio] = useState<string | null>(null)
+  const audioRef = useRef<HTMLAudioElement>(null)
+
+  // Autoplay the audio element when new audio is generated
+  useEffect(() => {
+    if (generatedAudio && audioRef.current) {
+      audioRef.current.load() // Reload the audio source
+      audioRef.current.play().catch(err => {
+        console.error("Audio playback failed:", err)
+      })
+    }
+  }, [generatedAudio])
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -63,8 +73,12 @@ export function TextToAudioPanel() {
     setIsGenerating(true)
     
     try {
-      // Connect to FastAPI backend
-      const response = await fetch("http://localhost:8000/api/tts/generate", {
+      // Connect to FastAPI backend - use relative path or network IP
+      const apiUrl = typeof window !== 'undefined' 
+        ? `${window.location.protocol}//${window.location.hostname}:8000/api/tts/generate`
+        : "http://localhost:8000/api/tts/generate"
+      
+      const response = await fetch(apiUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,15 +103,6 @@ export function TextToAudioPanel() {
         setGeneratedAudio(data.audioUrl)
         console.log("Audio generated successfully!")
         console.log("Metadata:", data.metadata)
-        
-        // Play the audio automatically if available
-        if (data.audioUrl) {
-          const audio = new Audio(data.audioUrl)
-          audio.play().catch(err => {
-            console.error("Audio playback failed:", err)
-            alert("Audio generated successfully but playback failed. Please download to listen.")
-          })
-        }
       } else {
         console.error("Generation failed:", data.error)
         throw new Error(data.error || "Unknown error occurred")
@@ -281,28 +286,18 @@ export function TextToAudioPanel() {
                   <span className="w-2 h-2 rounded-full bg-primary" />
                   Generated Audio
                 </h3>
-                <div className="flex gap-2">
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    onClick={handleDownloadAudio}
-                    className="border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"
-                  >
-                    <Download className="w-4 h-4 mr-2" />
-                    Download
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    size="sm"
-                    className="border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"
-                  >
-                    <Share2 className="w-4 h-4 mr-2" />
-                    Share
-                  </Button>
-                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm"
+                  onClick={handleDownloadAudio}
+                  className="border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Download
+                </Button>
               </div>
               
-              <audio controls className="w-full rounded-lg">
+              <audio ref={audioRef} controls className="w-full rounded-lg">
                 <source src={generatedAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>

@@ -116,8 +116,13 @@ export function SpeechToTextPanel() {
         formData.append('language', language)
       }
 
+      // Connect to FastAPI backend - use relative path or network IP
+      const apiUrl = typeof window !== 'undefined' 
+        ? `${window.location.protocol}//${window.location.hostname}:8000/api/asr/transcribe`
+        : "http://localhost:8000/api/asr/transcribe"
+
       // Call FastAPI backend
-      const response = await fetch("http://localhost:8000/api/asr/transcribe", {
+      const response = await fetch(apiUrl, {
         method: "POST",
         body: formData,
       })
@@ -315,7 +320,6 @@ export function SpeechToTextPanel() {
               <SelectContent className="bg-white dark:bg-card border border-border rounded-md">
                 <SelectItem value="auto">Auto-detect</SelectItem>
                 <SelectItem value="bn">বাংলা (Bengali)</SelectItem>
-                <SelectItem value="en">English</SelectItem>
               </SelectContent>
             </Select>
           </div>
