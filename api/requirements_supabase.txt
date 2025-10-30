@@ -1,0 +1,16 @@
+# FastAPI Supabase JWT Verification Requirements
+
+# Core FastAPI
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+
+# JWT Verification (no secret needed - uses asymmetric RS256)
+python-jose[cryptography]>=3.3.0
+
+# HTTP Client (to fetch JWKS)
+httpx>=0.25.0
+
+# Optional but recommended
+python-multipart>=0.0.6  # For form data
+pydantic>=2.0.0  # Data validation
+pydantic-settings>=2.0.0  # Settings management

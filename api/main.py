@@ -102,6 +102,20 @@ class TTSRequest(BaseModel):
         }
 
 
+class TTSCloneResponse(BaseModel):
+    """
+    Response model for successful TTS voice cloning.
+    
+    Attributes:
+        success: Whether the generation was successful
+        audioUrl: Base64-encoded audio data URL
+        metadata: Additional information about the cloned audio
+    """
+    success: bool
+    audioUrl: str
+    metadata: Dict[str, str]
+
+
 class TTSResponse(BaseModel):
     """
     Response model for successful TTS generation.
@@ -340,6 +354,199 @@ async def generate_tts(request: TTSRequest):
         raise HTTPException(
             status_code=500,
             detail=f"Failed to generate audio: {str(e)}"
+        )
+
+
+@app.post(
+    "/api/tts/clone",
+    response_model=TTSCloneResponse,
+    responses={
+        200: {"description": "Voice cloned and audio generated successfully"},
+        400: {"model": ErrorResponse, "description": "Invalid request"},
+        500: {"model": ErrorResponse, "description": "Server error"}
+    },
+    tags=["TTS"]
+)
+async def clone_voice(
+    text: str = Form(..., description="Text to convert to speech with cloned voice"),
+    language: str = Form(..., description="Language code: 'en' or 'bn'"),
+    reference: UploadFile = File(..., description="Reference audio file for voice cloning"),
+    make_clean: bool = Form(default=True, description="Apply audio cleaning/enhancement"),
+    sample_rate: int = Form(default=16000, description="Output audio sample rate in Hz")
+):
+    """
+    Generate speech audio with voice cloning using a reference audio sample.
+    
+    This endpoint accepts text input, language preference, and a reference audio file
+    to clone the voice characteristics from the reference and apply them to the generated speech.
+    
+    **Supported Languages:**
+    - `en`: English language
+    - `bn`: Bengali language
+    
+    **Reference Audio Requirements:**
+    - Clear audio with the target voice speaking
+    - Minimal background noise
+    - Duration: 5-30 seconds recommended
+    - Supported formats: mp3, wav, m4a, flac, ogg
+    
+    **Audio Processing Options:**
+    - `make_clean`: Apply audio enhancement (default: true)
+    - `sample_rate`: Output sample rate - 16000, 22050, 24000, or 48000 Hz (default: 16000)
+    
+    Args:
+        text: Text to synthesize with the cloned voice (required)
+        language: Language code - 'en' or 'bn' (required)
+        reference: Audio file containing the voice to clone (required)
+        make_clean: Apply audio cleaning/enhancement (optional, default: true)
+        sample_rate: Output audio sample rate in Hz (optional, default: 16000)
+        
+    Returns:
+        TTSCloneResponse with success status, audio data URL, and metadata
+        
+    Raises:
+        HTTPException: If text is empty, reference file is invalid, or TTS API fails
+    """
+    logger.info(f"TTS voice cloning requested: language={language}, text_length={len(text)}, reference_file={reference.filename}, make_clean={make_clean}, sample_rate={sample_rate}")
+    
+    # Validate input text
+    if not text or not text.strip():
+        logger.warning("Empty text received")
+        raise HTTPException(status_code=400, detail="Text is required and cannot be empty")
+    
+    # Validate language
+    if language not in ['en', 'bn']:
+        logger.warning(f"Invalid language code: {language}")
+        raise HTTPException(
+            status_code=400,
+            detail="Language must be 'en' (English) or 'bn' (Bengali)"
+        )
+    
+    # Validate reference file type
+    allowed_extensions = ['mp3', 'wav', 'm4a', 'flac', 'ogg']
+    file_extension = reference.filename.split('.')[-1].lower() if reference.filename else ''
+    
+    if file_extension not in allowed_extensions:
+        logger.warning(f"Unsupported reference file type: {file_extension}")
+        raise HTTPException(
+            status_code=400,
+            detail=f"Unsupported audio format. Supported formats: {', '.join(allowed_extensions)}"
+        )
+    
+    try:
+        # Read reference audio file
+        reference_content = await reference.read()
+        reference_size_mb = len(reference_content) / (1024 * 1024)
+        
+        if reference_size_mb > 10:
+            logger.warning(f"Reference file too large: {reference_size_mb:.2f} MB")
+            raise HTTPException(
+                status_code=400,
+                detail=f"Reference file size ({reference_size_mb:.2f} MB) exceeds maximum limit of 10 MB"
+            )
+        
+        logger.info(f"Processing voice cloning: reference audio size={reference_size_mb:.2f} MB")
+        
+        # Prepare multipart form data for TTS API
+        files = {
+            'reference': (reference.filename, reference_content, reference.content_type or f'audio/{file_extension}')
+        }
+        
+        data = {
+            'text': text,
+            'language': language,
+            'make_clean': str(make_clean).lower(),
+            'sample_rate': str(sample_rate)
+        }
+        
+        logger.info(f"Calling TTS API at {TTS_API_BASE_URL}/tts/clone...")
+        
+        # Call TTS voice cloning API with timeout
+        async with httpx.AsyncClient(timeout=180.0) as client:
+            response = await client.post(
+                f"{TTS_API_BASE_URL}/tts/clone",
+                files=files,
+                data=data
+            )
+            
+            # Handle API errors
+            if response.status_code != 200:
+                error_text = response.text
+                logger.error(f"TTS Clone API error {response.status_code}: {error_text}")
+                raise HTTPException(
+                    status_code=response.status_code,
+                    detail=f"TTS Clone API error: {error_text}"
+                )
+            
+            # Get audio bytes from response
+            audio_bytes = response.content
+            
+            if not audio_bytes:
+                logger.error("Empty audio response from TTS Clone API")
+                raise HTTPException(
+                    status_code=500,
+                    detail="Received empty audio from TTS Clone API"
+                )
+            
+            audio_size_kb = len(audio_bytes) / 1024
+            
+            # Extract metadata from response headers
+            processing_time = response.headers.get("x-processing-time", "0")
+            text_length = response.headers.get("x-text-length", "0")
+            
+            logger.info(f"Voice cloned audio generated successfully: {audio_size_kb:.2f} KB, processing time: {processing_time}s")
+            
+            # Convert audio to base64 data URL for browser playback
+            base64_audio = base64.b64encode(audio_bytes).decode('utf-8')
+            audio_data_url = f"data:audio/wav;base64,{base64_audio}"
+            
+            # Prepare response with metadata
+            response_data = {
+                "success": True,
+                "audioUrl": audio_data_url,
+                "metadata": {
+                    "language": language,
+                    "provider": "SenseTTS Voice Clone",
+                    "processingTime": f"{processing_time}s",
+                    "textLength": text_length,
+                    "audioSize": f"{audio_size_kb:.2f} KB",
+                    "referenceFile": reference.filename,
+                    "referenceSize": f"{reference_size_mb:.2f} MB",
+                    "makeClean": str(make_clean),
+                    "sampleRate": f"{sample_rate} Hz",
+                    "timestamp": datetime.utcnow().isoformat()
+                }
+            }
+            
+            logger.info("TTS voice cloning completed successfully")
+            return response_data
+            
+    except httpx.TimeoutException as e:
+        logger.error(f"Request timeout: {str(e)}")
+        raise HTTPException(
+            status_code=504,
+            detail="Request to TTS Clone API timed out. Please try again."
+        )
+    
+    except httpx.ConnectError as e:
+        logger.error(f"Connection failed: {str(e)}")
+        raise HTTPException(
+            status_code=503,
+            detail="Could not connect to TTS Clone API. Please check if the service is running."
+        )
+    
+    except httpx.HTTPError as e:
+        logger.error(f"HTTP request failed: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Request to TTS Clone API failed: {str(e)}"
+        )
+    
+    except Exception as e:
+        logger.error(f"Unexpected error during voice cloning: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to clone voice and generate audio: {str(e)}"
         )
 
 

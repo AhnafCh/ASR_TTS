@@ -1,9 +1,12 @@
 "use client"
 
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { AudioWaveform, Mic2, Key, User } from "lucide-react"
+import { AudioWaveform, Mic2, Key, User, UserCircle, LogOut } from "lucide-react"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useAuth } from "@/lib/auth-context"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 interface PlaygroundSidebarProps {
   activeTab: "text-to-audio" | "speech-to-text"
@@ -11,6 +14,9 @@ interface PlaygroundSidebarProps {
 }
 
 export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebarProps) {
+  const { user, isAuthenticated, logout } = useAuth()
+  const router = useRouter()
+
   return (
     <aside className="w-64 border-r border-border bg-muted dark:bg-background flex flex-col">
       {/* Logo */}
@@ -49,6 +55,17 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
           <span>Speech-to-Text</span>
         </button>
 
+        <button
+          disabled
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 font-medium text-muted-foreground hover:bg-card/50 cursor-not-allowed relative"
+        >
+          <UserCircle className="w-5 h-5" /><span>
+          <span>Voice Cloning</span>
+          <span className="ml-auto text-xs px-2 py-0.5 rounded-full bg-yellow-500/10 text-yellow-600 dark:text-yellow-500 font-semibold border border-yellow-500/20">
+            Soon
+          </span></span>
+        </button>
+
         <div className="pt-4 mt-4 border-t border-border space-y-2">
           <Link href="/#contact">
             <Button variant="outline" className="w-full justify-start gap-3 border border-border hover:bg-card transition-colors duration-200">
@@ -61,10 +78,47 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
 
       {/* User Section */}
       <div className="p-4 border-t border-border bg-white dark:bg-card space-y-2">
-        <Button variant="ghost" className="w-full justify-start gap-3 hover:bg-muted transition-colors duration-200">
-          <User className="w-5 h-5" />
-          Login
-        </Button>
+        {isAuthenticated && user ? (
+          <>
+            <div className="flex items-center gap-3 px-4 py-2">
+              <Avatar className="h-8 w-8">
+                <AvatarImage src={user.avatar} alt={user.name} />
+                <AvatarFallback className="bg-primary text-white text-sm">
+                  {user.name.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{user.name}</p>
+                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+              </div>
+            </div>
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3 hover:bg-muted transition-colors duration-200"
+              onClick={() => router.push("/profile")}
+            >
+              <User className="w-5 h-5" />
+              Profile
+            </Button>
+            <Button
+              variant="ghost"
+              className="w-full justify-start gap-3 hover:bg-muted transition-colors duration-200 text-red-600 dark:text-red-400"
+              onClick={logout}
+            >
+              <LogOut className="w-5 h-5" />
+              Logout
+            </Button>
+          </>
+        ) : (
+          <Button
+            variant="ghost"
+            className="w-full justify-start gap-3 hover:bg-muted transition-colors duration-200"
+            onClick={() => router.push("/login")}
+          >
+            <User className="w-5 h-5" />
+            Login
+          </Button>
+        )}
         <div className="flex items-center justify-between px-4">
           <span className="text-sm text-muted-foreground font-medium">Theme</span>
           <ThemeToggle />

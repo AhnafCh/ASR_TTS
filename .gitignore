@@ -69,3 +69,18 @@ Thumbs.db
 *.swp
 *.swo
 *~
+
+# IDE
+.vscode/settings.json
+.vscode/launch.json
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+coverage/
+.nyc_output/
+*.lcov
+
+# Supabase documentation (safe to exclude from git)
+/supaguides/

@@ -314,7 +314,11 @@ export function SpeechToTextPanel() {
           <div className="space-y-2">
             <Label htmlFor="transcribe-language" className="text-sm font-medium text-foreground">Audio Language</Label>
             <Select value={language} onValueChange={setLanguage}>
-              <SelectTrigger id="transcribe-language" className="bg-white dark:bg-background border border-border rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200">
+              <SelectTrigger 
+                id="transcribe-language" 
+                className="bg-white dark:bg-background border border-border rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
+                suppressHydrationWarning
+              >
                 <SelectValue />
               </SelectTrigger>
               <SelectContent className="bg-white dark:bg-card border border-border rounded-md">

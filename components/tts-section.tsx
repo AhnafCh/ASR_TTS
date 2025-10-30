@@ -23,12 +23,7 @@ export function TtsSection() {
       icon: GraduationCap,
       href: "/tts/educational-voiceovers",
     },
-    {
-      title: "Audio Ads & Commercials",
-      description: "Engaging voice content for marketing and advertising campaigns",
-      icon: Megaphone,
-      href: "/tts/audio-ads-commercials",
-    },
+   
     {
       title: "Podcast Script Conversion",
       description: "Transform scripts into polished podcast audio content",
@@ -47,12 +42,7 @@ export function TtsSection() {
       icon: Building,
       href: "/tts/museum-audio-guides",
     },
-    {
-      title: "Audiobook Production",
-      description: "Complete audiobook creation with professional narration",
-      icon: Headphones,
-      href: "/tts/audiobook-production",
-    },
+    
   ]
 
   return (

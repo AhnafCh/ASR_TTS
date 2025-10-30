@@ -3,9 +3,23 @@
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { useAuth } from "@/lib/auth-context"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { User, Settings, LogOut } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const { user, isAuthenticated, logout } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     const handleScroll = () => {
@@ -51,6 +65,18 @@ export function Navbar() {
           >
             Pricing
           </button>
+          <button
+            onClick={() => scrollToSection("faq")}
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
+          >
+            FAQ
+          </button>
+          <button
+            onClick={() => scrollToSection("contact")}
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 cursor-pointer"
+          >
+            Contact
+          </button>
         </div>
 
         <div className="flex items-center gap-3">
@@ -63,17 +89,63 @@ export function Navbar() {
           >
             Playground
           </Button>
-          <Button
-            size="sm"
-            variant="outline"
-            className="border border-border text-foreground hover:bg-muted rounded-lg hidden sm:inline-flex transition-colors duration-200"
-            onClick={() => scrollToSection("contact")}
-          >
-            Contact
-          </Button>
-          <Button size="sm" className="bg-primary hover:bg-secondary text-white rounded-lg font-semibold transition-colors duration-200">
-            Get API
-          </Button>
+
+          {isAuthenticated && user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                  <Avatar className="h-10 w-10">
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback className="bg-primary text-white">
+                      {user.name.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56" align="end" forceMount>
+                <DropdownMenuLabel className="font-normal">
+                  <div className="flex flex-col space-y-1">
+                    <p className="text-sm font-medium leading-none">{user.name}</p>
+                    <p className="text-xs leading-none text-muted-foreground">
+                      {user.email}
+                    </p>
+                  </div>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push("/profile")}>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => router.push("/settings")}>
+                  <Settings className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={logout} className="text-red-600 dark:text-red-400">
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <>
+              {/* <Button
+                size="sm"
+                variant="outline"
+                className="border border-border text-foreground hover:bg-muted rounded-lg transition-colors duration-200"
+                onClick={() => router.push("/login")}
+              >
+                Login
+              </Button> */}
+              <Button
+                size="sm"
+                className="bg-primary hover:bg-secondary text-white rounded-lg font-semibold transition-colors duration-200"
+                onClick={() => router.push("/signup")}
+              >
+                Get Started
+              </Button>
+            </>
+          )}
         </div>
       </div>
     </nav>

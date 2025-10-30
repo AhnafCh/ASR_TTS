@@ -32,8 +32,8 @@ export function ContactForm() {
       <div className="max-w-2xl mx-auto space-y-12">
         <div className="text-center space-y-4">
           <h2 className="text-4xl md:text-5xl font-bold text-foreground">Get in Touch</h2>
-          <p className="text-muted-foreground text-lg leading-relaxed">
-            Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+          <p className="text-muted-foreground text-1xl leading-relaxed">
+            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
 
