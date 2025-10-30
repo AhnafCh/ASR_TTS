@@ -129,12 +129,12 @@ export function TextToAudioPanel() {
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-6">
+    <div className="max-w-6xl mx-auto space-y-8">
       {/* Header */}
-      <div>
-        <h2 className="text-3xl font-bold">Text-to-Audio</h2>
-        <p className="text-muted-foreground mt-2">
-          Create natural, emotional speech in seconds to help you earn
+      <div className="space-y-3">
+        <h2 className="text-4xl font-bold text-foreground">Text-to-Audio</h2>
+        <p className="text-muted-foreground text-base leading-relaxed">
+          Create natural, emotional speech in seconds with AI-powered voices
         </p>
       </div>
 
@@ -142,11 +142,11 @@ export function TextToAudioPanel() {
         {/* Input Section */}
         <div className="lg:col-span-2 space-y-6">
           {/* Input Mode Selection */}
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Button
               variant={inputMode === "text" ? "default" : "outline"}
               onClick={() => setInputMode("text")}
-              className="flex-1"
+              className={inputMode === "text" ? "flex-1 bg-primary hover:bg-secondary text-white font-semibold rounded-lg transition-colors duration-200" : "flex-1 border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"}
             >
               <FileText className="w-4 h-4 mr-2" />
               Text
@@ -154,28 +154,30 @@ export function TextToAudioPanel() {
             <Button
               variant={inputMode === "file" ? "default" : "outline"}
               onClick={() => setInputMode("file")}
-              className="flex-1"
+              className="flex-1 border border-border bg-muted/30 text-muted-foreground rounded-lg opacity-60 cursor-not-allowed"
               disabled
               title="Coming soon - File upload feature"
             >
               <Upload className="w-4 h-4 mr-2" />
               File
+              <span className="ml-2 text-xs bg-muted px-2 py-0.5 rounded">Soon</span>
             </Button>
             <Button
               variant={inputMode === "link" ? "default" : "outline"}
               onClick={() => setInputMode("link")}
-              className="flex-1"
+              className="flex-1 border border-border bg-muted/30 text-muted-foreground rounded-lg opacity-60 cursor-not-allowed"
               disabled
               title="Coming soon - URL import feature"
             >
               <LinkIcon className="w-4 h-4 mr-2" />
               Link
+              <span className="ml-2 text-xs bg-muted px-2 py-0.5 rounded">Soon</span>
             </Button>
           </div>
 
           {/* Input Field */}
           <div className="space-y-2">
-            <Label htmlFor="input-text">
+            <Label htmlFor="input-text" className="text-sm font-medium text-foreground">
               {inputMode === "text" && "Enter your text"}
               {inputMode === "file" && "Upload your file"}
               {inputMode === "link" && "Enter URL"}
@@ -187,14 +189,14 @@ export function TextToAudioPanel() {
                 placeholder="আপনার টেক্সট এখানে লিখুন বা পেস্ট করুন..."
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                className="min-h-[200px] resize-none"
+                className="min-h-[250px] resize-none bg-white dark:bg-background border border-border rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 text-base leading-relaxed p-4"
               />
             )}
             
             {inputMode === "file" && (
-              <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
-                <Upload className="w-12 h-12 mx-auto mb-4 text-muted-foreground" />
-                <p className="text-sm text-muted-foreground mb-2">
+              <div className="border-2 border-dashed border-border rounded-lg p-10 text-center bg-muted/30 hover:border-primary/50 transition-colors duration-200">
+                <Upload className="w-16 h-16 mx-auto mb-4 text-primary" />
+                <p className="text-sm text-foreground mb-2 font-medium">
                   {uploadedFile ? uploadedFile.name : "Drag and drop your file here, or click to browse"}
                 </p>
                 <p className="text-xs text-muted-foreground mb-4">
@@ -210,6 +212,7 @@ export function TextToAudioPanel() {
                 <Button 
                   variant="outline" 
                   size="sm"
+                  className="bg-primary hover:bg-secondary text-white font-semibold rounded-lg border-0 transition-colors duration-200"
                   onClick={() => document.getElementById('file-upload')?.click()}
                 >
                   Choose File
@@ -224,7 +227,7 @@ export function TextToAudioPanel() {
                   placeholder="https://example.com/document.pdf"
                   value={fileUrl}
                   onChange={(e) => setFileUrl(e.target.value)}
-                  className="w-full px-4 py-2 border border-border rounded-lg bg-background"
+                  className="w-full px-4 py-3 border border-border rounded-md bg-white dark:bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
                 />
                 <p className="text-xs text-muted-foreground">
                   Supported URLs: PDF, DOC, DOCX, PNG, JPG, JPEG, BMP, TIFF, XLSX, PPTX, HTML, XML
@@ -236,12 +239,12 @@ export function TextToAudioPanel() {
           {/* Language and Settings */}
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="language">Language</Label>
+              <Label htmlFor="language" className="text-sm font-medium text-foreground">Language</Label>
               <Select value={language} onValueChange={setLanguage}>
-                <SelectTrigger id="language">
+                <SelectTrigger id="language" className="bg-white dark:bg-background border border-border rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200">
                   <SelectValue />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent className="bg-white dark:bg-card border border-border rounded-md">
                   <SelectItem value="bangla">বাংলা (Bangla)</SelectItem>
                   <SelectItem value="english">English</SelectItem>
                   <SelectItem value="mix">Mixed (Bangla + English)</SelectItem>
@@ -254,7 +257,7 @@ export function TextToAudioPanel() {
           <Button
             onClick={handleGenerate}
             disabled={isGenerating || !inputText}
-            className="w-full h-12 text-lg"
+            className="w-full h-14 text-base font-semibold bg-primary hover:bg-secondary text-white rounded-lg transition-colors duration-200"
             size="lg"
           >
             {isGenerating ? (
@@ -263,45 +266,67 @@ export function TextToAudioPanel() {
                 Generating...
               </>
             ) : (
-              "Generate Audio"
+              <>
+                <Play className="w-5 h-5 mr-2" />
+                Generate Audio
+              </>
             )}
           </Button>
 
           {/* Output Section */}
           {generatedAudio && (
-            <div className="border border-border rounded-lg p-6 space-y-4 bg-card">
+            <div className="bg-white dark:bg-card border border-border rounded-lg p-6 space-y-4 animate-in fade-in duration-300">
               <div className="flex items-center justify-between">
-                <h3 className="font-semibold">Generated Audio</h3>
+                <h3 className="font-semibold text-lg text-foreground flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-primary" />
+                  Generated Audio
+                </h3>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" onClick={handleDownloadAudio}>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={handleDownloadAudio}
+                    className="border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"
+                  >
                     <Download className="w-4 h-4 mr-2" />
                     Download
                   </Button>
-                  <Button variant="outline" size="sm">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"
+                  >
                     <Share2 className="w-4 h-4 mr-2" />
                     Share
                   </Button>
                 </div>
               </div>
               
-              <audio controls className="w-full">
+              <audio controls className="w-full rounded-lg">
                 <source src={generatedAudio} type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>
               
-              <div className="text-sm text-muted-foreground">
-                <p>Duration: 0:45 • Size: 1.2 MB • Format: MP3</p>
+              <div className="text-sm text-muted-foreground flex items-center gap-4">
+                <span className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  Format: MP3
+                </span>
+                <span className="flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  Quality: High
+                </span>
               </div>
             </div>
           )}
         </div>
 
         {/* Voice Actor Selection */}
-        <div className="space-y-4">
+        <div className="space-y-6">
           <div>
-            <h3 className="font-semibold mb-4">Voice Actors</h3>
-            <p className="text-sm text-muted-foreground mb-4">
-              Select a voice actor for your audio
+            <h3 className="font-semibold text-lg text-foreground mb-2">Voice Actors</h3>
+            <p className="text-sm text-muted-foreground leading-relaxed">
+              Choose the perfect voice for your content
             </p>
           </div>
 
@@ -309,31 +334,47 @@ export function TextToAudioPanel() {
             {voiceActors.map((actor) => (
               <div
                 key={actor.id}
-                className={`border rounded-lg p-4 cursor-pointer transition-all ${
+                className={`rounded-lg p-4 cursor-pointer transition-all duration-200 border ${
                   selectedVoice === actor.id
-                    ? "border-accent bg-accent/10"
-                    : "border-border hover:border-accent/50 hover:bg-secondary/50"
+                    ? "border-primary bg-primary/5"
+                    : "border-border bg-white dark:bg-card hover:border-primary/50"
                 }`}
                 onClick={() => setSelectedVoice(actor.id)}
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <p className="font-medium">{actor.name}</p>
-                    <p className="text-xs text-muted-foreground">{actor.language}</p>
+                    <p className="font-semibold text-base text-foreground">{actor.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1">{actor.language}</p>
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
+                    className="hover:bg-primary/10 transition-colors duration-200"
                     onClick={(e) => {
                       e.stopPropagation()
                       handlePlaySample(actor.sample)
                     }}
                   >
-                    <Play className="w-4 h-4" />
+                    <Play className="w-4 h-4 text-primary" />
                   </Button>
                 </div>
+                {selectedVoice === actor.id && (
+                  <div className="mt-3 pt-3 border-t border-primary/20">
+                    <p className="text-xs text-primary font-medium">Selected</p>
+                  </div>
+                )}
               </div>
             ))}
+          </div>
+
+          {/* Tips */}
+          <div className="bg-muted/50 rounded-lg p-4 border border-border">
+            <h4 className="font-semibold text-sm mb-3 text-foreground">Pro Tips</h4>
+            <ul className="text-xs text-muted-foreground space-y-2 leading-relaxed">
+              <li>Use punctuation for natural pauses</li>
+              <li>Mix languages seamlessly</li>
+              <li>Preview samples before generating</li>
+            </ul>
           </div>
         </div>
       </div>

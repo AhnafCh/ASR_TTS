@@ -1,23 +1,23 @@
 "use client"
 
 import Link from "next/link"
+import { LucideIcon } from "lucide-react"
 
 interface ServiceCardProps {
   title: string
   description: string
-  icon: string
+  icon: LucideIcon
   href?: string
 }
 
-export function ServiceCard({ title, description, icon, href }: ServiceCardProps) {
+export function ServiceCard({ title, description, icon: Icon, href }: ServiceCardProps) {
   const content = (
-    <div className="group relative p-6 rounded-lg bg-card border border-border hover:border-accent/50 card-hover cursor-pointer overflow-hidden h-full">
-      {/* Hover glow effect */}
-      <div className="absolute inset-0 bg-gradient-to-br from-accent/0 via-transparent to-accent/0 group-hover:from-accent/10 group-hover:to-accent/5 transition-all duration-300" />
-
-      <div className="relative z-10 space-y-3">
-        <div className="text-3xl">{icon}</div>
-        <h3 className="text-lg font-semibold text-foreground group-hover:text-accent transition-colors duration-300">
+    <div className="group relative p-6 rounded-lg bg-white dark:bg-card border border-border hover:border-primary transition-colors duration-200 cursor-pointer h-full">
+      <div className="space-y-3">
+        <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+          <Icon className="w-6 h-6" />
+        </div>
+        <h3 className="text-lg font-semibold text-foreground group-hover:text-primary transition-colors duration-200">
           {title}
         </h3>
         <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>

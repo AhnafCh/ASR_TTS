@@ -1,0 +1,130 @@
+"use client"
+
+import { Button } from "@/components/ui/button"
+import { Check, Building2, Mail, Phone } from "lucide-react"
+
+export function PricingSection() {
+  const scrollToContact = () => {
+    const element = document.getElementById("contact")
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
+  const features = [
+    "Custom API Integration",
+    "Unlimited API Calls",
+    "Premium Voice Models",
+    "24/7 Technical Support",
+    "Service Level Agreement (SLA)",
+    "Dedicated Account Manager",
+    "Custom Voice Training",
+    "On-Premise Deployment Options",
+  ]
+
+  return (
+    <section id="pricing" className="py-12 px-4 bg-muted">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <p className="text-primary text-sm font-semibold uppercase mb-4">Pricing</p>
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-foreground">
+            Enterprise <span className="text-primary">Solutions</span>
+          </h2>
+          <p className="text-muted-foreground text-lg max-w-2xl mx-auto leading-relaxed">
+            Tailored pricing for businesses. Contact us for a custom quote based on your specific requirements.
+          </p>
+        </div>
+
+        {/* Pricing Card */}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white dark:bg-card border border-border rounded-lg p-8 md:p-12">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              {/* Left side - Info */}
+              <div className="space-y-6">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 border border-primary/20">
+                  <Building2 className="w-4 h-4 text-primary" />
+                  <span className="text-primary text-sm font-semibold">B2B Only</span>
+                </div>
+
+                <div>
+                  <h3 className="text-3xl font-bold mb-2 text-foreground">Enterprise Plan</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    Custom pricing based on your usage, requirements, and scale
+                  </p>
+                </div>
+
+                <div className="space-y-3">
+                  {features.map((feature, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className="shrink-0 w-5 h-5 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Check className="w-3 h-3 text-primary" />
+                      </div>
+                      <span className="text-sm text-foreground">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-4">
+                  <Button 
+                    onClick={scrollToContact}
+                    size="lg"
+                    className="bg-primary hover:bg-secondary text-white font-semibold rounded-lg transition-colors duration-200 w-full md:w-auto"
+                  >
+                    <Mail className="w-4 h-4 mr-2" />
+                    Request Quote
+                  </Button>
+                </div>
+              </div>
+
+              {/* Right side - Contact Info */}
+              <div className="space-y-6">
+                <div className="bg-white dark:bg-card border border-border rounded-lg p-6">
+                  <h4 className="font-semibold text-lg mb-4 text-foreground">Get in Touch</h4>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-3">
+                      <Mail className="w-5 h-5 text-primary mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-foreground">Email</p>
+                        <p className="text-sm text-muted-foreground">enterprise@sensevoice.com</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Phone className="w-5 h-5 text-primary mt-0.5" />
+                      <div>
+                        <p className="text-sm font-medium text-foreground">Phone</p>
+                        <p className="text-sm text-muted-foreground">+880 1XXX-XXXXXX</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="bg-white dark:bg-card border border-border rounded-lg p-6">
+                  <h4 className="font-semibold text-sm mb-3 text-foreground">What's Included</h4>
+                  <ul className="text-sm text-muted-foreground space-y-2">
+                    <li>• Volume-based discounts</li>
+                    <li>• Flexible payment terms</li>
+                    <li>• No hidden fees</li>
+                    <li>• Monthly or annual billing</li>
+                  </ul>
+                </div>
+
+                <div className="text-center p-6 bg-white dark:bg-card border border-border rounded-lg">
+                  <p className="text-sm text-muted-foreground mb-2">Trusted by</p>
+                  <p className="text-2xl font-bold text-primary">50+ Enterprises</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* FAQ Hint */}
+        <div className="text-center mt-12">
+          <p className="text-sm text-muted-foreground">
+            Have questions? <button onClick={scrollToContact} className="text-primary hover:text-secondary font-medium transition-colors duration-200">Contact our sales team</button>
+          </p>
+        </div>
+      </div>
+    </section>
+  )
+}

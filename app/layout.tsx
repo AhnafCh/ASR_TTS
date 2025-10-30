@@ -11,7 +11,7 @@ const _geistMono = Geist_Mono({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "SenseVoice - Bengali AI Voice Services",
   description:
-    "Advanced AI voice technology for Text-to-Speech, Automatic Speech Recognition, and Voice Cloning in Bengali",
+    "Advanced AI voice technology for Text-to-Speech and Automatic Speech Recognition in Bengali",
   generator: "v0.app",
 }
 

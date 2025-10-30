@@ -26,7 +26,6 @@ yarn-error.log*
 
 # Python virtual environment
 /voice_env
-/voice
 
 # Python
 __pycache__/

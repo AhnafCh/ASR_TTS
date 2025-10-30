@@ -25,31 +25,31 @@ export function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-background/95 backdrop-blur-md border-b border-border shadow-lg" : "bg-transparent"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+        isScrolled ? "bg-white/95 dark:bg-background/95 backdrop-blur-sm border-b border-border" : "bg-transparent"
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="font-bold text-xl text-accent">SenseVoice</div>
+        <div className="font-bold text-xl text-primary">SenseVoice</div>
 
         <div className="hidden md:flex items-center gap-8">
           <button
             onClick={() => scrollToSection("tts")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
           >
             TTS
           </button>
           <button
             onClick={() => scrollToSection("asr")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
           >
             ASR
           </button>
           <button
-            onClick={() => scrollToSection("cloning")}
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            onClick={() => scrollToSection("pricing")}
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200"
           >
-            Voice Cloning
+            Pricing
           </button>
         </div>
 
@@ -58,12 +58,12 @@ export function Navbar() {
           <Button
             size="sm"
             variant="outline"
-            className="border-muted-foreground text-foreground hover:bg-secondary rounded-full bg-transparent hidden sm:inline-flex"
+            className="border border-border text-foreground hover:bg-muted rounded-lg hidden sm:inline-flex transition-colors duration-200"
             onClick={() => scrollToSection("contact")}
           >
             Contact
           </Button>
-          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full">
+          <Button size="sm" className="bg-primary hover:bg-secondary text-white rounded-lg font-semibold transition-colors duration-200">
             Get API
           </Button>
         </div>

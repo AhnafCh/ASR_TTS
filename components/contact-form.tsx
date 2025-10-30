@@ -28,16 +28,16 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contact" className="py-20 px-4 border-t border-border scroll-mt-20">
+    <section id="contact" className="py-12 px-4 border-t border-border scroll-mt-20 bg-white dark:bg-background">
       <div className="max-w-2xl mx-auto space-y-12">
         <div className="text-center space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold">Get in Touch</h2>
-          <p className="text-muted-foreground text-lg">
+          <h2 className="text-4xl md:text-5xl font-bold text-foreground">Get in Touch</h2>
+          <p className="text-muted-foreground text-lg leading-relaxed">
             Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 bg-card border border-border rounded-lg p-8">
+        <form onSubmit={handleSubmit} className="space-y-6 bg-white dark:bg-card border border-border rounded-lg p-8">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -50,7 +50,7 @@ export function ContactForm() {
                 onChange={handleChange}
                 placeholder="Your name"
                 required
-                className="bg-secondary border-border text-foreground placeholder:text-muted-foreground"
+                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg transition-colors duration-200"
               />
             </div>
             <div className="space-y-2">
@@ -65,7 +65,7 @@ export function ContactForm() {
                 onChange={handleChange}
                 placeholder="your@email.com"
                 required
-                className="bg-secondary border-border text-foreground placeholder:text-muted-foreground"
+                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg transition-colors duration-200"
               />
             </div>
           </div>
@@ -80,7 +80,7 @@ export function ContactForm() {
               value={formData.company}
               onChange={handleChange}
               placeholder="Your company"
-              className="bg-secondary border-border text-foreground placeholder:text-muted-foreground"
+              className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg transition-colors duration-200"
             />
           </div>
 
@@ -95,11 +95,11 @@ export function ContactForm() {
               onChange={handleChange}
               placeholder="Tell us about your project..."
               rows={5}
-              className="bg-secondary border-border text-foreground placeholder:text-muted-foreground resize-none"
+              className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus:border-primary focus:ring-2 focus:ring-primary/20 rounded-lg transition-colors duration-200 resize-none"
             />
           </div>
 
-          <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 rounded-lg">
+          <Button type="submit" className="w-full bg-primary text-white hover:bg-secondary rounded-lg transition-colors duration-200">
             Send Message
           </Button>
         </form>

@@ -12,14 +12,14 @@ interface PlaygroundSidebarProps {
 
 export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebarProps) {
   return (
-    <aside className="w-64 border-r border-border bg-card flex flex-col">
+    <aside className="w-64 border-r border-border bg-muted dark:bg-background flex flex-col">
       {/* Logo */}
-      <div className="p-6 border-b border-border">
+      <div className="p-6 border-b border-border bg-white dark:bg-card">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-            <AudioWaveform className="w-5 h-5 text-accent-foreground" />
+          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+            <AudioWaveform className="w-5 h-5 text-white" />
           </div>
-          <span className="font-bold text-xl">SenseVoice</span>
+          <span className="font-semibold text-xl text-foreground">SenseVoice</span>
         </Link>
       </div>
 
@@ -27,31 +27,31 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
       <nav className="flex-1 p-4 space-y-2">
         <button
           onClick={() => setActiveTab("text-to-audio")}
-          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 font-medium ${
             activeTab === "text-to-audio"
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+              ? "bg-primary text-white"
+              : "text-muted-foreground hover:bg-card hover:text-foreground"
           }`}
         >
           <AudioWaveform className="w-5 h-5" />
-          <span className="font-medium">Text-to-Audio</span>
+          <span>Text-to-Audio</span>
         </button>
 
         <button
           onClick={() => setActiveTab("speech-to-text")}
-          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+          className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 font-medium ${
             activeTab === "speech-to-text"
-              ? "bg-accent text-accent-foreground"
-              : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+              ? "bg-primary text-white"
+              : "text-muted-foreground hover:bg-card hover:text-foreground"
           }`}
         >
           <Mic2 className="w-5 h-5" />
-          <span className="font-medium">Speech-to-Text</span>
+          <span>Speech-to-Text</span>
         </button>
 
         <div className="pt-4 mt-4 border-t border-border space-y-2">
           <Link href="/#contact">
-            <Button variant="outline" className="w-full justify-start gap-3">
+            <Button variant="outline" className="w-full justify-start gap-3 border border-border hover:bg-card transition-colors duration-200">
               <Key className="w-5 h-5" />
               Get API
             </Button>
@@ -60,13 +60,13 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-border space-y-2">
-        <Button variant="ghost" className="w-full justify-start gap-3">
+      <div className="p-4 border-t border-border bg-white dark:bg-card space-y-2">
+        <Button variant="ghost" className="w-full justify-start gap-3 hover:bg-muted transition-colors duration-200">
           <User className="w-5 h-5" />
           Login
         </Button>
         <div className="flex items-center justify-between px-4">
-          <span className="text-sm text-muted-foreground">Theme</span>
+          <span className="text-sm text-muted-foreground font-medium">Theme</span>
           <ThemeToggle />
         </div>
       </div>
