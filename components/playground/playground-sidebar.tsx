@@ -65,15 +65,17 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
           </span></span>
         </button>
 
-        <div className="pt-4 mt-4 border-t border-border space-y-2">
+        <div className="pt-4 mt-4 border-t border-border">
           {isAuthenticated && (
-            <Button 
-              variant="outline" 
-              className="w-full justify-start gap-3 border border-border hover:bg-card transition-colors duration-200"
-            >
-              <History className="w-5 h-5" />
-              History
-            </Button>
+            <Link href="/history">
+              <Button 
+                variant="outline" 
+                className="w-full justify-start gap-3 border border-border hover:bg-card transition-colors duration-200 mb-3"
+              >
+                <History className="w-5 h-5" />
+                History
+              </Button>
+            </Link>
           )}
 
           <Link href="/#contact">
