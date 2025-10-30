@@ -2,26 +2,26 @@
 SenseVoice API - FastAPI Implementation
 
 This API provides both text-to-speech (TTS) and speech-to-text (ASR) services
-using OpenAI's advanced AI models with support for Bengali and English languages.
+using custom AI APIs with support for Bengali and English languages.
 
 Services:
-- TTS: Convert text to natural speech using OpenAI's TTS API
-- ASR: Transcribe audio to text using OpenAI's Whisper API
+- TTS: Convert text to natural speech using SenseTTS API
+- ASR: Transcribe audio to text using custom ASR API
 
 Author: SenseVoice Team
-Version: 1.0.0
-Created: October 28, 2025
+Version: 2.0.0
+Created: October 30, 2025
 """
 
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-import os
 import httpx
 import base64
 from datetime import datetime
 from typing import Optional, Dict
 import logging
+import os
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 app = FastAPI(
     title="SenseVoice API",
     description="Text-to-Speech and Speech-to-Text API with support for Bengali and English languages",
-    version="1.0.0",
+    version="2.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
 )
@@ -46,11 +46,21 @@ app = FastAPI(
 # Configure CORS for frontend integration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:8000"],  # Add your frontend URLs
+    allow_origins=["http://localhost:3000", "http://localhost:8000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Load API URLs from environment variables
+TTS_API_BASE_URL = os.getenv("TTS_API_BASE_URL")
+ASR_API_BASE_URL = os.getenv("ASR_API_BASE_URL")
+
+# Validate required environment variables
+if not TTS_API_BASE_URL:
+    raise ValueError("TTS_API_BASE_URL environment variable is required in .env file")
+if not ASR_API_BASE_URL:
+    raise ValueError("ASR_API_BASE_URL environment variable is required in .env file")
 
 # ============================================================================
 # DATA MODELS
@@ -68,7 +78,7 @@ class TTSRequest(BaseModel):
     text: str = Field(..., description="Text to convert to speech", min_length=1, max_length=5000)
     language: str = Field(
         default="english",
-        description="Language for speech synthesis: 'bangla', 'english', or 'mix'"
+        description="Language for speech synthesis: 'bangla' or 'english'"
     )
     voice: str = Field(
         default="female",
@@ -126,111 +136,24 @@ class ASRResponse(BaseModel):
 
 
 # ============================================================================
-# VOICE CONFIGURATION
-# ============================================================================
-
-# Mapping of custom voice IDs to OpenAI voice names
-# Simplified to two universal voices for all languages
-VOICE_MAP = {
-    "female": "nova",    # works for Bengali and English
-    "male": "echo",      # works for Bengali and English
-}
-
-# Voice characteristics for instruction generation
-VOICE_CHARACTERISTICS = {
-    "nova": "warm, friendly, and conversational",
-    "echo": "clear, articulate, and professional"
-}
-
-
-# ============================================================================
 # HELPER FUNCTIONS
 # ============================================================================
 
-def get_openai_voice(voice_id: str) -> str:
+def map_language_to_api(language: str) -> str:
     """
-    Map custom voice ID to OpenAI voice name.
+    Map frontend language names to SenseTTS API language codes.
     
     Args:
-        voice_id: Custom voice identifier (e.g., "bn-female-1")
+        language: Frontend language name ("bangla" or "english")
         
     Returns:
-        OpenAI voice name (e.g., "nova")
-        Returns "alloy" as fallback if voice_id not found
+        API language code ("bn" or "en")
     """
-    return VOICE_MAP.get(voice_id, "alloy")
-
-
-def generate_instructions(language: str, openai_voice: str) -> str:
-    """
-    Generate context-aware TTS instructions based on language and voice.
-    
-    This function creates detailed instructions for the OpenAI TTS model to
-    ensure natural, culturally appropriate speech synthesis with proper
-    pronunciation, intonation, and emotional inflection.
-    
-    Args:
-        language: Target language ("bangla", "english", or "mix")
-        openai_voice: OpenAI voice identifier (e.g., "nova", "onyx")
-        
-    Returns:
-        Detailed instruction string for the TTS model
-    """
-    # Get voice characteristics or use default
-    characteristic = VOICE_CHARACTERISTICS.get(openai_voice, "natural and clear")
-    
-    if language == "bangla":
-        return (
-            f"You are a professional Bengali voice narrator. "
-            f"Speak in a {characteristic} tone with perfect Bengali pronunciation (বাংলা উচ্চারণ). "
-            f"Maintain natural rhythm, proper stress on syllables, and use appropriate emotional inflection. "
-            f"Handle Bengali numbers, dates, and cultural references authentically."
-        )
-    
-    elif language == "english":
-        return (
-            f"You are a professional English voice narrator. "
-            f"Speak in a {characteristic} tone with clear enunciation and natural pacing. "
-            f"Use appropriate pauses for punctuation, vary your intonation to maintain listener engagement, "
-            f"and emphasize key words naturally."
-        )
-    
-    else:  # Mixed language
-        return (
-            f"You are a bilingual voice narrator fluent in both Bengali and English. "
-            f"Speak in a {characteristic} tone, seamlessly switching between languages "
-            f"while maintaining proper pronunciation for each. "
-            f"Use natural code-switching patterns common in Bengali-English conversations."
-        )
-
-
-def validate_api_key() -> str:
-    """
-    Validate and retrieve OpenAI API key from environment.
-    
-    Returns:
-        Valid OpenAI API key
-        
-    Raises:
-        HTTPException: If API key is not configured or invalid
-    """
-    api_key = os.getenv("OPENAI_API_KEY")
-    
-    if not api_key:
-        logger.error("OPENAI_API_KEY not found in environment variables")
-        raise HTTPException(
-            status_code=500,
-            detail="OPENAI_API_KEY is not configured. Please add your API key to .env file"
-        )
-    
-    if api_key == "your_openai_api_key_here":
-        logger.error("OPENAI_API_KEY is set to placeholder value")
-        raise HTTPException(
-            status_code=500,
-            detail="Please replace the placeholder API key with your actual OpenAI API key"
-        )
-    
-    return api_key
+    language_map = {
+        "bangla": "bn",
+        "english": "en"
+    }
+    return language_map.get(language.lower(), "en")
 
 
 # ============================================================================
@@ -261,14 +184,13 @@ async def health_check():
     Returns:
         API health status and configuration info
     """
-    api_key_configured = bool(os.getenv("OPENAI_API_KEY"))
-    
     return {
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
-        "api_key_configured": api_key_configured,
-        "supported_languages": ["bangla", "english", "mix"],
-        "available_voices": list(VOICE_MAP.keys())
+        "tts_api_url": TTS_API_BASE_URL,
+        "asr_api_url": ASR_API_BASE_URL,
+        "supported_languages": ["bangla", "english"],
+        "available_voices": ["female", "male"]
     }
 
 
@@ -284,16 +206,15 @@ async def health_check():
 )
 async def generate_tts(request: TTSRequest):
     """
-    Generate speech audio from text using OpenAI TTS API.
+    Generate speech audio from text using SenseTTS API.
     
     This endpoint accepts text input along with language and voice preferences,
-    then generates high-quality speech audio using OpenAI's text-to-speech model.
+    then generates high-quality speech audio using the SenseTTS API.
     The audio is returned as a base64-encoded data URL for immediate playback.
     
     **Supported Languages:**
     - `bangla`: Bengali language with proper pronunciation
     - `english`: English language with natural intonation
-    - `mix`: Mixed Bengali-English with code-switching
     
     **Available Voices:**
     - `female`: Warm, friendly female voice (works for all languages)
@@ -306,7 +227,7 @@ async def generate_tts(request: TTSRequest):
         TTSResponse with success status, audio data URL, and metadata
         
     Raises:
-        HTTPException: If text is empty, API key is invalid, or OpenAI API fails
+        HTTPException: If text is empty or SenseTTS API fails
     """
     logger.info(f"TTS generation requested: language={request.language}, voice={request.voice}, text_length={len(request.text)}")
     
@@ -316,57 +237,57 @@ async def generate_tts(request: TTSRequest):
         raise HTTPException(status_code=400, detail="Text is required and cannot be empty")
     
     try:
-        # Validate API key
-        api_key = validate_api_key()
+        # Map language from frontend format to API format
+        api_language = map_language_to_api(request.language)
+        logger.info(f"Mapped language '{request.language}' to API code '{api_language}'")
         
-        # Map voice to OpenAI voice
-        openai_voice = get_openai_voice(request.voice)
-        logger.info(f"Mapped voice '{request.voice}' to OpenAI voice '{openai_voice}'")
-        
-        # Generate context-aware instructions
-        instructions = generate_instructions(request.language, openai_voice)
-        
-        # Prepare OpenAI TTS API request payload
+        # Prepare SenseTTS API request payload
         payload = {
-            "model": "gpt-4o-mini-tts",
-            "input": request.text,
-            "voice": openai_voice,
-            "instructions": instructions,
-            "response_format": "mp3",
-            "speed": 1.0,
-            "stream_format": "audio"
+            "text": request.text,
+            "voice": request.voice,
+            "language": api_language,
+            "make_clean": True
         }
         
-        logger.info("Calling OpenAI TTS API...")
+        logger.info(f"Calling SenseTTS API at {TTS_API_BASE_URL}/tts...")
         
-        # Call OpenAI TTS API with timeout
+        # Call SenseTTS API with timeout
         async with httpx.AsyncClient(timeout=120.0) as client:
             response = await client.post(
-                "https://api.openai.com/v1/audio/speech",
-                headers={
-                    "Authorization": f"Bearer {api_key}",
-                    "Content-Type": "application/json"
-                },
+                f"{TTS_API_BASE_URL}/tts",
                 json=payload
             )
             
             # Handle API errors
             if response.status_code != 200:
                 error_text = response.text
-                logger.error(f"OpenAI API error {response.status_code}: {error_text}")
+                logger.error(f"SenseTTS API error {response.status_code}: {error_text}")
                 raise HTTPException(
                     status_code=response.status_code,
-                    detail=f"OpenAI API error: {error_text}"
+                    detail=f"SenseTTS API error: {error_text}"
                 )
             
-            # Get audio bytes from response
+            # Get audio bytes from response (direct audio/wav return)
             audio_bytes = response.content
+            
+            if not audio_bytes:
+                logger.error("Empty audio response from SenseTTS API")
+                raise HTTPException(
+                    status_code=500,
+                    detail="Received empty audio from SenseTTS API"
+                )
+            
             audio_size_kb = len(audio_bytes) / 1024
-            logger.info(f"Audio generated successfully: {audio_size_kb:.2f} KB")
+            
+            # Extract metadata from response headers
+            processing_time = response.headers.get("x-processing-time", "0")
+            text_length = response.headers.get("x-text-length", "0")
+            
+            logger.info(f"Audio generated successfully: {audio_size_kb:.2f} KB, processing time: {processing_time}s")
             
             # Convert audio to base64 data URL for browser playback
             base64_audio = base64.b64encode(audio_bytes).decode('utf-8')
-            audio_data_url = f"data:audio/mpeg;base64,{base64_audio}"
+            audio_data_url = f"data:audio/wav;base64,{base64_audio}"
             
             # Prepare response with metadata
             response_data = {
@@ -375,9 +296,9 @@ async def generate_tts(request: TTSRequest):
                 "metadata": {
                     "language": request.language,
                     "voice": request.voice,
-                    "openAIVoice": openai_voice,
-                    "provider": "OpenAI TTS",
-                    "model": "gpt-4o-mini-tts",
+                    "provider": "SenseTTS",
+                    "processingTime": f"{processing_time}s",
+                    "textLength": text_length,
                     "audioSize": f"{audio_size_kb:.2f} KB",
                     "timestamp": datetime.utcnow().isoformat()
                 }
@@ -386,11 +307,25 @@ async def generate_tts(request: TTSRequest):
             logger.info("TTS generation completed successfully")
             return response_data
             
+    except httpx.TimeoutException as e:
+        logger.error(f"Request timeout: {str(e)}")
+        raise HTTPException(
+            status_code=504,
+            detail="Request to SenseTTS API timed out. Please try again."
+        )
+    
+    except httpx.ConnectError as e:
+        logger.error(f"Connection failed: {str(e)}")
+        raise HTTPException(
+            status_code=503,
+            detail="Could not connect to SenseTTS API. Please check if the service is running."
+        )
+    
     except httpx.HTTPError as e:
         logger.error(f"HTTP request failed: {str(e)}")
         raise HTTPException(
             status_code=500,
-            detail=f"Request to OpenAI API failed: {str(e)}"
+            detail=f"Request to SenseTTS API failed: {str(e)}"
         )
     
     except Exception as e:
@@ -412,24 +347,20 @@ async def generate_tts(request: TTSRequest):
     tags=["ASR"]
 )
 async def transcribe_audio(
-    file: UploadFile = File(..., description="Audio file to transcribe"),
-    language: Optional[str] = Form(None, description="Language hint: 'bn' for Bengali, 'en' for English, or None for auto-detect")
+    file: UploadFile = File(..., description="Audio file to transcribe")
 ):
     """
-    Transcribe speech audio to text using OpenAI Whisper API.
+    Transcribe speech audio to Bengali text using custom ASR API.
     
-    This endpoint accepts audio files and transcribes them to text using OpenAI's
-    state-of-the-art speech recognition model (gpt-4o-transcribe). It supports
-    multiple audio formats and can handle both Bengali and English languages.
+    This endpoint accepts audio files and transcribes them to Bengali text
+    using a custom speech recognition API. Punctuation is automatically added
+    to improve readability.
     
     **Supported Audio Formats:**
-    - flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm
+    - mp3, wav, m4a, flac, aac, wma, aiff
     
     **Language Support:**
-    - Automatic language detection (default)
-    - Bengali (bn) - when specified
-    - English (en) - when specified
-    - Code-switching between Bengali and English
+    - Bengali (Bangla) only
     
     **Best Practices:**
     - Use clear audio with minimal background noise
@@ -438,18 +369,17 @@ async def transcribe_audio(
     
     Args:
         file: Audio file to transcribe (required)
-        language: Optional language hint (None for auto-detect, 'bn' for Bengali, 'en' for English)
         
     Returns:
         ASRResponse with success status, transcribed text, and metadata
         
     Raises:
-        HTTPException: If file is invalid, API key is missing, or OpenAI API fails
+        HTTPException: If file is invalid or ASR API fails
     """
     logger.info(f"ASR transcription requested: filename={file.filename}, content_type={file.content_type}")
     
     # Validate file type
-    allowed_extensions = ['flac', 'mp3', 'mp4', 'mpeg', 'mpga', 'm4a', 'ogg', 'wav', 'webm']
+    allowed_extensions = ['mp3', 'wav', 'm4a', 'flac', 'aac', 'wma', 'aiff']
     file_extension = file.filename.split('.')[-1].lower() if file.filename else ''
     
     if file_extension not in allowed_extensions:
@@ -460,9 +390,6 @@ async def transcribe_audio(
         )
     
     try:
-        # Validate API key
-        api_key = validate_api_key()
-        
         # Read audio file content
         audio_content = await file.read()
         audio_size_mb = len(audio_content) / (1024 * 1024)
@@ -476,29 +403,22 @@ async def transcribe_audio(
         
         logger.info(f"Processing audio file: {audio_size_mb:.2f} MB")
         
-        # Prepare multipart form data for OpenAI Whisper API
+        # Prepare multipart form data for custom ASR API
         files = {
-            'file': (file.filename, audio_content, file.content_type or 'audio/mpeg')
+            'file': (file.filename, audio_content, file.content_type or f'audio/{file_extension}')
         }
         
+        # Always add punctuation for better readability
         data = {
-            'model': 'gpt-4o-transcribe'
+            'add_punctuation': 'true'
         }
         
-        # Add language parameter if specified
-        if language:
-            data['language'] = language
-            logger.info(f"Language hint provided: {language}")
+        logger.info(f"Calling Custom ASR API at {ASR_API_BASE_URL}/transcribe...")
         
-        logger.info("Calling OpenAI Whisper API...")
-        
-        # Call OpenAI Whisper API with timeout
+        # Call custom ASR API with timeout
         async with httpx.AsyncClient(timeout=120.0) as client:
             response = await client.post(
-                "https://api.openai.com/v1/audio/transcriptions",
-                headers={
-                    "Authorization": f"Bearer {api_key}"
-                },
+                f"{ASR_API_BASE_URL}/transcribe",
                 files=files,
                 data=data
             )
@@ -506,15 +426,23 @@ async def transcribe_audio(
             # Handle API errors
             if response.status_code != 200:
                 error_text = response.text
-                logger.error(f"OpenAI API error {response.status_code}: {error_text}")
+                logger.error(f"ASR API error {response.status_code}: {error_text}")
                 raise HTTPException(
                     status_code=response.status_code,
-                    detail=f"OpenAI API error: {error_text}"
+                    detail=f"ASR API error: {error_text}"
                 )
             
             # Parse response
-            transcription_result = response.json()
-            transcribed_text = transcription_result.get('text', '')
+            asr_result = response.json()
+            
+            if not asr_result.get('success'):
+                logger.warning("ASR API returned success=false")
+                raise HTTPException(
+                    status_code=400,
+                    detail="Transcription failed"
+                )
+            
+            transcribed_text = asr_result.get('transcription', '')
             
             if not transcribed_text:
                 logger.warning("No text transcribed from audio")
@@ -523,19 +451,21 @@ async def transcribe_audio(
                     detail="No speech detected in the audio file"
                 )
             
-            logger.info(f"Transcription successful: {len(transcribed_text)} characters")
+            logger.info(f"Transcription successful: {len(transcribed_text)} characters, duration: {asr_result.get('duration_seconds', 0)}s")
             
             # Prepare response with metadata
             response_data = {
                 "success": True,
                 "text": transcribed_text,
                 "metadata": {
-                    "filename": file.filename,
+                    "filename": asr_result.get('filename', file.filename),
                     "fileSize": f"{audio_size_mb:.2f} MB",
                     "format": file_extension,
-                    "language": language or "auto-detect",
-                    "provider": "OpenAI Whisper",
-                    "model": "gpt-4o-transcribe",
+                    "language": "bangla",
+                    "provider": "Custom ASR",
+                    "durationSeconds": str(asr_result.get('duration_seconds', 0)),
+                    "wordCount": str(asr_result.get('word_count', 0)),
+                    "punctuationAdded": str(asr_result.get('punctuation_added', True)),
                     "characterCount": str(len(transcribed_text)),
                     "timestamp": datetime.utcnow().isoformat()
                 }
@@ -544,11 +474,25 @@ async def transcribe_audio(
             logger.info("ASR transcription completed successfully")
             return response_data
             
+    except httpx.TimeoutException as e:
+        logger.error(f"Request timeout: {str(e)}")
+        raise HTTPException(
+            status_code=504,
+            detail="Request to ASR API timed out. Please try again."
+        )
+    
+    except httpx.ConnectError as e:
+        logger.error(f"Connection failed: {str(e)}")
+        raise HTTPException(
+            status_code=503,
+            detail="Could not connect to ASR API. Please check if the service is running."
+        )
+    
     except httpx.HTTPError as e:
         logger.error(f"HTTP request failed: {str(e)}")
         raise HTTPException(
             status_code=500,
-            detail=f"Request to OpenAI API failed: {str(e)}"
+            detail=f"Request to ASR API failed: {str(e)}"
         )
     
     except Exception as e:
@@ -574,17 +518,12 @@ async def startup_event():
     logger.info("=" * 60)
     logger.info(f"API Version: 1.0.0")
     logger.info(f"Services: TTS (Text-to-Speech) & ASR (Speech-to-Text)")
-    logger.info(f"TTS - Supported Languages: {', '.join(['bangla', 'english', 'mix'])}")
-    logger.info(f"TTS - Available Voices: {', '.join(VOICE_MAP.keys())}")
-    logger.info(f"ASR - Supported Formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm")
-    
-    # Check API key configuration
-    api_key_configured = bool(os.getenv("OPENAI_API_KEY"))
-    if api_key_configured:
-        logger.info("✓ OpenAI API Key: Configured")
-    else:
-        logger.warning("⚠ OpenAI API Key: NOT CONFIGURED - Please set OPENAI_API_KEY in .env")
-    
+    logger.info(f"TTS API: {TTS_API_BASE_URL}")
+    logger.info(f"TTS - Supported Languages: bangla, english")
+    logger.info(f"TTS - Available Voices: female, male")
+    logger.info(f"ASR API: {ASR_API_BASE_URL}")
+    logger.info(f"ASR - Supported Languages: bangla")
+    logger.info(f"ASR - Supported Formats: mp3, wav, m4a, flac, aac, wma, aiff")
     logger.info("=" * 60)
 
 

@@ -23,11 +23,13 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+/api/.env
 
 # Python virtual environment
 /voice_env
 
 # Python
+/api/main.py.backup
 __pycache__/
 *.py[cod]
 *$py.class
