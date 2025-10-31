@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ProtectedRoute } from "@/components/protected-route"
+import { PlaygroundSidebar } from "@/components/playground/playground-sidebar"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -21,78 +22,61 @@ import {
   Mic2,
   Clock,
   FileText,
-  ArrowLeft
+  Loader2
 } from "lucide-react"
-import Link from "next/link"
+import { createClient } from "@/lib/supabase/client"
 
-// Dummy data
-const dummyHistory = [
-  {
-    id: "1",
-    name: "Welcome to our new voice synthesis platform...",
-    type: "text-to-speech" as const,
-    wordCount: 150,
-    duration: "00:45",
-    createdAt: "2024-10-30T14:30:00",
-    audioUrl: "/samples/female.mp3",
-    textContent: "Welcome to our new voice synthesis platform. This technology allows you to convert text into natural-sounding speech with various voice options and languages."
-  },
-  {
-    id: "2",
-    name: "The quick brown fox jumps over...",
-    type: "speech-to-text" as const,
-    wordCount: 89,
-    duration: "00:32",
-    createdAt: "2024-10-30T13:15:00",
-    audioUrl: "/samples/male.mp3",
-    textContent: "The quick brown fox jumps over the lazy dog. This is a sample transcription of an audio file that was processed through our speech-to-text engine."
-  },
-  {
-    id: "3",
-    name: "In today's digital age, artificial intelligence...",
-    type: "text-to-speech" as const,
-    wordCount: 234,
-    duration: "01:20",
-    createdAt: "2024-10-30T11:45:00",
-    audioUrl: "/samples/female.mp3",
-    textContent: "In today's digital age, artificial intelligence is transforming how we interact with technology. Voice synthesis is just one example of how AI can enhance user experiences."
-  },
-  {
-    id: "4",
-    name: "Good morning everyone, today we will discuss...",
-    type: "speech-to-text" as const,
-    wordCount: 445,
-    duration: "02:15",
-    createdAt: "2024-10-29T16:20:00",
-    audioUrl: "/samples/male.mp3",
-    textContent: "Good morning everyone, today we will discuss the importance of voice technology in modern applications and how it can improve accessibility for users worldwide."
-  },
-  {
-    id: "5",
-    name: "Machine learning models have evolved significantly...",
-    type: "text-to-speech" as const,
-    wordCount: 312,
-    duration: "01:45",
-    createdAt: "2024-10-29T10:10:00",
-    audioUrl: "/samples/female.mp3",
-    textContent: "Machine learning models have evolved significantly over the past decade, enabling more natural and human-like voice synthesis capabilities."
-  },
-  {
-    id: "6",
-    name: "Thank you for joining our webinar...",
-    type: "speech-to-text" as const,
-    wordCount: 678,
-    duration: "03:30",
-    createdAt: "2024-10-28T15:00:00",
-    audioUrl: "/samples/male.mp3",
-    textContent: "Thank you for joining our webinar on voice technology. We appreciate your time and hope you found the session informative and engaging."
-  },
-]
+interface HistoryItem {
+  id: string
+  name: string
+  type: "text-to-speech" | "speech-to-text"
+  wordCount: number
+  duration: string | null
+  createdAt: string
+  audioUrl: string | null
+  textContent: string
+}
 
 function HistoryPageContent() {
+  const [history, setHistory] = useState<HistoryItem[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState("")
   const [filterType, setFilterType] = useState<"all" | "text-to-speech" | "speech-to-text">("all")
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "longest" | "shortest">("newest")
+  const supabase = createClient()
+
+  useEffect(() => {
+    fetchHistory()
+  }, [])
+
+  const fetchHistory = async () => {
+    try {
+      setIsLoading(true)
+      const { data, error } = await supabase
+        .from('history')
+        .select('*')
+        .order('created_at', { ascending: false })
+
+      if (error) throw error
+
+      const formattedHistory: HistoryItem[] = (data || []).map(item => ({
+        id: item.id,
+        name: item.name,
+        type: item.type as "text-to-speech" | "speech-to-text",
+        wordCount: item.word_count,
+        duration: item.duration || "00:00",
+        createdAt: item.created_at,
+        audioUrl: item.audio_url,
+        textContent: item.text_content
+      }))
+
+      setHistory(formattedHistory)
+    } catch (error) {
+      console.error('Error fetching history:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const handleCopyText = (text: string) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -102,7 +86,7 @@ function HistoryPageContent() {
     })
   }
 
-  const handleDownload = (item: typeof dummyHistory[0]) => {
+  const handleDownload = (item: HistoryItem) => {
     if (item.type === "text-to-speech") {
       // Download as .txt file
       const blob = new Blob([item.textContent], { type: "text/plain" })
@@ -114,8 +98,8 @@ function HistoryPageContent() {
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
-    } else {
-      // Download as .mp3 file (simulate)
+    } else if (item.audioUrl) {
+      // Download as .mp3 file
       const a = document.createElement("a")
       a.href = item.audioUrl
       a.download = `${item.name.slice(0, 30).replace(/[^a-z0-9]/gi, "_")}.mp3`
@@ -133,7 +117,7 @@ function HistoryPageContent() {
   }
 
   // Filter and sort history
-  let filteredHistory = dummyHistory.filter(item => {
+  let filteredHistory = history.filter((item: HistoryItem) => {
     const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          item.textContent.toLowerCase().includes(searchQuery.toLowerCase())
     const matchesType = filterType === "all" || item.type === filterType
@@ -171,14 +155,14 @@ function HistoryPageContent() {
   }
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      {/* Header */}
-      <div className="border-b border-border bg-white dark:bg-background">
-        <div className="max-w-7xl mx-auto px-6 py-6">
-          <Link href="/playground" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-4 transition-colors">
-            <ArrowLeft className="w-4 h-4" />
-            Back to Playground
-          </Link>
+    <div className="flex h-screen bg-muted">
+      {/* Sidebar */}
+      <PlaygroundSidebar activeTab="text-to-audio" setActiveTab={() => {}} />
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <div className="border-b border-border bg-white dark:bg-background px-8 py-6 shrink-0">
           <div className="flex items-center justify-between">
             <div>
               <h1 className="text-3xl font-bold text-foreground">History</h1>
@@ -190,9 +174,10 @@ function HistoryPageContent() {
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-6 py-8">
+        {/* Content Area */}
+        <main className="flex-1 overflow-y-auto p-8 bg-background">
+          <div className="max-w-7xl mx-auto space-y-6">
         {/* Filters */}
         <div className="flex flex-col md:flex-row gap-4 mb-6">
           <div className="relative flex-1">
@@ -229,7 +214,17 @@ function HistoryPageContent() {
 
         {/* History List */}
         <div className="space-y-3">
-          {filteredHistory.length === 0 ? (
+          {isLoading ? (
+            <Card>
+              <CardContent className="py-12 text-center">
+                <Loader2 className="w-12 h-12 text-muted-foreground mx-auto mb-4 animate-spin" />
+                <h3 className="text-lg font-semibold mb-2">Loading history...</h3>
+                <p className="text-muted-foreground">
+                  Please wait while we fetch your projects
+                </p>
+              </CardContent>
+            </Card>
+          ) : filteredHistory.length === 0 ? (
             <Card>
               <CardContent className="py-12 text-center">
                 <FileText className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
@@ -247,7 +242,7 @@ function HistoryPageContent() {
                 <CardContent className="p-1">
                   <div className="flex items-center gap-4 px-4">
                     {/* Icon */}
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center flex-shrink-0 ${
+                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${
                       item.type === "text-to-speech" 
                         ? "bg-primary/10 text-primary" 
                         : "bg-blue-500/10 text-blue-600"
@@ -286,18 +281,18 @@ function HistoryPageContent() {
                       </div>
 
                       {/* Actions */}
-                      <div className="flex items-center gap-2 flex-shrink-0">
-                        {item.type === "speech-to-text" ? (
+                      <div className="flex items-center gap-2 shrink-0">
+                        {item.type === "speech-to-text" && item.audioUrl ? (
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => handlePlayAudio(item.audioUrl)}
+                            onClick={() => handlePlayAudio(item.audioUrl!)}
                             className="gap-2"
                           >
                             <Play className="w-4 h-4" />
                             Play
                           </Button>
-                        ) : (
+                        ) : item.type === "text-to-speech" ? (
                           <Button
                             size="sm"
                             variant="outline"
@@ -307,7 +302,7 @@ function HistoryPageContent() {
                             <Copy className="w-4 h-4" />
                             Copy
                           </Button>
-                        )}
+                        ) : null}
                         <Button
                           size="sm"
                           variant="outline"
@@ -325,6 +320,8 @@ function HistoryPageContent() {
             ))
           )}
         </div>
+          </div>
+        </main>
       </div>
     </div>
   )

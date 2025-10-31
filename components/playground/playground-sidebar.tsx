@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
+import { useRouter, usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { AudioWaveform, Mic2, Key, User, UserCircle, History } from "lucide-react"
 import { useAuth } from "@/lib/auth-context"
@@ -16,6 +16,7 @@ interface PlaygroundSidebarProps {
 export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebarProps) {
   const { user, isAuthenticated, isLoading } = useAuth()
   const router = useRouter()
+  const pathname = usePathname()
 
   console.log('PlaygroundSidebar - isLoading:', isLoading, 'isAuthenticated:', isAuthenticated, 'user:', user?.email)
 
@@ -44,9 +45,16 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-2">
         <button
-          onClick={() => setActiveTab("text-to-audio")}
+          onClick={() => {
+            if (pathname === "/history") {
+              router.push("/playground")
+              setTimeout(() => setActiveTab("text-to-audio"), 100)
+            } else {
+              setActiveTab("text-to-audio")
+            }
+          }}
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 font-medium ${
-            activeTab === "text-to-audio"
+            activeTab === "text-to-audio" && pathname !== "/history"
               ? "bg-primary text-white"
               : "text-muted-foreground hover:bg-card hover:text-foreground"
           }`}
@@ -56,9 +64,16 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
         </button>
 
         <button
-          onClick={() => setActiveTab("speech-to-text")}
+          onClick={() => {
+            if (pathname === "/history") {
+              router.push("/playground")
+              setTimeout(() => setActiveTab("speech-to-text"), 100)
+            } else {
+              setActiveTab("speech-to-text")
+            }
+          }}
           className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-colors duration-200 font-medium ${
-            activeTab === "speech-to-text"
+            activeTab === "speech-to-text" && pathname !== "/history"
               ? "bg-primary text-white"
               : "text-muted-foreground hover:bg-card hover:text-foreground"
           }`}
@@ -82,8 +97,12 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
           {isAuthenticated && (
             <Link href="/history">
               <Button 
-                variant="outline" 
-                className="w-full justify-start gap-3 border border-border hover:bg-card transition-colors duration-200 mb-3"
+                variant={pathname === "/history" ? "default" : "outline"}
+                className={`w-full justify-start gap-3 transition-colors duration-200 mb-3 ${
+                  pathname === "/history" 
+                    ? "" 
+                    : "border border-border hover:bg-card"
+                }`}
               >
                 <History className="w-5 h-5" />
                 History
