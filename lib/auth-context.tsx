@@ -98,12 +98,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       
       if (session?.user) {
         // Set user immediately from session
-        console.log('Setting supabaseUser and isLoading=false')
+        console.log('Setting supabaseUser and user from session')
         setSupabaseUser(session.user)
+        
+        // Set basic user info immediately from session
+        const basicUser: User = {
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
+          avatar: session.user.user_metadata?.avatar_url
+        }
+        setUser(basicUser)
         setIsLoading(false)
         
-        // Then fetch profile in background
-        fetchUserProfile(session.user.id)
+        // Then try to fetch full profile in background (optional)
+        fetchUserProfile(session.user.id).catch(err => {
+          console.log('Profile fetch failed, using session data:', err)
+        })
       } else {
         console.log('No session, setting isLoading=false')
         setIsLoading(false)
@@ -119,13 +130,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         
         if (session?.user) {
           setSupabaseUser(session.user)
-          await fetchUserProfile(session.user.id)
+          
+          // Set basic user info immediately from session
+          const basicUser: User = {
+            id: session.user.id,
+            email: session.user.email || '',
+            name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
+            avatar: session.user.user_metadata?.avatar_url
+          }
+          setUser(basicUser)
+          setIsLoading(false)
+          
+          // Then try to fetch full profile in background (with timeout)
+          fetchUserProfile(session.user.id).catch(err => {
+            console.log('Profile fetch failed, using session data:', err)
+          })
         } else {
           setSupabaseUser(null)
           setUser(null)
           clearProfileCache()
+          setIsLoading(false)
         }
-        setIsLoading(false)
       }
     )
 
@@ -168,7 +193,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchUserProfile = useCallback(async (userId: string, isBackgroundRefresh = false) => {
     // Prevent concurrent fetches
-    if (isFetchingProfile.current) return
+    if (isFetchingProfile.current) {
+      console.log('Already fetching profile, skipping')
+      return
+    }
     isFetchingProfile.current = true
 
     try {
@@ -179,8 +207,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         .eq('id', userId)
         .single()
 
+      console.log('Profile query result:', { hasData: !!data, error: error?.message })
+
       if (error) {
-        console.error("Error fetching profile:", error)
+        console.error("Error fetching profile:", error.message, error.code)
         // If profile doesn't exist, get user from session
         const { data: { session } } = await supabase.auth.getSession()
         if (session?.user) {
@@ -193,6 +223,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           console.log('Using fallback user:', fallbackUser.email)
           setUser(fallbackUser)
           setProfileCache(fallbackUser)
+        } else {
+          console.log('No session found for fallback')
         }
       } else if (data) {
         const userProfile: User = {
@@ -204,10 +236,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         console.log('Profile loaded successfully:', userProfile.email)
         setUser(userProfile)
         setProfileCache(userProfile)
+      } else {
+        console.log('No data and no error - unexpected state')
       }
     } catch (error) {
       console.error("Error fetching user profile:", error)
     } finally {
+      console.log('fetchUserProfile completed')
       isFetchingProfile.current = false
     }
   }, [])
