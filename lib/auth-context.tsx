@@ -112,6 +112,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       // We don't need to cache the session ourselves
       const { data: { session } } = await supabase.auth.getSession()
       
+      console.log('checkAuth - session:', session ? 'exists' : 'null')
+      console.log('checkAuth - user:', session?.user?.email)
+      
       if (session?.user) {
         setSupabaseUser(session.user)
         
@@ -195,9 +198,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(error.message || "Login failed")
       }
 
-      if (data.user) {
-        setSupabaseUser(data.user)
-        await fetchUserProfile(data.user.id)
+      // Don't manually set state here - let onAuthStateChange handle it
+      // This prevents race conditions and ensures consistent auth state
+      if (data.session) {
+        console.log('Login successful, redirecting to playground')
         router.push("/playground")
       }
     } catch (error) {
@@ -222,16 +226,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(error.message || "Signup failed")
       }
 
-      if (data.user) {
-        setSupabaseUser(data.user)
-        setUser({
-          id: data.user.id,
-          email: email,
-          name: name,
-        })
-        
-        // The profile will be created automatically by the database trigger
-        // If the trigger is set up correctly in Supabase
+      // Don't manually set state here - let onAuthStateChange handle it
+      // This prevents race conditions and ensures consistent auth state
+      if (data.session) {
+        console.log('Signup successful, redirecting to playground')
         router.push("/playground")
       }
     } catch (error) {
