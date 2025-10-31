@@ -18,7 +18,7 @@ Scroll to **Build** section and set:
 
 **Build Command**: 
 ```bash
-pip install -r requirements.txt
+pip install --break-system-packages -r requirements.txt
 ```
 
 **Start Command**:
