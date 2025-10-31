@@ -126,9 +126,9 @@ export function SpeechToTextPanel() {
         formData.append('language', language)
       }
 
-      // Connect to FastAPI backend - use relative path or network IP
-      const apiUrl = typeof window !== 'undefined' 
-        ? `${window.location.protocol}//${window.location.hostname}:8000/api/asr/transcribe`
+      // Connect to FastAPI backend - use environment variable or fallback to localhost
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL 
+        ? `${process.env.NEXT_PUBLIC_API_URL}/api/asr/transcribe`
         : "http://localhost:8000/api/asr/transcribe"
 
       // Call FastAPI backend
