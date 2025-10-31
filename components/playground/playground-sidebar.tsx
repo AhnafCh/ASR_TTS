@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { AudioWaveform, Mic2, Key, User, UserCircle, History } from "lucide-react"
@@ -21,10 +22,20 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
       {/* Logo */}
       <div className="p-6 border-b border-border bg-white dark:bg-card">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <AudioWaveform className="w-5 h-5 text-white" />
-          </div>
-          <span className="font-semibold text-xl text-foreground">SenseVoice</span>
+          <Image
+            src="/logo/sv-light-48.svg"
+            alt="SenseVoice Logo"
+            width={110}
+            height={32}
+            className="h-8 w-auto dark:hidden"
+          />
+          <Image
+            src="/logo/sv-dark-48.svg"
+            alt="SenseVoice Logo"
+            width={110}
+            height={32}
+            className="h-8 w-auto hidden dark:block"
+          />
         </Link>
       </div>
 

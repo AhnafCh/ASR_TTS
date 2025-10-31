@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -37,10 +38,20 @@ export default function LoginPage() {
         {/* Logo */}
         <div className="flex justify-center mb-8">
           <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <AudioWaveform className="w-6 h-6 text-white" />
-            </div>
-            <span className="font-bold text-2xl text-foreground">SenseVoice</span>
+            <Image
+              src="/logo/sv-light-48.svg"
+              alt="SenseVoice Logo"
+              width={140}
+              height={40}
+              className="h-10 w-auto dark:hidden"
+            />
+            <Image
+              src="/logo/sv-dark-48.svg"
+              alt="SenseVoice Logo"
+              width={140}
+              height={40}
+              className="h-10 w-auto hidden dark:block"
+            />
           </Link>
         </div>
 

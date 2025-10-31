@@ -1,3 +1,5 @@
+import Image from "next/image"
+
 export function Footer() {
   return (
     <footer className="border-t border-border py-12 px-4 bg-white dark:bg-background">
@@ -6,7 +8,20 @@ export function Footer() {
           {/* Brand */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <span className="text-2xl font-bold text-primary">SenseVoice</span>
+              <Image
+                src="/logo/sv-light-48.svg"
+                alt="SenseVoice Logo"
+                width={130}
+                height={36}
+                className="h-9 w-auto dark:hidden"
+              />
+              <Image
+                src="/logo/sv-dark-48.svg"
+                alt="SenseVoice Logo"
+                width={130}
+                height={36}
+                className="h-9 w-auto hidden dark:block"
+              />
             </div>
             <p className="text-sm text-muted-foreground leading-relaxed">
               Advanced AI voice technology for Bengali language processing.

@@ -13,7 +13,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex items-center justify-center px-4 py-10 overflow-hidden pt-20 pb-20">
+    <section className="relative flex items-center justify-center px-4 overflow-hidden min-h-screen">
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-primary/20 to-blue-50 dark:from-background dark:via-primary/25 dark:to-background animate-gradient-shift" 
            style={{
@@ -47,8 +47,8 @@ export function Hero() {
               <span className="text-primary text-sm font-semibold">AI-Powered Voice Technology</span>
             </div>
 
-            <div className="space-y-6">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] text-foreground">
+            <div className="space-y-2">
+              <h1 className="text-5xl md:text-5xl lg:text-7xl font-bold leading-[1.1] text-foreground">
                 <span className="block">
                   বাংলা এআই
                 </span>

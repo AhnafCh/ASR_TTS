@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   description:
     "Advanced AI voice technology for Text-to-Speech and Automatic Speech Recognition in Bengali",
   generator: "v0.app",
+  icons: {
+    icon: "/logo/sv-icon-light-48.svg",
+    apple: "/logo/sv-icon-light-256.svg",
+  },
 }
 
 export default function RootLayout({

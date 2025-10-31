@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { useAuth } from "@/lib/auth-context"
@@ -44,7 +45,38 @@ export function Navbar() {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-        <div className="font-bold text-xl text-primary">SenseVoice</div>
+        <a href="/" className="flex items-center gap-2">
+          {/* Full logo on desktop */}
+          <Image
+            src="/logo/sv-light-48.svg"
+            alt="SenseVoice Logo"
+            width={120}
+            height={32}
+            className="h-8 w-auto hidden dark:hidden md:block"
+          />
+          <Image
+            src="/logo/sv-dark-48.svg"
+            alt="SenseVoice Logo"
+            width={120}
+            height={32}
+            className="h-8 w-auto hidden dark:block md:dark:block"
+          />
+          {/* Icon only on mobile */}
+          <Image
+            src="/logo/sv-icon-light-48.svg"
+            alt="SenseVoice"
+            width={32}
+            height={32}
+            className="h-8 w-8 md:hidden dark:hidden"
+          />
+          <Image
+            src="/logo/sv-icon-dark-48.svg"
+            alt="SenseVoice"
+            width={32}
+            height={32}
+            className="h-8 w-8 hidden dark:block md:dark:hidden"
+          />
+        </a>
 
         <div className="hidden md:flex items-center gap-8">
           <button
