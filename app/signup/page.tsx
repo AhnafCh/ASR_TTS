@@ -20,13 +20,29 @@ export default function SignupPage() {
   const [error, setError] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
+  // Password validation criteria
+  const validatePassword = (pwd: string) => {
+    return {
+      minLength: pwd.length >= 8,
+      hasUppercase: /[A-Z]/.test(pwd),
+      hasNumber: /[0-9]/.test(pwd),
+    }
+  }
+
+  const passwordCriteria = password ? validatePassword(password) : null
+  const isPasswordValid = passwordCriteria 
+    ? passwordCriteria.minLength && passwordCriteria.hasUppercase && passwordCriteria.hasNumber
+    : false
+
   // Password strength
   const getPasswordStrength = (pwd: string) => {
-    if (pwd.length < 6) return { strength: "weak", color: "text-red-500" }
-    if (pwd.length < 10) return { strength: "medium", color: "text-yellow-500" }
-    if (pwd.length >= 10 && /[A-Z]/.test(pwd) && /[0-9]/.test(pwd)) {
-      return { strength: "strong", color: "text-green-500" }
-    }
+    const criteria = validatePassword(pwd)
+    const validCount = Object.values(criteria).filter(Boolean).length
+    
+    if (validCount === 0) return { strength: "weak", color: "text-red-500" }
+    if (validCount === 1) return { strength: "weak", color: "text-red-500" }
+    if (validCount === 2) return { strength: "medium", color: "text-yellow-500" }
+    if (validCount === 3 && pwd.length >= 12) return { strength: "strong", color: "text-green-500" }
     return { strength: "medium", color: "text-yellow-500" }
   }
 
@@ -44,6 +60,16 @@ export default function SignupPage() {
 
     if (password.length < 8) {
       setError("Password must be at least 8 characters long")
+      return
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      setError("Password must contain at least one uppercase letter")
+      return
+    }
+
+    if (!/[0-9]/.test(password)) {
+      setError("Password must contain at least one number")
       return
     }
 
@@ -144,8 +170,46 @@ export default function SignupPage() {
                     disabled={isLoading}
                   />
                 </div>
+                
+                {/* Password Requirements */}
+                {password && passwordCriteria && (
+                  <div className="space-y-1 text-xs mt-2">
+                    <p className="font-medium text-muted-foreground">Password must contain:</p>
+                    <div className="flex items-center gap-2">
+                      {passwordCriteria.minLength ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 text-red-500" />
+                      )}
+                      <span className={passwordCriteria.minLength ? "text-green-500" : "text-red-500"}>
+                        At least 8 characters
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {passwordCriteria.hasUppercase ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 text-red-500" />
+                      )}
+                      <span className={passwordCriteria.hasUppercase ? "text-green-500" : "text-red-500"}>
+                        One uppercase letter
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      {passwordCriteria.hasNumber ? (
+                        <CheckCircle2 className="h-3 w-3 text-green-500" />
+                      ) : (
+                        <AlertCircle className="h-3 w-3 text-red-500" />
+                      )}
+                      <span className={passwordCriteria.hasNumber ? "text-green-500" : "text-red-500"}>
+                        One number
+                      </span>
+                    </div>
+                  </div>
+                )}
+                
                 {passwordStrength && (
-                  <p className={`text-xs ${passwordStrength.color}`}>
+                  <p className={`text-xs ${passwordStrength.color} mt-2`}>
                     Password strength: <span className="font-medium capitalize">{passwordStrength.strength}</span>
                   </p>
                 )}
@@ -171,7 +235,7 @@ export default function SignupPage() {
                 </div>
               </div>
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
+              <Button type="submit" className="w-full" disabled={isLoading || !isPasswordValid || password !== confirmPassword}>
                 {isLoading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
