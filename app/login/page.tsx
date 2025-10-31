@@ -25,9 +25,10 @@ export default function LoginPage() {
 
     try {
       await login(email, password)
+      // Login successful - the login function will redirect
+      // Keep loading state until redirect completes
     } catch (err) {
       setError(err instanceof Error ? err.message : "Login failed. Please try again.")
-    } finally {
       setIsLoading(false)
     }
   }

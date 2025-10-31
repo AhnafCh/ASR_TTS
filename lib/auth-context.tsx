@@ -198,11 +198,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         throw new Error(error.message || "Login failed")
       }
 
-      // Don't manually set state here - let onAuthStateChange handle it
-      // This prevents race conditions and ensures consistent auth state
       if (data.session) {
-        console.log('Login successful, redirecting to playground')
+        console.log('Login successful, session exists')
+        // Wait a tiny bit for onAuthStateChange to fire
+        await new Promise(resolve => setTimeout(resolve, 100))
         router.push("/playground")
+      } else {
+        throw new Error("No session returned from login")
       }
     } catch (error) {
       console.error("Login error:", error)
