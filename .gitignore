@@ -83,4 +83,4 @@ coverage/
 
 # Supabase documentation (safe to exclude from git)
 /supaguides/
-.vercel
+
