@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { User, Settings, LogOut, Menu, X } from "lucide-react"
+import { User, Settings, LogOut, Menu, X, Mic2, Headphones, DollarSign, HelpCircle, Mail, Gamepad2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
@@ -44,7 +44,7 @@ export function Navbar() {
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
-        isScrolled ? "bg-white/95 dark:bg-background/95 backdrop-blur-sm border-b border-border" : "bg-transparent"
+        isScrolled ? "bg-white/95 dark:bg-background/85 backdrop-blur-sm border-b border-border" : "bg-transparent"
       }`}
     >
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 md:px-8 py-3 sm:py-4 flex items-center justify-between">
@@ -118,56 +118,149 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Hamburger menu on LEFT for screens 420px-820px */}
+        {/* Spacer to push content to the right on mobile */}
+        <div className="flex-1 [@media(min-width:821px)]:hidden" />
+
+        {/* Mobile Hamburger Menu for screens under 821px */}
         <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
           <SheetTrigger asChild>
             <Button
               variant="ghost"
               size="icon"
-              className="[@media(max-width:419px)]:hidden [@media(min-width:821px)]:hidden min-h-11 min-w-11"
+              className="[@media(min-width:821px)]:hidden min-h-11 min-w-11"
               aria-label="Open menu"
             >
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
           <SheetContent side="right" className="w-[280px] sm:w-[320px]">
-            <div className="flex flex-col gap-6 mt-8">
-              {/* Theme Toggle in mobile menu */}
-              <div className="flex items-center justify-between px-2 py-2 border-b border-border">
-                <span className="text-sm font-medium text-foreground">Theme</span>
-                <ThemeToggle />
+            <div className="flex flex-col h-full">
+              {/* Header */}
+              <div className="pt-6 pb-4 px-2 border-b border-border">
+                <h2 className="text-lg font-semibold text-foreground">Menu</h2>
               </div>
-              
-              <button
-                onClick={() => scrollToSection("tts")}
-                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-              >
-                TTS
-              </button>
-              <button
-                onClick={() => scrollToSection("asr")}
-                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-              >
-                ASR
-              </button>
-              <button
-                onClick={() => scrollToSection("pricing")}
-                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-              >
-                Pricing
-              </button>
-              <button
-                onClick={() => scrollToSection("faq")}
-                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-              >
-                FAQ
-              </button>
-              <button
-                onClick={() => scrollToSection("contact")}
-                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-              >
-                Contact
-              </button>
+
+              {/* Navigation Links */}
+              <div className="flex-1 overflow-y-auto py-6 px-2">
+                <nav className="flex flex-col gap-1">
+                  {/* Playground button in mobile menu for screens under 420px */}
+                  <button
+                    onClick={() => {
+                      window.location.href = '/playground'
+                      setIsMobileMenuOpen(false)
+                    }}
+                    className="[@media(min-width:420px)]:hidden flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-foreground bg-primary/10 hover:bg-primary/20 rounded-lg transition-all duration-200 mb-2"
+                  >
+                    <Gamepad2 className="h-4 w-4" />
+                    <span>Playground</span>
+                  </button>
+
+                  <button
+                    onClick={() => scrollToSection("tts")}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg transition-all duration-200"
+                  >
+                    <Mic2 className="h-4 w-4" />
+                    <span>Text-to-Speech</span>
+                  </button>
+                  <button
+                    onClick={() => scrollToSection("asr")}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg transition-all duration-200"
+                  >
+                    <Headphones className="h-4 w-4" />
+                    <span>Speech Recognition</span>
+                  </button>
+                  <button
+                    onClick={() => scrollToSection("pricing")}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg transition-all duration-200"
+                  >
+                    <DollarSign className="h-4 w-4" />
+                    <span>Pricing</span>
+                  </button>
+                  <button
+                    onClick={() => scrollToSection("faq")}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg transition-all duration-200"
+                  >
+                    <HelpCircle className="h-4 w-4" />
+                    <span>FAQ</span>
+                  </button>
+                  <button
+                    onClick={() => scrollToSection("contact")}
+                    className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg transition-all duration-200"
+                  >
+                    <Mail className="h-4 w-4" />
+                    <span>Contact</span>
+                  </button>
+
+                  {/* Auth section in mobile menu for screens under 375px */}
+                  {isAuthenticated && user ? (
+                    <div className="[@media(min-width:375px)]:hidden flex flex-col gap-2 mt-6 pt-6 border-t border-border">
+                      <div className="flex items-center gap-3 p-3 bg-muted/50 rounded-lg mb-2">
+                        <Avatar className="h-10 w-10">
+                          <AvatarImage src={user.avatar} alt={user.name} />
+                          <AvatarFallback className="bg-primary text-white text-sm">
+                            {user.name.charAt(0).toUpperCase()}
+                          </AvatarFallback>
+                        </Avatar>
+                        <div className="flex flex-col overflow-hidden">
+                          <p className="text-sm font-semibold truncate">{user.name}</p>
+                          <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                        </div>
+                      </div>
+                      <button
+                        onClick={() => {
+                          router.push("/profile")
+                          setIsMobileMenuOpen(false)
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg transition-all duration-200"
+                      >
+                        <User className="h-4 w-4" />
+                        <span>Profile</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          router.push("/settings")
+                          setIsMobileMenuOpen(false)
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted rounded-lg transition-all duration-200"
+                      >
+                        <Settings className="h-4 w-4" />
+                        <span>Settings</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          logout()
+                          setIsMobileMenuOpen(false)
+                        }}
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm font-medium text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/20 rounded-lg transition-all duration-200"
+                      >
+                        <LogOut className="h-4 w-4" />
+                        <span>Log out</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="[@media(min-width:375px)]:hidden mt-6 pt-6 border-t border-border">
+                      <Button
+                        size="lg"
+                        className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white rounded-lg font-semibold transition-all duration-200 shadow-md"
+                        onClick={() => {
+                          router.push("/signup")
+                          setIsMobileMenuOpen(false)
+                        }}
+                      >
+                        Get Started
+                      </Button>
+                    </div>
+                  )}
+                </nav>
+              </div>
+
+              {/* Footer */}
+              <div className="mt-auto border-t border-border p-4">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium text-foreground">Theme</span>
+                  <ThemeToggle />
+                </div>
+              </div>
             </div>
           </SheetContent>
         </Sheet>
@@ -184,135 +277,6 @@ export function Navbar() {
           >
             Playground
           </Button>
-
-          {/* Hamburger menu on RIGHT for screens under 420px only */}
-          <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="[@media(min-width:420px)]:hidden min-h-11 min-w-11"
-                aria-label="Open menu"
-              >
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="right" className="w-[280px] sm:w-[320px]">
-              <div className="flex flex-col gap-6 mt-8">
-                {/* Theme Toggle in mobile menu */}
-                <div className="flex items-center justify-between px-2 py-2 border-b border-border">
-                  <span className="text-sm font-medium text-foreground">Theme</span>
-                  <ThemeToggle />
-                </div>
-                
-                {/* Playground button in mobile menu for screens under 420px */}
-                <button
-                  onClick={() => {
-                    window.location.href = '/playground'
-                    setIsMobileMenuOpen(false)
-                  }}
-                  className="[@media(min-width:420px)]:hidden text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-                >
-                  Playground
-                </button>
-                
-                <button
-                  onClick={() => scrollToSection("tts")}
-                  className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-                >
-                  TTS
-                </button>
-                <button
-                  onClick={() => scrollToSection("asr")}
-                  className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-                >
-                  ASR
-                </button>
-                <button
-                  onClick={() => scrollToSection("pricing")}
-                  className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-                >
-                  Pricing
-                </button>
-                <button
-                  onClick={() => scrollToSection("faq")}
-                  className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-                >
-                  FAQ
-                </button>
-                <button
-                  onClick={() => scrollToSection("contact")}
-                  className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left min-h-11 px-2"
-                >
-                  Contact
-                </button>
-
-                {/* Auth buttons in mobile menu for screens under 375px */}
-                {isAuthenticated && user ? (
-                  <div className="[@media(min-width:375px)]:hidden flex flex-col gap-3 mt-4 px-2">
-                    <div className="flex items-center gap-3 p-2 border border-border rounded-lg">
-                      <Avatar className="h-10 w-10">
-                        <AvatarImage src={user.avatar} alt={user.name} />
-                        <AvatarFallback className="bg-primary text-white text-sm">
-                          {user.name.charAt(0).toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex flex-col">
-                        <p className="text-sm font-medium">{user.name}</p>
-                        <p className="text-xs text-muted-foreground">{user.email}</p>
-                      </div>
-                    </div>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start"
-                      onClick={() => {
-                        router.push("/profile")
-                        setIsMobileMenuOpen(false)
-                      }}
-                    >
-                      <User className="mr-2 h-4 w-4" />
-                      Profile
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start"
-                      onClick={() => {
-                        router.push("/settings")
-                        setIsMobileMenuOpen(false)
-                      }}
-                    >
-                      <Settings className="mr-2 h-4 w-4" />
-                      Settings
-                    </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full justify-start text-red-600 dark:text-red-400"
-                      onClick={() => {
-                        logout()
-                        setIsMobileMenuOpen(false)
-                      }}
-                    >
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Log out
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="[@media(min-width:375px)]:hidden mt-4 px-2">
-                    <Button
-                      size="sm"
-                      className="w-full bg-primary hover:bg-secondary text-white rounded-lg font-semibold transition-colors duration-200 min-h-9"
-                      onClick={() => {
-                        router.push("/signup")
-                        setIsMobileMenuOpen(false)
-                      }}
-                    >
-                      Get Started
-                    </Button>
-                  </div>
-                )}
-              </div>
-            </SheetContent>
-          </Sheet>
 
           {isAuthenticated && user ? (
             <DropdownMenu>

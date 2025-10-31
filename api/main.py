@@ -8,9 +8,7 @@ Services:
 - TTS: Convert text to natural speech using SenseTTS API
 - ASR: Transcribe audio to text using custom ASR API
 
-Author: SenseVoice Team
-Version: 2.0.0
-Created: October 30, 2025
+SORRY IT'S ALL VIBE CODED :)
 """
 
 from fastapi import FastAPI, HTTPException, File, UploadFile, Form
