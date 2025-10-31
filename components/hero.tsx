@@ -3,12 +3,25 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { Sparkles, Mic, Volume2, Zap } from "lucide-react"
+import { useAuth } from "@/lib/auth-context"
+import { useRouter } from "next/navigation"
 
 export function Hero() {
+  const { isAuthenticated } = useAuth()
+  const router = useRouter()
+
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+    }
+  }
+
+  const handleGetAPIClick = () => {
+    if (isAuthenticated) {
+      scrollToSection("contact")
+    } else {
+      router.push("/signup")
     }
   }
 
@@ -66,6 +79,7 @@ export function Hero() {
               <Button 
                 size="lg" 
                 className="ai-gradient-button text-white font-semibold rounded-lg px-6 sm:px-8 shadow-lg min-h-11 w-full sm:w-auto"
+                onClick={handleGetAPIClick}
               >
                 Get API Access
               </Button>
@@ -79,14 +93,6 @@ export function Hero() {
                   <Zap className="w-4 h-4" />
                 </Button>
               </Link>
-              <Button
-                size="lg"
-                variant="outline"
-                className="border border-border text-foreground hover:bg-muted rounded-lg px-6 sm:px-8 transition-colors duration-200 font-semibold min-h-11 w-full sm:w-auto"
-                onClick={() => scrollToSection("contact")}
-              >
-                Contact Us
-              </Button>
             </div>
 
             {/* Stats */}
