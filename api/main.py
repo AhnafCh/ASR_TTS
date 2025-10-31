@@ -50,8 +50,7 @@ ALLOWED_ORIGINS = os.getenv("ALLOWED_ORIGINS", "").split(",") if os.getenv("ALLO
     "http://192.168.0.203:3000",
     "http://192.168.0.203:9605",
     "http://127.0.0.1:3000",
-    # Add your production frontend URL here after deployment
-    # "https://your-frontend.vercel.app",
+    "https://sensevoice.vercel.app",  # Production Vercel frontend
 ]
 
 app.add_middleware(
