@@ -21,10 +21,7 @@ CREATE TABLE IF NOT EXISTS public.history (
   
   -- Timestamps
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  
-  -- Indexes for better query performance
-  CONSTRAINT history_user_id_fkey FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Create index on user_id for faster queries
