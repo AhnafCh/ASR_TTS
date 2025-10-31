@@ -81,28 +81,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (hasInitialized.current) return
     hasInitialized.current = true
 
-    // Check auth immediately on mount
-    checkAuth()
+    // Immediately check for cached session (synchronous)
+    const initAuth = async () => {
+      // Get session from cache/cookies (fast)
+      const { data: { session } } = await supabase.auth.getSession()
+      
+      if (session?.user) {
+        // Set user immediately from session
+        setSupabaseUser(session.user)
+        setIsLoading(false)
+        
+        // Then fetch profile in background
+        fetchUserProfile(session.user.id)
+      } else {
+        setIsLoading(false)
+      }
+    }
 
-    // Listen for auth state changes (for login/logout events)
+    initAuth()
+
+    // Listen for auth state changes (login/logout/refresh)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth state changed:', event, 'Session:', session ? 'exists' : 'null')
-        console.log('User email:', session?.user?.email)
         
-        // Only handle state changes for specific events, not INITIAL_SESSION
-        // because checkAuth() already handles the initial session
-        if (event !== 'INITIAL_SESSION') {
-          if (session?.user) {
-            setSupabaseUser(session.user)
-            await fetchUserProfile(session.user.id)
-          } else {
-            setSupabaseUser(null)
-            setUser(null)
-            clearProfileCache()
-          }
-          setIsLoading(false)
+        if (session?.user) {
+          setSupabaseUser(session.user)
+          await fetchUserProfile(session.user.id)
+        } else {
+          setSupabaseUser(null)
+          setUser(null)
+          clearProfileCache()
         }
+        setIsLoading(false)
       }
     )
 
