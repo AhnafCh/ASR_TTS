@@ -80,23 +80,32 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   // Check for existing session on mount and listen for auth changes
   useEffect(() => {
+    console.log('AuthProvider useEffect running')
     // Prevent duplicate initialization
-    if (hasInitialized.current) return
+    if (hasInitialized.current) {
+      console.log('Already initialized, skipping')
+      return
+    }
     hasInitialized.current = true
 
     // Immediately check for cached session (synchronous)
     const initAuth = async () => {
+      console.log('initAuth starting...')
       // Get session from cache/cookies (fast)
       const { data: { session } } = await supabase.auth.getSession()
       
+      console.log('Session retrieved:', session ? 'exists' : 'null', session?.user?.email)
+      
       if (session?.user) {
         // Set user immediately from session
+        console.log('Setting supabaseUser and isLoading=false')
         setSupabaseUser(session.user)
         setIsLoading(false)
         
         // Then fetch profile in background
         fetchUserProfile(session.user.id)
       } else {
+        console.log('No session, setting isLoading=false')
         setIsLoading(false)
       }
     }
