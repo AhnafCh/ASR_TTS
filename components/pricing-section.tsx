@@ -109,12 +109,12 @@ export function PricingSection() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground">Email</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <p className="text-xs sm:text-sm text-muted-foreground break-all flex-1">enterprise@sensevoice.com</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground break-all flex-1">info@sensevoice.app</p>
                           <Button
                             size="icon"
                             variant="ghost"
                             className="h-7 w-7 shrink-0"
-                            onClick={() => copyToClipboard("enterprise@sensevoice.com", "Email")}
+                            onClick={() => copyToClipboard("info@sensevoice.app", "Email")}
                           >
                             <Copy className={`h-3.5 w-3.5 ${copiedField === "Email" ? "text-green-500" : "text-muted-foreground"}`} />
                           </Button>
@@ -126,12 +126,12 @@ export function PricingSection() {
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium text-foreground">Phone</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <p className="text-xs sm:text-sm text-muted-foreground flex-1">+880 1XXX-XXXXXX</p>
+                          <p className="text-xs sm:text-sm text-muted-foreground flex-1">+880 1632 305448</p>
                           <Button
                             size="icon"
                             variant="ghost"
                             className="h-7 w-7 shrink-0"
-                            onClick={() => copyToClipboard("+880 1XXX-XXXXXX", "Phone")}
+                            onClick={() => copyToClipboard("+880 1632 305448", "Phone")}
                           >
                             <Copy className={`h-3.5 w-3.5 ${copiedField === "Phone" ? "text-green-500" : "text-muted-foreground"}`} />
                           </Button>

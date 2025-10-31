@@ -18,8 +18,8 @@ export function AsrSection() {
       href: "/asr/meeting-minutes",
     },
     {
-      title: "Video & Podcast Subtitling",
-      description: "Create accurate subtitles for video and podcast content",
+      title: "Video Subtitling",
+      description: "Create accurate subtitles for various types of video content",
       icon: Video,
       href: "/asr/video-podcast-subtitling",
     },
@@ -36,26 +36,8 @@ export function AsrSection() {
       href: "/asr/interview-transcription",
     },
     {
-      title: "Voice Commands",
-      description: "Implement voice control for apps and devices",
-      icon: MessageSquare,
-      href: "/asr/voice-commands",
-    },
-    {
-      title: "Lecture Transcription",
-      description: "Convert educational lectures into searchable text",
-      icon: PresentationIcon,
-      href: "/asr/lecture-transcription",
-    },
-    {
-      title: "Voice Data Entry",
-      description: "Hands-free data input through voice commands",
-      icon: Edit,
-      href: "/asr/voice-data-entry",
-    },
-    {
       title: "Survey Voice Input",
-      description: "Collect survey responses through voice input",
+      description: "Collect survey responses through voice input, making data collection easier",
       icon: BarChart3,
       href: "/asr/survey-voice-input",
     },
