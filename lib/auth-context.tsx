@@ -242,10 +242,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = async () => {
     try {
-      await supabase.auth.signOut()
+      // Clear state immediately for instant UI feedback
       setUser(null)
       setSupabaseUser(null)
       clearProfileCache()
+      
+      // Then sign out from Supabase
+      await supabase.auth.signOut()
+      
+      // Wait a tiny bit to ensure state updates are rendered
+      await new Promise(resolve => setTimeout(resolve, 50))
+      
       router.push("/")
     } catch (error) {
       console.error("Logout error:", error)

@@ -14,7 +14,7 @@ interface PlaygroundSidebarProps {
 }
 
 export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebarProps) {
-  const { user, isAuthenticated } = useAuth()
+  const { user, isAuthenticated, isLoading } = useAuth()
   const router = useRouter()
 
   return (
@@ -100,7 +100,15 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
 
       {/* User Section */}
       <div className="p-4 border-t border-border bg-white dark:bg-card space-y-2">
-        {isAuthenticated && user ? (
+        {isLoading ? (
+          <div className="w-full flex items-center gap-3 px-4 py-2 rounded-lg">
+            <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
+            <div className="flex-1 space-y-2">
+              <div className="h-3 bg-muted rounded animate-pulse" />
+              <div className="h-2 bg-muted rounded animate-pulse w-3/4" />
+            </div>
+          </div>
+        ) : isAuthenticated && user ? (
           <>
             <button
               onClick={() => router.push("/profile")}
