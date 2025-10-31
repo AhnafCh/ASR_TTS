@@ -81,23 +81,28 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (hasInitialized.current) return
     hasInitialized.current = true
 
+    // Check auth immediately on mount
     checkAuth()
 
-    // Listen for auth state changes
+    // Listen for auth state changes (for login/logout events)
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
         console.log('Auth state changed:', event, 'Session:', session ? 'exists' : 'null')
         console.log('User email:', session?.user?.email)
         
-        if (session?.user) {
-          setSupabaseUser(session.user)
-          await fetchUserProfile(session.user.id)
-        } else {
-          setSupabaseUser(null)
-          setUser(null)
-          clearProfileCache()
+        // Only handle state changes for specific events, not INITIAL_SESSION
+        // because checkAuth() already handles the initial session
+        if (event !== 'INITIAL_SESSION') {
+          if (session?.user) {
+            setSupabaseUser(session.user)
+            await fetchUserProfile(session.user.id)
+          } else {
+            setSupabaseUser(null)
+            setUser(null)
+            clearProfileCache()
+          }
+          setIsLoading(false)
         }
-        setIsLoading(false)
       }
     )
 
