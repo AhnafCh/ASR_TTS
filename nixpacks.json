@@ -5,6 +5,9 @@
     },
     "install": {
       "cmds": ["pip install --break-system-packages -r requirements.txt"]
+    },
+    "build": {
+      "cmds": ["echo 'Skipping Node.js build - Python API only'"]
     }
   },
   "start": {

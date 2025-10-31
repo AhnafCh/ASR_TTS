@@ -1,0 +1,9 @@
+# Railway ignore patterns
+# Prevent Railway from detecting this as a Node.js project
+
+package.json
+package-lock.json
+node_modules/
+.next/
+next.config.mjs
+tsconfig.json
