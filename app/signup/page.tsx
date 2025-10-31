@@ -34,7 +34,7 @@ export default function SignupPage() {
     ? passwordCriteria.minLength && passwordCriteria.hasUppercase && passwordCriteria.hasNumber
     : false
 
-  // Password strength
+  // Password strength.
   const getPasswordStrength = (pwd: string) => {
     const criteria = validatePassword(pwd)
     const validCount = Object.values(criteria).filter(Boolean).length
