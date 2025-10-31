@@ -14,17 +14,36 @@ export function ContactForm() {
     company: "",
     message: "",
   })
+  const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState(false)
+  const [error, setError] = useState("")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    console.log("Form submitted:", formData)
-    // Reset form
-    setFormData({ name: "", email: "", company: "", message: "" })
+    setLoading(true)
+    setError("")
+    setSuccess(false)
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      })
+      if (!res.ok) {
+        throw new Error("Failed to send message. Please try again later.")
+      }
+      setSuccess(true)
+      setFormData({ name: "", email: "", company: "", message: "" })
+    } catch (err: any) {
+      setError(err.message || "Failed to send message.")
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -38,6 +57,12 @@ export function ContactForm() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 card-gradient dark:bg-card border border-border rounded-lg p-5 sm:p-6 md:p-8 elevation-2">
+          {success && (
+            <div className="text-green-600 font-medium">Message sent successfully!</div>
+          )}
+          {error && (
+            <div className="text-red-600 font-medium">{error}</div>
+          )}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium text-foreground">
@@ -99,8 +124,8 @@ export function ContactForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full ai-gradient-button text-white rounded-lg shadow-lg min-h-11">
-            Send Message
+          <Button type="submit" className="w-full ai-gradient-button text-white rounded-lg shadow-lg min-h-11" disabled={loading}>
+            {loading ? "Sending..." : "Send Message"}
           </Button>
         </form>
       </div>
