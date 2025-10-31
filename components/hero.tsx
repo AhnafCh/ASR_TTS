@@ -13,9 +13,9 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex items-center justify-center px-4 overflow-hidden min-h-screen pt-20">
+    <section className="relative flex items-center justify-center px-4 sm:px-6 md:px-8 overflow-hidden min-h-screen pt-20">
       {/* Animated Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white via-primary/20 to-blue-50 dark:from-background dark:via-primary/25 dark:to-background animate-gradient-shift" 
+      <div className="absolute inset-0 bg-linear-to-br from-white via-primary/20 to-blue-50 dark:from-background dark:via-primary/25 dark:to-background animate-gradient-shift" 
            style={{
              backgroundSize: '200% 200%',
              animation: 'gradient-shift 15s ease infinite'
@@ -31,24 +31,24 @@ export function Hero() {
            }}
       />
 
-      {/* Subtle Background Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30">
+      {/* Subtle Background Elements - Hidden on mobile */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-30 hidden sm:block">
         <div className="absolute top-20 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 left-1/4 w-96 h-96 bg-secondary/5 rounded-full blur-3xl" />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div className="relative z-10 w-full max-w-[1200px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
           {/* Left side - Text and Buttons */}
-          <div className="space-y-8 text-left">
+          <div className="space-y-6 sm:space-y-8 text-left">
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 border border-primary/20">
-              <Zap className="w-4 h-4 text-primary" />
-              <span className="text-primary text-sm font-semibold">AI-Powered Voice Technology</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-primary/10 border border-primary/20">
+              <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
+              <span className="text-primary text-xs sm:text-sm font-semibold">AI-Powered Voice Technology</span>
             </div>
 
-            <div className="space-y-2">
-              <h1 className="text-5xl md:text-5xl lg:text-7xl font-bold leading-[1.1] text-foreground">
+            <div className="space-y-2 sm:space-y-3">
+              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] text-foreground">
                 <span className="block">
                   বাংলা এআই
                 </span>
@@ -56,36 +56,24 @@ export function Hero() {
                   ভয়েস প্রযুক্তি
                 </span>
               </h1>
-              <p className="text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
                 Transform your content with cutting-edge <span className="text-primary font-semibold">AI voice services</span>. 
                 Text-to-Speech and Speech Recognition in Bengali.
               </p>
             </div>
 
-            {/* Features Grid */}
-            {/* <div className="grid grid-cols-2 gap-4 py-4">
-              <div className="bg-white border border-border p-4 text-center hover:border-primary transition-all duration-200 cursor-pointer rounded-lg">
-                <Volume2 className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <p className="text-sm font-medium text-foreground">TTS</p>
-              </div>
-              <div className="bg-white border border-border p-4 text-center hover:border-primary transition-all duration-200 cursor-pointer rounded-lg">
-                <Mic className="w-6 h-6 mx-auto mb-2 text-primary" />
-                <p className="text-sm font-medium text-foreground">ASR</p>
-              </div>
-            </div> */}
-
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
+            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
               <Button 
                 size="lg" 
-                className="ai-gradient-button text-white font-semibold rounded-lg px-8 shadow-lg"
+                className="ai-gradient-button text-white font-semibold rounded-lg px-6 sm:px-8 shadow-lg min-h-11 w-full sm:w-auto"
               >
                 Get API Access
               </Button>
-              <Link href="/playground">
+              <Link href="/playground" className="w-full sm:w-auto">
                 <Button
                   size="lg"
                   variant="outline"
-                  className="border-2 border-border text-foreground hover:bg-muted rounded-lg px-8 transition-colors duration-200 font-semibold elevation-1 hover:elevation-2"
+                  className="border-2 border-border text-foreground hover:bg-muted rounded-lg px-6 sm:px-8 transition-colors duration-200 font-semibold elevation-1 hover:elevation-2 min-h-11 w-full"
                 >
                   <span className="mr-2">Try Playground</span>
                   <Zap className="w-4 h-4" />
@@ -94,7 +82,7 @@ export function Hero() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border border-border text-foreground hover:bg-muted rounded-lg px-8 transition-colors duration-200 font-semibold"
+                className="border border-border text-foreground hover:bg-muted rounded-lg px-6 sm:px-8 transition-colors duration-200 font-semibold min-h-11 w-full sm:w-auto"
                 onClick={() => scrollToSection("contact")}
               >
                 Contact Us
@@ -102,25 +90,25 @@ export function Hero() {
             </div>
 
             {/* Stats */}
-            <div className="flex gap-8 pt-4 text-sm">
+            <div className="flex flex-wrap gap-6 sm:gap-8 pt-2 sm:pt-4 text-sm">
               <div>
-                <p className="text-2xl font-bold text-primary">99.9%</p>
-                <p className="text-muted-foreground">Accuracy</p>
+                <p className="text-xl sm:text-2xl font-bold text-primary">99.9%</p>
+                <p className="text-muted-foreground text-sm">Accuracy</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-primary">&lt;100ms</p>
-                <p className="text-muted-foreground">Latency</p>
+                <p className="text-xl sm:text-2xl font-bold text-primary">&lt;100ms</p>
+                <p className="text-muted-foreground text-sm">Latency</p>
               </div>
               <div>
-                <p className="text-2xl font-bold text-primary">24/7</p>
-                <p className="text-muted-foreground">Available</p>
+                <p className="text-xl sm:text-2xl font-bold text-primary">24/7</p>
+                <p className="text-muted-foreground text-sm">Available</p>
               </div>
             </div>
           </div>
 
           {/* Right side - YouTube Video */}
-          <div className="relative">
-            <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border bg-muted">
+          <div className="relative mt-8 md:mt-0">
+            <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border bg-muted shadow-lg">
               <iframe
                 className="absolute inset-0 w-full h-full"
                 src="https://www.youtube-nocookie.com/embed/Jw_gLj0_87Y"
@@ -130,10 +118,10 @@ export function Hero() {
               ></iframe>
             </div>
 
-            {/* Badge */}
-            <div className="absolute -bottom-4 -right-4 bg-white dark:bg-card border border-border p-4 rounded-lg shadow-lg">
+            {/* Badge - Hidden on mobile */}
+            <div className="hidden sm:block absolute -bottom-4 -right-4 bg-white dark:bg-card border border-border p-3 sm:p-4 rounded-lg shadow-lg">
               <p className="text-xs text-muted-foreground mb-1">Watch Demo</p>
-              <p className="text-lg font-bold text-primary flex items-center gap-1">
+              <p className="text-base sm:text-lg font-bold text-primary flex items-center gap-1">
                 <Play className="w-4 h-4" />
                 1:10
               </p>

@@ -52,32 +52,32 @@ const faqs = [
 
 export function FaqSection() {
   return (
-    <section id="faq" className="py-20 px-4 bg-muted/30">
+    <section id="faq" className="py-10 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 bg-muted/30 scroll-mt-20">
       <div className="max-w-4xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12">
+          <h2 className="text-3xl sm:text-4xl md:text-4xl font-bold mb-3 sm:mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-muted-foreground text-1xl max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-base sm:text-lg max-w-2xl mx-auto px-4">
             Find answers to common questions about our TTS and ASR services for Bangla language
           </p>
         </div>
 
         {/* FAQ Accordion */}
-        <Accordion type="single" collapsible className="w-full space-y-4">
+        <Accordion type="single" collapsible className="w-full space-y-3 sm:space-y-4">
           {faqs.map((faq, index) => (
             <AccordionItem 
               key={index} 
               value={`item-${index}`}
-              className="bg-card border border-border rounded-lg px-6 shadow-sm hover:shadow-md transition-shadow"
+              className="bg-card border border-border rounded-lg px-4 sm:px-6 shadow-sm hover:shadow-md transition-shadow"
             >
-              <AccordionTrigger className="text-left hover:no-underline py-5">
-                <span className="font-semibold text-foreground pr-4">
+              <AccordionTrigger className="text-left hover:no-underline py-4 sm:py-5 min-h-11">
+                <span className="font-semibold text-foreground pr-3 sm:pr-4 text-sm sm:text-base">
                   {faq.question}
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="text-muted-foreground leading-relaxed pb-5">
+              <AccordionContent className="text-muted-foreground leading-relaxed pb-4 sm:pb-5 text-sm sm:text-base">
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
@@ -85,8 +85,8 @@ export function FaqSection() {
         </Accordion>
 
         {/* CTA */}
-        <div className="mt-12 text-center">
-          <p className="text-muted-foreground mb-4">
+        <div className="mt-8 sm:mt-10 md:mt-12 text-center">
+          <p className="text-muted-foreground mb-4 text-sm sm:text-base px-4">
             Still have questions?
           </p>
         </div>

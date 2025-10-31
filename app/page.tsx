@@ -20,8 +20,8 @@ export default function Home() {
         <PricingSection />
         <FaqSection />
         <ContactForm />
-        <Footer />
       </main>
+      <Footer />
     </>
   )
 }

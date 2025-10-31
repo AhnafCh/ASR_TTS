@@ -141,6 +141,16 @@
   body {
     @apply bg-background text-foreground;
   }
+  
+  /* Ensure smooth scrolling */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* Prevent horizontal overflow on mobile */
+  body {
+    overflow-x: hidden;
+  }
 }
 
 @layer utilities {
@@ -365,6 +375,87 @@
   /* Smooth Easing */
   * {
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Mobile-first responsive container utilities */
+  .container-responsive {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem; /* 16px mobile */
+    padding-right: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .container-responsive {
+      padding-left: 1.5rem; /* 24px tablet */
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container-responsive {
+      padding-left: 2rem; /* 32px desktop */
+      padding-right: 2rem;
+    }
+  }
+  
+  /* Touch target minimum size for mobile */
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Responsive text utilities */
+  .text-responsive-xs {
+    font-size: 0.75rem; /* 12px */
+  }
+  
+  @media (min-width: 640px) {
+    .text-responsive-xs {
+      font-size: 0.875rem; /* 14px */
+    }
+  }
+  
+  .text-responsive-sm {
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  @media (min-width: 640px) {
+    .text-responsive-sm {
+      font-size: 1rem; /* 16px */
+    }
+  }
+  
+  .text-responsive-base {
+    font-size: 1rem; /* 16px mobile */
+  }
+  
+  @media (min-width: 1024px) {
+    .text-responsive-base {
+      font-size: 1.125rem; /* 18px desktop */
+    }
+  }
+  
+  /* Section spacing utilities */
+  .section-spacing {
+    padding-top: 2.5rem; /* 40px mobile */
+    padding-bottom: 2.5rem;
+  }
+  
+  @media (min-width: 640px) {
+    .section-spacing {
+      padding-top: 3.75rem; /* 60px tablet */
+      padding-bottom: 3.75rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section-spacing {
+      padding-top: 5rem; /* 80px desktop */
+      padding-bottom: 5rem;
+    }
   }
 }
 

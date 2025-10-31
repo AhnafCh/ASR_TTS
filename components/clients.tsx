@@ -57,17 +57,17 @@ export function Clients() {
   }
 
   return (
-    <section className="py-12 px-4 bg-linear-to-br from-white via-primary/5 to-white dark:from-background dark:via-primary/5 dark:to-background relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl opacity-50" />
+    <section className="py-10 sm:py-12 md:py-16 px-4 sm:px-6 md:px-8 bg-linear-to-br from-white via-primary/5 to-white dark:from-background dark:via-primary/5 dark:to-background relative overflow-hidden">
+      {/* Background decoration - hidden on mobile */}
+      <div className="hidden sm:block absolute top-0 right-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl opacity-50" />
+      <div className="hidden sm:block absolute bottom-0 left-0 w-96 h-96 bg-secondary/5 rounded-full blur-3xl opacity-50" />
       
-      <div className="max-w-7xl mx-auto relative z-10">
-        <div className="text-center mb-12 space-y-3">
-          <p className="text-primary text-sm font-semibold uppercase tracking-wide">
+      <div className="max-w-[1200px] mx-auto relative z-10">
+        <div className="text-center mb-8 sm:mb-10 md:mb-12 space-y-2 sm:space-y-3">
+          <p className="text-primary text-xs sm:text-sm font-semibold uppercase tracking-wide">
             Client Success Stories
           </p>
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground">
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-foreground">
             Trusted by Industry Leaders
           </h2>
         </div>
@@ -77,26 +77,26 @@ export function Clients() {
           <div className="overflow-hidden rounded-2xl">
             <div
               className="flex transition-transform duration-700 ease-out"
-              style={{ transform: `translateX(-${currentIndex * (100 / 3)}%)` }}
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
             >
               {testimonials.map((item, index) => {
                 const Icon = item.icon
                 return (
-                  <div key={index} className="w-full md:w-1/3 shrink-0 px-3">
-                    <div className="relative card-gradient dark:bg-card border-2 border-border rounded-2xl p-6 shadow-lg card-hover-lift h-full hover:border-primary transition-all duration-200 elevation-2">
+                  <div key={index} className="w-full shrink-0 px-2 sm:px-3">
+                    <div className="relative card-gradient dark:bg-card border-2 border-border rounded-2xl p-5 sm:p-6 shadow-lg card-hover-lift h-full hover:border-primary transition-all duration-200 elevation-2">
                       {/* Company Icon at top */}
-                      <div className="flex justify-center mb-6">
-                        <div className="w-16 h-16 rounded-xl bg-linear-to-br from-primary to-secondary flex items-center justify-center shadow-md">
-                          <Icon className="w-8 h-8 text-white" />
+                      <div className="flex justify-center mb-4 sm:mb-6">
+                        <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-xl bg-linear-to-br from-primary to-secondary flex items-center justify-center shadow-md">
+                          <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
                         </div>
                       </div>
 
                       {/* Quote mark decoration */}
-                      <div className="text-primary/10 dark:text-primary/20 text-5xl font-serif leading-none mb-4 text-center">"</div>
+                      <div className="text-primary/10 dark:text-primary/20 text-4xl sm:text-5xl font-serif leading-none mb-3 sm:mb-4 text-center">"</div>
                       
-                      <div className="space-y-6">
+                      <div className="space-y-4 sm:space-y-6">
                         {/* Testimonial text */}
-                        <blockquote className="text-foreground text-base leading-relaxed text-center min-h-[120px]">
+                        <blockquote className="text-foreground text-sm sm:text-base leading-relaxed text-center min-h-[100px] sm:min-h-[120px]">
                           {item.testimonial}
                         </blockquote>
 
@@ -114,12 +114,12 @@ export function Clients() {
                         </div>
 
                         {/* Author section */}
-                        <div className="text-center pt-4 border-t border-border space-y-1">
-                          <p className="text-foreground font-bold">{item.name}</p>
-                          <p className="text-muted-foreground text-sm">
+                        <div className="text-center pt-3 sm:pt-4 border-t border-border space-y-1">
+                          <p className="text-foreground font-bold text-sm sm:text-base">{item.name}</p>
+                          <p className="text-muted-foreground text-xs sm:text-sm">
                             {item.role}
                           </p>
-                          <p className="text-primary text-sm font-semibold">
+                          <p className="text-primary text-xs sm:text-sm font-semibold">
                             {item.company}
                           </p>
                         </div>
@@ -131,48 +131,48 @@ export function Clients() {
             </div>
           </div>
 
-          {/* Navigation arrows */}
+          {/* Navigation arrows - hidden on mobile */}
           <button
             onClick={() => goToSlide((currentIndex - 1 + testimonials.length) % testimonials.length)}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-12 h-12 bg-white dark:bg-card border-2 border-border rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:border-primary hover:text-white transition-all duration-200 group z-10"
+            className="hidden sm:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-11 h-11 md:w-12 md:h-12 bg-white dark:bg-card border-2 border-border rounded-full items-center justify-center shadow-lg hover:bg-primary hover:border-primary hover:text-white transition-all duration-200 group z-10 min-h-11 min-w-11"
             aria-label="Previous testimonial"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
             onClick={() => goToSlide((currentIndex + 1) % testimonials.length)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-12 h-12 bg-white dark:bg-card border-2 border-border rounded-full flex items-center justify-center shadow-lg hover:bg-primary hover:border-primary hover:text-white transition-all duration-200 group z-10"
+            className="hidden sm:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-11 h-11 md:w-12 md:h-12 bg-white dark:bg-card border-2 border-border rounded-full items-center justify-center shadow-lg hover:bg-primary hover:border-primary hover:text-white transition-all duration-200 group z-10 min-h-11 min-w-11"
             aria-label="Next testimonial"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
         </div>
 
         {/* Enhanced Dots Navigation */}
-        <div className="flex justify-center items-center gap-3 mt-10">
+        <div className="flex justify-center items-center gap-2 sm:gap-3 mt-6 sm:mt-8 md:mt-10">
           {testimonials.map((item, index) => {
             const Icon = item.icon
             return (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
-                className={`group relative transition-all duration-200 ${
+                className={`group relative transition-all duration-200 min-h-11 min-w-11 ${
                   index === currentIndex ? "scale-110" : "hover:scale-105"
                 }`}
                 aria-label={`Go to ${item.company} testimonial`}
               >
                 <div
-                  className={`w-10 h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${
+                  className={`w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center transition-all duration-200 ${
                     index === currentIndex
                       ? "bg-primary text-white shadow-lg"
                       : "bg-white dark:bg-card border border-border text-muted-foreground hover:border-primary hover:text-primary"
                   }`}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className="w-4 h-4 sm:w-5 sm:h-5" />
                 </div>
               </button>
             )

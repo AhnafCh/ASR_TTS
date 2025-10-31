@@ -28,17 +28,17 @@ export function ContactForm() {
   }
 
   return (
-    <section id="contact" className="py-12 px-4 border-t border-border scroll-mt-20 bg-white dark:bg-background">
-      <div className="max-w-2xl mx-auto space-y-12">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground">Get in Touch</h2>
-          <p className="text-muted-foreground text-1xl leading-relaxed">
+    <section id="contact" className="py-10 sm:py-12 md:py-16 lg:py-20 px-4 sm:px-6 md:px-8 border-t border-border scroll-mt-20 bg-white dark:bg-background">
+      <div className="max-w-2xl mx-auto space-y-8 sm:space-y-10 md:space-y-12">
+        <div className="text-center space-y-3 sm:space-y-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-foreground">Get in Touch</h2>
+          <p className="text-muted-foreground text-base sm:text-lg leading-relaxed px-4">
             We'd love to hear from you. Send us a message and we'll respond as soon as possible.
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6 card-gradient dark:bg-card border border-border rounded-lg p-8 elevation-2">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 card-gradient dark:bg-card border border-border rounded-lg p-5 sm:p-6 md:p-8 elevation-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
             <div className="space-y-2">
               <label htmlFor="name" className="text-sm font-medium text-foreground">
                 Name
@@ -50,7 +50,7 @@ export function ContactForm() {
                 onChange={handleChange}
                 placeholder="Your name"
                 required
-                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200"
+                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200 min-h-11"
               />
             </div>
             <div className="space-y-2">
@@ -65,7 +65,7 @@ export function ContactForm() {
                 onChange={handleChange}
                 placeholder="your@email.com"
                 required
-                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200"
+                className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200 min-h-11"
               />
             </div>
           </div>
@@ -80,7 +80,7 @@ export function ContactForm() {
               value={formData.company}
               onChange={handleChange}
               placeholder="Your company"
-              className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200"
+              className="bg-white dark:bg-background border-border text-foreground placeholder:text-muted-foreground focus-glow rounded-lg transition-all duration-200 min-h-11"
             />
           </div>
 
@@ -99,7 +99,7 @@ export function ContactForm() {
             />
           </div>
 
-          <Button type="submit" className="w-full ai-gradient-button text-white rounded-lg shadow-lg">
+          <Button type="submit" className="w-full ai-gradient-button text-white rounded-lg shadow-lg min-h-11">
             Send Message
           </Button>
         </form>
