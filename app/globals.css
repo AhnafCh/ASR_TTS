@@ -2,6 +2,7 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant xs (&:is(@media (max-width: 375px)));
 
 :root {
   --background: 255 255 255; /* #ffffff */

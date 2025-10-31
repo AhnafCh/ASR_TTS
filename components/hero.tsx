@@ -13,7 +13,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex items-center justify-center px-4 overflow-hidden min-h-screen">
+    <section className="relative flex items-center justify-center px-4 overflow-hidden min-h-screen pt-20">
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-white via-primary/20 to-blue-50 dark:from-background dark:via-primary/25 dark:to-background animate-gradient-shift" 
            style={{

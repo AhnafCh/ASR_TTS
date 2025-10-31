@@ -1,0 +1,26 @@
+# Railway Ignore - Only deploy Python API
+# Exclude all Next.js/frontend files
+
+# Next.js
+.next/
+out/
+node_modules/
+app/
+components/
+lib/
+public/
+styles/
+hooks/
+
+# Next.js config files
+next.config.mjs
+next-env.d.ts
+tsconfig.json
+postcss.config.mjs
+components.json
+package.json
+package-lock.json
+
+# Only keep Python API
+# api/ directory will be deployed
+# requirements.txt will be used

@@ -1,0 +1,14 @@
+# Nixpacks configuration for Railway
+# Deploy Python API only, ignore Next.js frontend
+
+[phases.setup]
+nixPkgs = ["python311"]
+
+[phases.install]
+cmds = [
+  "pip install --upgrade pip",
+  "pip install -r requirements.txt"
+]
+
+[start]
+cmd = "cd api && uvicorn main:app --host 0.0.0.0 --port $PORT"

@@ -14,11 +14,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { User, Settings, LogOut } from "lucide-react"
+import { User, Settings, LogOut, Menu, X } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { user, isAuthenticated, logout } = useAuth()
   const router = useRouter()
 
@@ -35,6 +37,7 @@ export function Navbar() {
     const element = document.getElementById(id)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+      setIsMobileMenuOpen(false)
     }
   }
 
@@ -46,13 +49,13 @@ export function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
         <a href="/" className="flex items-center gap-2">
-          {/* Full logo on desktop */}
+          {/* Desktop full logo (md: 768px+) */}
           <Image
             src="/logo/sv-light-48.svg"
             alt="SenseVoice Logo"
             width={120}
             height={32}
-            className="h-8 w-auto hidden dark:hidden md:block"
+            className="h-8 w-auto dark:hidden hidden md:block"
           />
           <Image
             src="/logo/sv-dark-48.svg"
@@ -61,23 +64,27 @@ export function Navbar() {
             height={32}
             className="h-8 w-auto hidden dark:block md:dark:block"
           />
-          {/* Icon only on mobile */}
+          
+          {/* Mobile: Full logo (sm) or Icon (xs) with smooth transition */}
           <Image
-            src="/logo/sv-icon-light-48.svg"
-            alt="SenseVoice"
-            width={32}
+            src="/logo/sv-light-48.svg"
+            alt="SenseVoice Logo"
+            width={120}
             height={32}
-            className="h-8 w-8 md:hidden dark:hidden"
+            className="h-8 dark:hidden block md:hidden"
+            style={{ width: 'auto', maxWidth: 'min(120px, max(32px, 25vw))' }}
           />
           <Image
-            src="/logo/sv-icon-dark-48.svg"
-            alt="SenseVoice"
-            width={32}
+            src="/logo/sv-dark-48.svg"
+            alt="SenseVoice Logo"
+            width={120}
             height={32}
-            className="h-8 w-8 hidden dark:block md:dark:hidden"
+            className="h-8 hidden dark:block md:hidden"
+            style={{ width: 'auto', maxWidth: 'min(120px, max(32px, 25vw))' }}
           />
         </a>
 
+        {/* Desktop navigation */}
         <div className="hidden md:flex items-center gap-8">
           <button
             onClick={() => scrollToSection("tts")}
@@ -111,7 +118,54 @@ export function Navbar() {
           </button>
         </div>
 
-        <div className="flex items-center gap-3">
+        {/* Mobile hamburger menu */}
+        <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
+          <SheetTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="md:hidden"
+            >
+              <Menu className="h-5 w-5" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[280px] sm:w-[320px]">
+            <div className="flex flex-col gap-6 mt-8">
+              <button
+                onClick={() => scrollToSection("tts")}
+                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left"
+              >
+                TTS
+              </button>
+              <button
+                onClick={() => scrollToSection("asr")}
+                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left"
+              >
+                ASR
+              </button>
+              <button
+                onClick={() => scrollToSection("pricing")}
+                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left"
+              >
+                Pricing
+              </button>
+              <button
+                onClick={() => scrollToSection("faq")}
+                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left"
+              >
+                FAQ
+              </button>
+              <button
+                onClick={() => scrollToSection("contact")}
+                className="text-lg font-medium text-muted-foreground hover:text-foreground transition-colors text-left"
+              >
+                Contact
+              </button>
+            </div>
+          </SheetContent>
+        </Sheet>
+
+        <div className="flex items-center gap-2 md:gap-3">
           <ThemeToggle />
           <Button
             size="sm"
