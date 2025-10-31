@@ -164,6 +164,15 @@ export function SpeechToTextPanel() {
             // Extract first few words for the name
             const name = data.text.trim().slice(0, 50) + (data.text.length > 50 ? '...' : '')
             
+            // Format duration from seconds to MM:SS
+            let formattedDuration = null
+            if (data.metadata?.durationSeconds) {
+              const totalSeconds = parseInt(data.metadata.durationSeconds)
+              const minutes = Math.floor(totalSeconds / 60)
+              const seconds = totalSeconds % 60
+              formattedDuration = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+            }
+            
             await supabase.from('history').insert({
               user_id: user.id,
               name: name,
@@ -171,7 +180,7 @@ export function SpeechToTextPanel() {
               text_content: data.text,
               audio_url: audioUrl, // Store the blob URL
               word_count: wordCount,
-              duration: data.metadata?.duration || null,
+              duration: formattedDuration,
               language: data.metadata?.language || language,
               voice: null // No voice for ASR
             })

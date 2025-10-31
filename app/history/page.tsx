@@ -43,6 +43,7 @@ function HistoryPageContent() {
   const [searchQuery, setSearchQuery] = useState("")
   const [filterType, setFilterType] = useState<"all" | "text-to-speech" | "speech-to-text">("all")
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "longest" | "shortest">("newest")
+  const [playingAudioId, setPlayingAudioId] = useState<string | null>(null)
   const supabase = createClient()
 
   useEffect(() => {
@@ -109,11 +110,12 @@ function HistoryPageContent() {
     }
   }
 
-  const handlePlayAudio = (audioUrl: string) => {
-    const audio = new Audio(audioUrl)
-    audio.play().catch(err => {
-      console.error("Failed to play audio:", err)
-    })
+  const handleToggleAudio = (itemId: string) => {
+    if (playingAudioId === itemId) {
+      setPlayingAudioId(null)
+    } else {
+      setPlayingAudioId(itemId)
+    }
   }
 
   // Filter and sort history
@@ -240,7 +242,8 @@ function HistoryPageContent() {
             filteredHistory.map((item) => (
               <Card key={item.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="p-1">
-                  <div className="flex items-center gap-4 px-4">
+                  <div className="flex flex-col gap-3 px-4">
+                    <div className="flex items-center gap-4">
                     {/* Icon */}
                     <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${
                       item.type === "text-to-speech" 
@@ -282,17 +285,17 @@ function HistoryPageContent() {
 
                       {/* Actions */}
                       <div className="flex items-center gap-2 shrink-0">
-                        {item.type === "speech-to-text" && item.audioUrl ? (
+                        {item.type === "text-to-speech" && item.audioUrl ? (
                           <Button
                             size="sm"
                             variant="outline"
-                            onClick={() => handlePlayAudio(item.audioUrl!)}
+                            onClick={() => handleToggleAudio(item.id)}
                             className="gap-2"
                           >
                             <Play className="w-4 h-4" />
                             Play
                           </Button>
-                        ) : item.type === "text-to-speech" ? (
+                        ) : item.type === "speech-to-text" ? (
                           <Button
                             size="sm"
                             variant="outline"
@@ -310,10 +313,26 @@ function HistoryPageContent() {
                           className="gap-2"
                         >
                           <Download className="w-4 h-4" />
-                          Download {item.type === "text-to-speech" ? ".txt" : ".mp3"}
+                          Download {item.type === "text-to-speech" ? ".mp3" : ".txt"}
                         </Button>
                       </div>
                     </div>
+                    </div>
+                    
+                    {/* Audio Player */}
+                    {playingAudioId === item.id && item.audioUrl && (
+                      <div className="px-4 pb-3">
+                        <audio 
+                          controls 
+                          autoPlay
+                          className="w-full"
+                          onEnded={() => setPlayingAudioId(null)}
+                        >
+                          <source src={item.audioUrl} type="audio/mpeg" />
+                          Your browser does not support the audio element.
+                        </audio>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>
