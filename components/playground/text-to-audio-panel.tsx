@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
+import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
@@ -113,6 +114,35 @@ export function TextToAudioPanel() {
         setGeneratedAudio(data.audioUrl)
         console.log("Audio generated successfully!")
         console.log("Metadata:", data.metadata)
+        
+        // Save to history in Supabase
+        try {
+          const supabase = createClient()
+          const { data: { user } } = await supabase.auth.getUser()
+          
+          if (user) {
+            // Count words in the text
+            const wordCount = inputText.trim().split(/\s+/).length
+            
+            // Extract first few words for the name
+            const name = inputText.trim().slice(0, 50) + (inputText.length > 50 ? '...' : '')
+            
+            await supabase.from('history').insert({
+              user_id: user.id,
+              name: name,
+              type: 'text-to-speech',
+              text_content: inputText,
+              audio_url: data.audioUrl,
+              word_count: wordCount,
+              duration: data.metadata?.duration || null,
+              language: language,
+              voice: selectedVoice
+            })
+          }
+        } catch (historyError) {
+          console.error("Failed to save to history:", historyError)
+          // Don't fail the whole operation if history save fails
+        }
       } else {
         console.error("Generation failed:", data.error)
         throw new Error(data.error || "Unknown error occurred")

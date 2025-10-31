@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { useAuth } from "@/lib/auth-context"
+import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { 
@@ -150,6 +151,35 @@ export function SpeechToTextPanel() {
         setTranscription(data.text)
         console.log("Transcription successful!")
         console.log("Metadata:", data.metadata)
+        
+        // Save to history in Supabase
+        try {
+          const supabase = createClient()
+          const { data: { user } } = await supabase.auth.getUser()
+          
+          if (user) {
+            // Count words in the transcription
+            const wordCount = data.text.trim().split(/\s+/).length
+            
+            // Extract first few words for the name
+            const name = data.text.trim().slice(0, 50) + (data.text.length > 50 ? '...' : '')
+            
+            await supabase.from('history').insert({
+              user_id: user.id,
+              name: name,
+              type: 'speech-to-text',
+              text_content: data.text,
+              audio_url: audioUrl, // Store the blob URL
+              word_count: wordCount,
+              duration: data.metadata?.duration || null,
+              language: data.metadata?.language || language,
+              voice: null // No voice for ASR
+            })
+          }
+        } catch (historyError) {
+          console.error("Failed to save to history:", historyError)
+          // Don't fail the whole operation if history save fails
+        }
       } else {
         console.error("Transcription failed:", data.error)
         throw new Error(data.error || "Unknown error occurred")
