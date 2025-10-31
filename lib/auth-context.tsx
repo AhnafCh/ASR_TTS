@@ -75,6 +75,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const isFetchingProfile = useRef(false)
   const hasInitialized = useRef(false)
 
+  // Debug logging when state changes
+  console.log('AuthProvider state:', { isLoading, isAuthenticated: !!user && !!supabaseUser, userEmail: user?.email })
+
   // Check for existing session on mount and listen for auth changes
   useEffect(() => {
     // Prevent duplicate initialization
