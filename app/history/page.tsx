@@ -87,26 +87,48 @@ function HistoryPageContent() {
     })
   }
 
+  // Helper to sanitize and format filename
+  const getDownloadFilename = (item: HistoryItem) => {
+    // Get first 6 words from name or textContent
+    let baseText = item.name || item.textContent || "voiceai"
+    // Remove non-alphanumeric, split to words, take first 6
+    const words = baseText.replace(/[^a-zA-Z0-9 ]/g, " ").split(/\s+/).filter(Boolean).slice(0, 6)
+    const prefix = item.type === "text-to-speech" ? "tts" : "asr"
+    // Format date and time from createdAt
+    const dateObj = new Date(item.createdAt)
+    const yyyy = dateObj.getFullYear()
+    const mm = String(dateObj.getMonth() + 1).padStart(2, '0')
+    const dd = String(dateObj.getDate()).padStart(2, '0')
+    const hh = String(dateObj.getHours()).padStart(2, '0')
+    const min = String(dateObj.getMinutes()).padStart(2, '0')
+    const ss = String(dateObj.getSeconds()).padStart(2, '0')
+    const dateStr = `${yyyy}${mm}${dd}`
+    const timeStr = `${hh}${min}${ss}`
+    const ext = item.type === "text-to-speech" ? "mp3" : "txt"
+    return `${prefix}-${words.join('_')}-${dateStr}-${timeStr}.${ext}`.toLowerCase()
+  }
+
   const handleDownload = (item: HistoryItem) => {
-    if (item.type === "text-to-speech") {
-      // Download as .txt file
+    const filename = getDownloadFilename(item)
+    if (item.type === "text-to-speech" && item.audioUrl) {
+      // TTS: Download generated audio as .mp3 file (WAV data, but .mp3 for user)
+      const a = document.createElement("a")
+      a.href = item.audioUrl
+      a.download = filename
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+    } else if (item.type === "speech-to-text") {
+      // STT: Download transcribed text as .txt file
       const blob = new Blob([item.textContent], { type: "text/plain" })
       const url = URL.createObjectURL(blob)
       const a = document.createElement("a")
       a.href = url
-      a.download = `${item.name.slice(0, 30).replace(/[^a-z0-9]/gi, "_")}.txt`
+      a.download = filename
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
-    } else if (item.audioUrl) {
-      // Download as .mp3 file
-      const a = document.createElement("a")
-      a.href = item.audioUrl
-      a.download = `${item.name.slice(0, 30).replace(/[^a-z0-9]/gi, "_")}.mp3`
-      document.body.appendChild(a)
-      a.click()
-      document.body.removeChild(a)
     }
   }
 
@@ -328,7 +350,7 @@ function HistoryPageContent() {
                           className="w-full"
                           onEnded={() => setPlayingAudioId(null)}
                         >
-                          <source src={item.audioUrl} type="audio/mpeg" />
+                          <source src={item.audioUrl} type="audio/wav" />
                           Your browser does not support the audio element.
                         </audio>
                       </div>

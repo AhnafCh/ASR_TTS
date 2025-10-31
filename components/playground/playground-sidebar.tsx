@@ -60,7 +60,7 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
           }`}
         >
           <AudioWaveform className="w-5 h-5" />
-          <span>Text-to-Audio</span>
+          <span>Text-to-Speech</span>
         </button>
 
         <button

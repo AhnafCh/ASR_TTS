@@ -178,7 +178,7 @@ export function SpeechToTextPanel() {
               name: name,
               type: 'speech-to-text',
               text_content: data.text,
-              audio_url: audioUrl, // Store the blob URL
+              audio_url: null, // Don't store audio URL for ASR (blob URL won't persist)
               word_count: wordCount,
               duration: formattedDuration,
               language: data.metadata?.language || language,
