@@ -100,7 +100,23 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
 
       {/* User Section */}
       <div className="p-4 border-t border-border bg-white dark:bg-card space-y-2">
-        {isLoading ? (
+        {isAuthenticated && user ? (
+          <button
+            onClick={() => router.push("/profile")}
+            className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-muted/50 hover:shadow-sm transition-all duration-200 text-left group"
+          >
+            <Avatar className="h-8 w-8 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
+              <AvatarImage src={user.avatar} alt={user.name} />
+              <AvatarFallback className="bg-primary text-white text-sm">
+                {user.name.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium truncate group-hover:text-primary transition-colors duration-200">{user.name}</p>
+              <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+            </div>
+          </button>
+        ) : isLoading ? (
           <div className="w-full flex items-center gap-3 px-4 py-2 rounded-lg">
             <div className="h-8 w-8 rounded-full bg-muted animate-pulse" />
             <div className="flex-1 space-y-2">
@@ -108,24 +124,6 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
               <div className="h-2 bg-muted rounded animate-pulse w-3/4" />
             </div>
           </div>
-        ) : isAuthenticated && user ? (
-          <>
-            <button
-              onClick={() => router.push("/profile")}
-              className="w-full flex items-center gap-3 px-4 py-2 rounded-lg hover:bg-muted/50 hover:shadow-sm transition-all duration-200 text-left group"
-            >
-              <Avatar className="h-8 w-8 ring-2 ring-transparent group-hover:ring-primary/20 transition-all duration-200">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="bg-primary text-white text-sm">
-                  {user.name.charAt(0).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium truncate group-hover:text-primary transition-colors duration-200">{user.name}</p>
-                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-              </div>
-            </button>
-          </>
         ) : (
           <Button
             variant="ghost"

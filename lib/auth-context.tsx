@@ -86,7 +86,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth state changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-        console.log('Auth state changed:', event)
+        console.log('Auth state changed:', event, 'Session:', session ? 'exists' : 'null')
+        console.log('User email:', session?.user?.email)
         
         if (session?.user) {
           setSupabaseUser(session.user)
@@ -143,6 +144,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     isFetchingProfile.current = true
 
     try {
+      console.log('Fetching profile for user:', userId)
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
@@ -151,14 +153,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       if (error) {
         console.error("Error fetching profile:", error)
-        // If profile doesn't exist, create basic user object from auth data
-        if (supabaseUser) {
+        // If profile doesn't exist, get user from session
+        const { data: { session } } = await supabase.auth.getSession()
+        if (session?.user) {
           const fallbackUser: User = {
-            id: supabaseUser.id,
-            email: supabaseUser.email || '',
-            name: supabaseUser.user_metadata?.name || supabaseUser.email?.split('@')[0] || 'User',
-            avatar: supabaseUser.user_metadata?.avatar_url
+            id: session.user.id,
+            email: session.user.email || '',
+            name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User',
+            avatar: session.user.user_metadata?.avatar_url
           }
+          console.log('Using fallback user:', fallbackUser.email)
           setUser(fallbackUser)
           setProfileCache(fallbackUser)
         }
@@ -169,6 +173,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           name: data.name || data.email?.split('@')[0] || 'User',
           avatar: data.avatar_url
         }
+        console.log('Profile loaded successfully:', userProfile.email)
         setUser(userProfile)
         setProfileCache(userProfile)
       }
@@ -177,7 +182,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     } finally {
       isFetchingProfile.current = false
     }
-  }, [supabaseUser])
+  }, [])
 
   // Manual refresh function for when user updates their profile
   const refreshUser = useCallback(async () => {
