@@ -26,12 +26,18 @@ pip install -r requirements.txt
 cd api && uvicorn main:app --host 0.0.0.0 --port $PORT
 ```
 
+**Watch Paths** (optional):
+```
+api/**
+requirements.txt
+```
+
 ### Step 3: Set Environment Variables
 Go to **Variables** tab and add:
 
 **Required Variables:**
 ```
-NIXPACKS_PYTHON_VERSION = 3.11
+NIXPACKS_PKGS = python311 python311Packages.pip python311Packages.setuptools
 TTS_API_BASE_URL = your_tts_api_url_here
 ASR_API_BASE_URL = your_asr_api_url_here
 ```
