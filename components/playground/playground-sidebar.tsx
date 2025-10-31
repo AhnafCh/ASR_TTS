@@ -17,6 +17,8 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
   const { user, isAuthenticated, isLoading } = useAuth()
   const router = useRouter()
 
+  console.log('PlaygroundSidebar - isLoading:', isLoading, 'isAuthenticated:', isAuthenticated, 'user:', user?.email)
+
   return (
     <aside className="w-64 border-r border-border bg-muted dark:bg-background flex flex-col">
       {/* Logo */}
