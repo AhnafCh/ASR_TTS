@@ -24,10 +24,12 @@ const nextConfig = {
     // This helps with hydration mismatches from browser extensions
     optimizePackageImports: ['lucide-react'],
   },
-  // Use Turbopack (Next.js 16 default) — keep an explicit empty config so the
-  // build system knows we intend to use Turbopack rather than a custom
-  // webpack setup.
-  turbopack: {},
+  // Use Turbopack (Next.js 16 default) with explicit alias configuration
+  turbopack: {
+    resolveAlias: {
+      '@': '.',
+    },
+  },
   // Optimize for production
   poweredByHeader: false,
   compress: true,
