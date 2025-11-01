@@ -241,7 +241,7 @@ export function Navbar() {
                     <div className="[@media(min-width:375px)]:hidden mt-6 pt-6 border-t border-border">
                       <Button
                         size="lg"
-                        className="w-full bg-gradient-to-r from-primary to-secondary hover:opacity-90 text-white rounded-lg font-semibold transition-all duration-200 shadow-md"
+                        className="w-full ai-gradient-button text-white rounded-lg font-semibold transition-all duration-200 shadow-md"
                         onClick={() => {
                           router.push("/signup")
                           setIsMobileMenuOpen(false)
@@ -327,7 +327,7 @@ export function Navbar() {
               </Button> */}
               <Button
                 size="sm"
-                className="[@media(max-width:374px)]:hidden bg-primary hover:bg-secondary text-white rounded-lg font-semibold transition-colors duration-200 min-h-9"
+                className="[@media(max-width:374px)]:hidden ai-gradient-button text-white rounded-lg font-semibold transition-colors duration-200 min-h-9"
                 onClick={() => router.push("/signup")}
               >
                 Get Started

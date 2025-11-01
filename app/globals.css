@@ -322,7 +322,7 @@
   }
 
   .ai-gradient-button {
-    background: linear-gradient(90deg, rgb(var(--primary)), rgb(var(--secondary)), rgb(var(--primary)));
+    background: linear-gradient(90deg, rgb(108, 198, 238), rgb(47, 165, 218), rgb(108, 198, 238));
     background-size: 200% 100%;
     animation: gradientMove 3s ease infinite;
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);

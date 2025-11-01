@@ -177,7 +177,7 @@ export function TextToAudioPanel() {
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Header */}
       <div className="space-y-3">
-        <h2 className="text-4xl font-bold text-foreground">Text-to-Audio</h2>
+        <h2 className="text-4xl font-bold text-foreground">Text-to-Speech</h2>
         <p className="text-muted-foreground text-base leading-relaxed">
           Create natural, emotional speech in seconds with AI-powered voices
         </p>
@@ -191,7 +191,7 @@ export function TextToAudioPanel() {
             <Button
               variant={inputMode === "text" ? "default" : "outline"}
               onClick={() => setInputMode("text")}
-              className={inputMode === "text" ? "flex-1 bg-primary hover:bg-secondary text-white font-semibold rounded-lg transition-colors duration-200" : "flex-1 border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"}
+              className={inputMode === "text" ? "flex-1 ai-gradient-button text-white font-semibold rounded-lg transition-colors duration-200" : "flex-1 border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"}
             >
               <FileText className="w-4 h-4 mr-2" />
               Text
@@ -258,7 +258,7 @@ export function TextToAudioPanel() {
                 <Button 
                   variant="outline" 
                   size="sm"
-                  className="bg-primary hover:bg-secondary text-white font-semibold rounded-lg border-0 transition-colors duration-200"
+                  className="ai-gradient-button text-white font-semibold rounded-lg border-0 transition-colors duration-200"
                   onClick={() => document.getElementById('file-upload')?.click()}
                 >
                   Choose File

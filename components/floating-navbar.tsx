@@ -34,7 +34,7 @@ export function FloatingNavbar() {
     <div className="fixed bottom-8 right-8 z-40 flex flex-col gap-3">
       <Button
         size="sm"
-        className="bg-primary text-white hover:bg-secondary rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+        className="ai-gradient-button text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
         onClick={() => scrollToSection("contact")}
       >
         Contact Us
@@ -50,7 +50,7 @@ export function FloatingNavbar() {
       </Link>
       <Button
         size="icon"
-        className="bg-primary text-white hover:bg-secondary rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
+        className="ai-gradient-button text-white rounded-lg shadow-lg hover:shadow-xl transition-all duration-200"
         onClick={scrollToTop}
       >
         <ChevronUp className="w-4 h-4" />

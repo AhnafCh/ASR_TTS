@@ -242,7 +242,7 @@ export function SpeechToTextPanel() {
         <Button
           variant={inputMode === "file" ? "default" : "outline"}
           onClick={() => setInputMode("file")}
-          className={inputMode === "file" ? "flex-1 bg-primary hover:bg-secondary text-white font-semibold rounded-lg transition-colors duration-200" : "flex-1 border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"}
+          className={inputMode === "file" ? "flex-1 ai-gradient-button text-white font-semibold rounded-lg transition-colors duration-200" : "flex-1 border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200"}
         >
           <Upload className="w-4 h-4 mr-2" />
           Upload File
@@ -301,7 +301,7 @@ export function SpeechToTextPanel() {
             <Button 
               variant="outline" 
               size="sm"
-              className="bg-primary hover:bg-secondary text-white font-semibold rounded-lg border-0 transition-colors duration-200"
+              className="ai-gradient-button text-white font-semibold rounded-lg border-0 transition-colors duration-200"
               onClick={() => document.getElementById('audio-upload')?.click()}
             >
               Choose Audio File
@@ -352,7 +352,7 @@ export function SpeechToTextPanel() {
               placeholder="https://example.com/audio.mp3"
               className="w-full px-4 py-3 border border-border rounded-md bg-white dark:bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200"
             />
-            <Button onClick={handleTranscribe} className="w-full mt-4 bg-primary hover:bg-secondary text-white font-semibold rounded-lg transition-colors duration-200">
+            <Button onClick={handleTranscribe} className="w-full mt-4 ai-gradient-button text-white font-semibold rounded-lg transition-colors duration-200">
               Transcribe from Link
             </Button>
           </div>
