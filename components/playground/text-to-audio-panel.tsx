@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
+import { CustomAudioPlayer } from "./custom-audio-player"
 
 const voiceActors = [
   { id: "female", name: "Female Voice", language: "Universal", sample: "/samples/female.mp3" },
@@ -43,18 +44,7 @@ export function TextToAudioPanel() {
   const [isGenerating, setIsGenerating] = useState(false)
   const [generatedAudio, setGeneratedAudio] = useState<string | null>(null)
   const [isPlayingSample, setIsPlayingSample] = useState(false)
-  const audioRef = useRef<HTMLAudioElement>(null)
   const sampleAudioRef = useRef<HTMLAudioElement | null>(null)
-
-  // Autoplay the audio element when new audio is generated
-  useEffect(() => {
-    if (generatedAudio && audioRef.current) {
-      audioRef.current.load() // Reload the audio source
-      audioRef.current.play().catch(err => {
-        console.error("Audio playback failed:", err)
-      })
-    }
-  }, [generatedAudio])
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -361,11 +351,11 @@ export function TextToAudioPanel() {
 
           <div className="space-y-2 w-full sm:w-[70%]">
             <Label htmlFor="voice" className="text-sm font-medium text-foreground">Voice Actor</Label>
-            <div className="flex flex-col xs:flex-row gap-2">
+            <div className="flex flex-col sm:flex-row gap-2">
               <Select value={selectedVoice} onValueChange={setSelectedVoice}>
                 <SelectTrigger 
                   id="voice" 
-                  className="bg-white dark:bg-background border border-border rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 w-full xs:flex-1"
+                  className="bg-white dark:bg-background border border-border rounded-md focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 w-full sm:flex-1"
                   suppressHydrationWarning
                 >
                   <SelectValue />
@@ -381,7 +371,7 @@ export function TextToAudioPanel() {
               <Button
                 variant="outline"
                 size="default"
-                className="px-3 sm:px-4 border border-border hover:bg-primary/10 transition-colors duration-200 w-full xs:w-auto"
+                className="px-3 sm:px-4 border border-border hover:bg-primary/10 transition-colors duration-200 whitespace-nowrap w-full sm:w-auto"
                 onClick={() => {
                   const currentVoice = voiceActors.find(actor => actor.id === selectedVoice)
                   if (currentVoice) {
@@ -426,6 +416,31 @@ export function TextToAudioPanel() {
           )}
         </Button>
 
+        {/* Output Section */}
+        {generatedAudio && (
+          <div className="card-gradient dark:bg-card border border-border rounded-lg p-3 sm:p-4 md:p-6 space-y-3 sm:space-y-4 animate-in fade-in duration-300 elevation-2">
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary" />
+              <h3 className="font-semibold text-sm sm:text-base md:text-lg text-foreground">
+                Generated Audio
+              </h3>
+            </div>
+            
+            <CustomAudioPlayer audioUrl={generatedAudio} onDownload={handleDownloadAudio} />
+            
+            <div className="text-xs sm:text-sm text-muted-foreground flex flex-wrap items-center gap-3 sm:gap-4 pt-2 border-t border-border/50">
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                Format: MP3
+              </span>
+              <span className="flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                Quality: High
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Pro Tips */}
         <div className="bg-muted/50 rounded-lg p-3 sm:p-4 border border-border">
           <h4 className="font-semibold text-xs sm:text-sm mb-2 sm:mb-3 text-foreground">Pro Tips</h4>
@@ -435,43 +450,6 @@ export function TextToAudioPanel() {
             <li>• Preview voice samples before generating</li>
           </ul>
         </div>
-
-        {/* Output Section */}
-        {generatedAudio && (
-          <div className="card-gradient dark:bg-card border border-border rounded-lg p-4 sm:p-6 space-y-3 sm:space-y-4 animate-in fade-in duration-300 elevation-2">
-            <div className="flex items-center justify-between">
-              <h3 className="font-semibold text-base sm:text-lg text-foreground flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-primary" />
-                Generated Audio
-              </h3>
-              <Button 
-                variant="outline" 
-                size="sm"
-                onClick={handleDownloadAudio}
-                className="border border-border hover:bg-muted/50 rounded-lg transition-colors duration-200 text-xs sm:text-sm"
-              >
-                <Download className="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2" />
-                Download
-              </Button>
-            </div>
-            
-            <audio ref={audioRef} controls className="w-full rounded-lg">
-              <source src={generatedAudio} type="audio/mpeg" />
-              Your browser does not support the audio element.
-            </audio>
-            
-            <div className="text-sm text-muted-foreground flex items-center gap-4">
-              <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Format: MP3
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary" />
-                Quality: High
-              </span>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   )
