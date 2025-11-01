@@ -19,17 +19,17 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
   const router = useRouter()
   const pathname = usePathname()
   const [isCollapsed, setIsCollapsed] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   console.log('PlaygroundSidebar - isLoading:', isLoading, 'isAuthenticated:', isAuthenticated, 'user:', user?.email)
 
-  // Auto-collapse on mobile
+  // Auto-collapse on mobile and track mobile state
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 768) {
+      const mobile = window.innerWidth < 768
+      setIsMobile(mobile)
+      if (mobile) {
         setIsCollapsed(true)
-      } else if (window.innerWidth >= 768 && isCollapsed && window.innerWidth < 1024) {
-        // Optional: Keep collapsed between 768-1024px unless user manually expands
-        // Remove this condition if you want auto-expand on tablet
       }
     }
     
@@ -40,14 +40,27 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
     window.addEventListener('resize', handleResize)
     
     return () => window.removeEventListener('resize', handleResize)
-  }, [isCollapsed])
+  }, [])
 
   return (
-    <aside className={`${isCollapsed ? 'w-20' : 'w-64'} border-r border-border bg-muted dark:bg-background flex flex-col transition-all duration-300 relative`}>
-      {/* Collapse Toggle Button - Hidden on mobile */}
+    <>
+      {/* Overlay backdrop for mobile when expanded */}
+      {isMobile && !isCollapsed && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-40 md:hidden"
+          onClick={() => setIsCollapsed(true)}
+        />
+      )}
+
+      <aside className={`
+        ${isCollapsed ? 'w-20' : 'w-64'} 
+        ${isMobile && !isCollapsed ? 'fixed left-0 top-0 bottom-0 z-50 shadow-2xl' : 'relative'}
+        border-r border-border bg-muted dark:bg-background flex flex-col transition-all duration-300
+      `}>
+      {/* Collapse Toggle Button */}
       <button
         onClick={() => setIsCollapsed(!isCollapsed)}
-        className="hidden md:flex absolute -right-3 top-20 z-10 w-6 h-6 rounded-full ai-gradient-button text-white shadow-lg items-center justify-center hover:scale-110 transition-transform duration-200"
+        className={`${isMobile ? 'flex' : 'hidden md:flex'} absolute -right-3 top-20 z-10 w-6 h-6 rounded-full ai-gradient-button text-white shadow-lg items-center justify-center hover:scale-110 transition-transform duration-200`}
         aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
       >
         {isCollapsed ? <ChevronRight className="w-3 h-3" /> : <ChevronLeft className="w-3 h-3" />}
@@ -230,5 +243,6 @@ export function PlaygroundSidebar({ activeTab, setActiveTab }: PlaygroundSidebar
         )}
       </div>
     </aside>
+    </>
   )
 }
