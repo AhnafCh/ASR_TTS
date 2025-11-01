@@ -14,11 +14,14 @@ python-multipart==0.0.9   # Required for file uploads in FastAPI
 # Data Validation
 pydantic==2.9.2           # Data validation using Python type annotations
 
+# JWT Authentication (for Supabase auth)
+python-jose[cryptography]==3.3.0  # JWT token verification with cryptography support
+
 # Environment Variables
 python-dotenv==1.0.1      # Load environment variables from .env file
 
 # For sending email from Python (optional, not used in Next.js API)
-aiosmtplib==2.0.3          # Async SMTP client for email
+aiosmtplib==2.0.2          # Async SMTP client for email
 
 # Optional: Enhanced logging
 python-json-logger==2.0.7 # JSON formatted logging
