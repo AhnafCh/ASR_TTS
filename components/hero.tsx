@@ -26,7 +26,7 @@ export function Hero() {
   }
 
   return (
-    <section className="relative flex items-center justify-center px-4 sm:px-6 md:px-8 overflow-hidden min-h-screen pt-20">
+    <section className="relative flex items-center justify-center hero-padding overflow-hidden min-h-screen pt-20">
       {/* Animated Gradient Background */}
       <div className="absolute inset-0 bg-linear-to-br from-white via-primary/20 to-blue-50 dark:from-background dark:via-primary/25 dark:to-background animate-gradient-shift" 
            style={{
@@ -51,9 +51,9 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 w-full max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 sm:gap-10 md:gap-12 items-center">
+        <div className="hero-grid hero-gap items-center">
           {/* Left side - Text and Buttons */}
-          <div className="space-y-6 sm:space-y-8 text-left">
+          <div className="space-y-6 sm:space-y-8 hero-content-align flex flex-col hero-items-center">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg bg-primary/10 border border-primary/20">
               <Zap className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-primary" />
@@ -61,7 +61,7 @@ export function Hero() {
             </div>
 
             <div className="space-y-2 sm:space-y-3">
-              <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold leading-[1.1] text-foreground">
+              <h1 className="hero-text-size font-bold leading-[1.1] text-foreground">
                 <span className="block">
                   বাংলা এআই
                 </span>
@@ -69,7 +69,7 @@ export function Hero() {
                   ভয়েস প্রযুক্তি
                 </span>
               </h1>
-              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-xl leading-relaxed">
+              <p className="hero-subtitle-size text-muted-foreground max-w-xl leading-relaxed">
                 Transform your content with cutting-edge <span className="text-primary font-semibold">AI voice services</span>. 
                 Text-to-Speech and Speech Recognition in Bengali.
               </p>
@@ -113,7 +113,7 @@ export function Hero() {
           </div>
 
           {/* Right side - YouTube Video */}
-          <div className="relative mt-8 md:mt-0">
+          <div className="relative hero-video-container">
             <div className="relative w-full aspect-video rounded-lg overflow-hidden border border-border bg-muted shadow-lg">
               <iframe
                 className="absolute inset-0 w-full h-full"
