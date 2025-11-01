@@ -7,7 +7,7 @@ export function PlaygroundHeader() {
     <header className="border-b border-border bg-white dark:bg-background px-8 py-5">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-foreground">Playground</h1>
+          <h1 className="text-xl font-bold text-foreground">Playground</h1>
         </div>
         <ThemeToggle />
       </div>
