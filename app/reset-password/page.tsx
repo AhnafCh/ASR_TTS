@@ -3,11 +3,12 @@
 import { useState, useEffect, Suspense } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { AudioWaveform, Lock, AlertCircle, Loader2, CheckCircle2 } from "lucide-react"
+import { Lock, AlertCircle, Loader2, CheckCircle2 } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { createClient } from "@/lib/supabase/client"
 
@@ -112,11 +113,23 @@ function ResetPasswordForm() {
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="flex justify-center mb-8">
-          <Link href="/" className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-              <AudioWaveform className="w-6 h-6 text-white" />
-            </div>
-            <span className="font-bold text-2xl text-foreground">SenseVoice</span>
+          <Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+            <Image 
+              src="/logo/sv-light-48.svg" 
+              alt="SenseVoice Logo" 
+              width={140}
+              height={40}
+              className="h-10 w-auto dark:hidden"
+              priority
+            />
+            <Image 
+              src="/logo/sv-dark-48.svg" 
+              alt="SenseVoice Logo" 
+              width={140}
+              height={40}
+              className="h-10 w-auto hidden dark:block"
+              priority
+            />
           </Link>
         </div>
 
