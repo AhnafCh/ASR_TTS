@@ -12,22 +12,31 @@ import { Alert, AlertDescription } from "@/components/ui/alert"
 
 function ResetPasswordForm() {
   const router = useRouter()
-  const searchParams = useSearchParams()
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [error, setError] = useState("")
   const [success, setSuccess] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [token, setToken] = useState<string | null>(null)
+  const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    const tokenParam = searchParams.get("token")
-    if (!tokenParam) {
-      setError("Invalid or missing reset token")
-    } else {
-      setToken(tokenParam)
+    // Check if we have a valid session from the reset link
+    // Supabase automatically handles the token from the URL hash
+    const checkSession = async () => {
+      try {
+        const response = await fetch("/api/auth/user")
+        if (response.ok) {
+          setIsReady(true)
+        } else {
+          setError("Invalid or expired reset link. Please request a new password reset.")
+        }
+      } catch (err) {
+        setError("Invalid or expired reset link. Please request a new password reset.")
+      }
     }
-  }, [searchParams])
+    
+    checkSession()
+  }, [])
 
   // Password strength
   const getPasswordStrength = (pwd: string) => {
@@ -45,8 +54,8 @@ function ResetPasswordForm() {
     e.preventDefault()
     setError("")
 
-    if (!token) {
-      setError("Invalid reset token")
+    if (!isReady) {
+      setError("Invalid reset session")
       return
     }
 
@@ -68,12 +77,12 @@ function ResetPasswordForm() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ token, password }),
+        body: JSON.stringify({ password }),
       })
 
       if (!response.ok) {
         const error = await response.json()
-        throw new Error(error.message || "Failed to reset password")
+        throw new Error(error.error || "Failed to reset password")
       }
 
       setSuccess(true)
@@ -136,7 +145,7 @@ function ResetPasswordForm() {
                       onChange={(e) => setPassword(e.target.value)}
                       className="pl-10"
                       required
-                      disabled={isLoading || !token}
+                      disabled={isLoading || !isReady}
                     />
                   </div>
                   {passwordStrength && (
@@ -158,7 +167,7 @@ function ResetPasswordForm() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       className="pl-10"
                       required
-                      disabled={isLoading || !token}
+                      disabled={isLoading || !isReady}
                     />
                     {confirmPassword && password === confirmPassword && (
                       <CheckCircle2 className="absolute right-3 top-3 h-4 w-4 text-green-500" />
@@ -166,7 +175,7 @@ function ResetPasswordForm() {
                   </div>
                 </div>
 
-                <Button type="submit" className="w-full" disabled={isLoading || !token}>
+                <Button type="submit" className="w-full" disabled={isLoading || !isReady}>
                   {isLoading ? (
                     <>
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
