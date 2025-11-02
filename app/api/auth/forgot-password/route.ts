@@ -29,13 +29,14 @@ export async function POST(request: NextRequest) {
     const supabase = await createServerSupabaseClient()
 
     // Get the site URL for the redirect
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
+    // Always use production URL for password resets to avoid localhost links
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://sensevoice.vercel.app'
 
     // Send password reset email
     // Supabase will send the user directly to the reset-password page
     // with the token in the URL hash
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${siteUrl}/reset-password`,
+      redirectTo: `${siteUrl}/auth/callback?next=/reset-password`,
     })
 
     if (error) {
