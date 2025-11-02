@@ -2,10 +2,21 @@
 
 ## ✅ What I've Done
 
-### 1. Created Custom Email Templates
-- **HTML Template**: `email-templates/password-reset.html` - Beautiful, branded email
-- **Plain Text**: `email-templates/password-reset.txt` - Fallback for text-only clients
+### 1. Created Enhanced Custom Email Templates
+- **HTML Template**: `email-templates/password-reset.html` - Beautiful, professionally branded
+- **Plain Text**: `email-templates/password-reset.txt` - Enhanced fallback
 - **Documentation**: `email-templates/README.md` - Complete setup guide
+- **Preview**: `email-templates/PREVIEW.md` - Visual design documentation
+
+### ✨ New Features:
+- ✅ **Your actual SenseVoice logo** (from `/public/logo/sv-light-256.svg`)
+- ✅ **Grid pattern overlay** on header for depth
+- ✅ **Enhanced gradients** with smooth transitions
+- ✅ **Professional typography** hierarchy
+- ✅ **Bengali text** in footer (বাংলা এআই ভয়েস প্রযুক্তি)
+- ✅ **Better security notes** with icons
+- ✅ **Improved mobile responsiveness**
+- ✅ **Multi-layer shadows** for depth
 
 ### 2. Fixed Auth Flow
 Updated these files to ensure proper redirect:
@@ -41,10 +52,10 @@ Updated these files to ensure proper redirect:
 
 2. **Add These URLs to "Redirect URLs":**
    ```
-   http://localhost:3000/auth/callback*
-   https://yourdomain.com/auth/callback*
    http://localhost:3000/reset-password
    https://yourdomain.com/reset-password
+   http://localhost:3000/auth/callback*
+   https://yourdomain.com/auth/callback*
    ```
    *(Replace `yourdomain.com` with your actual domain)*
 
@@ -127,9 +138,9 @@ Supabase sends email with custom template
            ↓
 User clicks "Reset Password" button
            ↓
-Redirects to /auth/callback?type=recovery
+Redirects directly to /reset-password (with token in URL hash)
            ↓
-Callback validates and redirects to /reset-password
+Page validates session from URL hash
            ↓
 User enters new password
            ↓

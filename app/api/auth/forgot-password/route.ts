@@ -32,10 +32,10 @@ export async function POST(request: NextRequest) {
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'
 
     // Send password reset email
-    // Supabase will handle sending the email with a reset link
-    // The link will go through /auth/callback which will redirect to /reset-password
+    // Supabase will send the user directly to the reset-password page
+    // with the token in the URL hash
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${siteUrl}/auth/callback?type=recovery&next=/reset-password`,
+      redirectTo: `${siteUrl}/reset-password`,
     })
 
     if (error) {

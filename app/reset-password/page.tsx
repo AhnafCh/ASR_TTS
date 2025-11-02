@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, Suspense } from "react"
-import { useRouter, useSearchParams } from "next/navigation"
+import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { AudioWaveform, Lock, AlertCircle, Loader2, CheckCircle2 } from "lucide-react"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { createClient } from "@/lib/supabase/client"
 
 function ResetPasswordForm() {
   const router = useRouter()
@@ -20,17 +21,27 @@ function ResetPasswordForm() {
   const [isReady, setIsReady] = useState(false)
 
   useEffect(() => {
-    // Check if we have a valid session from the reset link
-    // Supabase automatically handles the token from the URL hash
+    // Initialize Supabase client and check for recovery session
     const checkSession = async () => {
       try {
-        const response = await fetch("/api/auth/user")
-        if (response.ok) {
+        const supabase = createClient()
+        
+        // Check if we have a valid session (Supabase handles the hash automatically)
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+        
+        if (sessionError) {
+          console.error('Session error:', sessionError)
+          setError("Invalid or expired reset link. Please request a new password reset.")
+          return
+        }
+
+        if (session && session.user) {
           setIsReady(true)
         } else {
           setError("Invalid or expired reset link. Please request a new password reset.")
         }
       } catch (err) {
+        console.error('Error checking session:', err)
         setError("Invalid or expired reset link. Please request a new password reset.")
       }
     }
