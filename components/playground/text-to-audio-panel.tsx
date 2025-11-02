@@ -27,10 +27,30 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { CustomAudioPlayer } from "./custom-audio-player"
 
-const voiceActors = [
-  { id: "female", name: "Female Voice", language: "Universal", sample: "/samples/female.mp3" },
-  { id: "male", name: "Male Voice", language: "Universal", sample: "/samples/male.mp3" },
+// Voice actor interface
+interface VoiceActor {
+  id: string
+  name: string
+  language: string
+  sample: string
+  type: "standard" | "custom"
+  referenceFile?: string
+  gender?: string
+}
+
+// Standard voices
+const standardVoices: VoiceActor[] = [
+  { id: "female", name: "Female Voice", language: "Universal", sample: "/samples/female.mp3", type: "standard" },
+  { id: "male", name: "Male Voice", language: "Universal", sample: "/samples/male.mp3", type: "standard" },
 ]
+
+// Custom cloned voices
+const customVoices: VoiceActor[] = [
+  { id: "sneha", name: "Sneha", language: "Bengali", sample: "/samples/Female_voiceover2.wav", type: "custom", referenceFile: "/samples/Female_voiceover2.wav", gender: "Female" },
+  { id: "zayra", name: "Zayra", language: "Bengali", sample: "/samples/female3.wav", type: "custom", referenceFile: "/samples/Female_voiceover3.wav", gender: "Female" },
+]
+
+const voiceActors: VoiceActor[] = [...standardVoices, ...customVoices]
 
 export function TextToAudioPanel() {
   const router = useRouter()
@@ -78,22 +98,52 @@ export function TextToAudioPanel() {
     setIsGenerating(true)
     
     try {
-      // Connect to FastAPI backend - use environment variable or fallback to localhost
-      const apiUrl = process.env.NEXT_PUBLIC_API_URL 
-        ? `${process.env.NEXT_PUBLIC_API_URL}/api/tts/generate`
-        : "http://localhost:8000/api/tts/generate"
+      // Check if this is a custom voice that requires cloning
+      const selectedVoiceActor = voiceActors.find(v => v.id === selectedVoice)
+      const isCustomVoice = selectedVoiceActor?.type === "custom"
       
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          text: inputText,
-          language,
-          voice: selectedVoice,
-        }),
-      })
+      let response;
+      
+      if (isCustomVoice && selectedVoiceActor?.referenceFile) {
+        // Use clone endpoint for custom voices
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL 
+          ? `${process.env.NEXT_PUBLIC_API_URL}/api/tts/clone`
+          : "http://localhost:8000/api/tts/clone"
+        
+        // Fetch the reference audio file
+        const referenceResponse = await fetch(selectedVoiceActor.referenceFile)
+        const referenceBlob = await referenceResponse.blob()
+        
+        // Prepare form data for clone endpoint
+        const formData = new FormData()
+        formData.append('text', inputText)
+        formData.append('language', language === 'bangla' ? 'bn' : 'en')
+        formData.append('make_clean', 'true')
+        formData.append('sample_rate', '24000')
+        formData.append('reference', referenceBlob, 'reference.wav')
+        
+        response = await fetch(apiUrl, {
+          method: "POST",
+          body: formData,
+        })
+      } else {
+        // Use standard TTS endpoint for standard voices
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL 
+          ? `${process.env.NEXT_PUBLIC_API_URL}/api/tts/generate`
+          : "http://localhost:8000/api/tts/generate"
+        
+        response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            text: inputText,
+            language,
+            voice: selectedVoice,
+          }),
+        })
+      }
 
       if (!response.ok) {
         const errorData = await response.json()
@@ -361,11 +411,32 @@ export function TextToAudioPanel() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent className="bg-white dark:bg-card border border-border rounded-md">
-                  {voiceActors.map((actor) => (
+                  {/* Standard Voices */}
+                  {standardVoices.map((actor) => (
                     <SelectItem key={actor.id} value={actor.id}>
                       {actor.name}
                     </SelectItem>
                   ))}
+                  
+                  {/* Separator for Custom Voices */}
+                  {customVoices.length > 0 && (
+                    <>
+                      <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground bg-muted/50 border-t border-border mt-1">
+                        Custom Voices
+                      </div>
+                      {customVoices.map((actor) => (
+                        <SelectItem key={actor.id} value={actor.id}>
+                          <div className="flex items-center gap-2">
+                            <span>
+                              {actor.name}
+                              {actor.gender && <span className="text-xs text-muted-foreground"> ({actor.gender})</span>}
+                            </span>
+                            <span className="text-xs text-primary bg-primary/10 px-1.5 py-0.5 rounded">Premium</span>
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </>
+                  )}
                 </SelectContent>
               </Select>
               <Button
@@ -446,7 +517,7 @@ export function TextToAudioPanel() {
           <h4 className="font-semibold text-xs sm:text-sm mb-2 sm:mb-3 text-foreground">Pro Tips</h4>
           <ul className="text-xs text-muted-foreground space-y-1.5 sm:space-y-2 leading-relaxed">
             <li>• Use punctuation for natural pauses</li>
-            <li>• Mix languages seamlessly</li>
+            <li>• Input English as language if you have English & Bangla mixed input</li>
             <li>• Preview voice samples before generating</li>
           </ul>
         </div>

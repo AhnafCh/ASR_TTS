@@ -374,7 +374,7 @@ async def clone_voice(
     language: str = Form(..., description="Language code: 'en' or 'bn'"),
     reference: UploadFile = File(..., description="Reference audio file for voice cloning"),
     make_clean: bool = Form(default=True, description="Apply audio cleaning/enhancement"),
-    sample_rate: int = Form(default=16000, description="Output audio sample rate in Hz")
+    sample_rate: int = Form(default=24000, description="Output audio sample rate in Hz")
 ):
     """
     Generate speech audio with voice cloning using a reference audio sample.
