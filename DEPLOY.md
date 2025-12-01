@@ -109,7 +109,7 @@ git push
 
 ## 📚 Full Documentation
 
-See `RAILWAY_DEPLOYMENT.md` for complete guide with:
+See `RAILWAY_DEPLOYMENT.md` for guide with:
 - Detailed explanations
 - Advanced configurations
 - Monitoring setup
@@ -117,4 +117,4 @@ See `RAILWAY_DEPLOYMENT.md` for complete guide with:
 
 ---
 
-**Ready to deploy?** Follow the 3 steps above! 🚀
+**Ready to deploy?** Follow the 3 steps above! 
